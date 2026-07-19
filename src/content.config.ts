@@ -124,6 +124,71 @@ const caseStudies = defineCollection({
   }),
 });
 
+// A photo in `public/`, with its intrinsic dimensions so the renderer can
+// reserve layout space and respect the source aspect ratio.
+const imageSlot = z.object({
+  src: z.string(),
+  alt: z.string(),
+  width: z.number(),
+  height: z.number(),
+  caption: z.string().optional(),
+  // 'small' constrains display width — for low-resolution sources that
+  // would visibly upscale at full column width.
+  size: z.enum(['default', 'small']).optional(),
+});
+
+// Operations-leadership case studies — the second lane of the site,
+// rendered at /leadership. Same content-first discipline as the technical
+// case studies: narrative lives in the markdown body, structured figures
+// and section scaffolding live in frontmatter so the layout never hardcodes
+// copy. `status: 'stub'` renders a heading and a placeholder only — used
+// for entries whose content hasn't been written yet.
+const leadership = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/leadership' }),
+  schema: z.object({
+    title: z.string(),
+    role: z.string(),
+    org: z.string(),
+    location: z.string().optional(),
+    period: z.string(),
+    order: z.number(),
+    status: z.enum(['published', 'stub']).default('published'),
+    summary: z.string().optional(),
+    stubNote: z.string().optional(),
+    headlineStat: z
+      .object({
+        value: z.string(),
+        label: z.string(),
+      })
+      .optional(),
+    stats: z
+      .array(
+        z.object({
+          value: z.string(),
+          label: z.string(),
+        }),
+      )
+      .optional(),
+    // Image slots reference files under `public/leadership/`. `width`/`height`
+    // are the file's intrinsic pixel dimensions and are emitted as HTML
+    // attributes so the browser reserves the correct box before the image
+    // loads (no layout shift, and portrait sources can't stretch the grid).
+    // The page also checks the filesystem at build time and omits any slot
+    // whose file is absent, so slots can be declared ahead of the photo.
+    heroImage: imageSlot.optional(),
+    sections: z
+      .array(
+        z.object({
+          title: z.string(),
+          body: z.array(z.string()),
+          // One image renders full column width; two render as a pair.
+          images: z.array(imageSlot).optional(),
+        }),
+      )
+      .optional(),
+  }),
+});
+
 const roadmap = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/roadmap' }),
   schema: z.object({
@@ -146,6 +211,7 @@ export const collections = {
   experience,
   projects,
   'case-studies': caseStudies,
+  leadership,
   roadmap,
   skills,
 };

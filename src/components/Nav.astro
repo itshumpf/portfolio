@@ -8,18 +8,29 @@ interface Props {
 
 const { name } = Astro.props;
 const [first] = name.split(' ');
+
+// Section anchors only resolve on the homepage; from any other route they
+// need the leading `/` so they navigate home first.
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const onHome = path === '/';
+const resolve = (href: string) => (href.startsWith('#') && !onHome ? `/${href}` : href);
 ---
 
 <header class="site-nav">
   <div class="wrap wrap--wide site-nav__inner">
-    <a href="#top" class="site-nav__brand">{first}</a>
+    <a href={onHome ? '#top' : '/'} class="site-nav__brand">{first}</a>
     <div class="site-nav__right">
       <nav aria-label="Primary">
         <ul class="site-nav__links">
           {
             navLinks.map((link) => (
               <li>
-                <a href={link.href}>{link.label}</a>
+                <a
+                  href={resolve(link.href)}
+                  aria-current={link.href === path ? 'page' : undefined}
+                >
+                  {link.label}
+                </a>
               </li>
             ))
           }
@@ -71,9 +82,33 @@ const [first] = name.split(' ');
     color: var(--text-primary);
   }
 
+  .site-nav__links a[aria-current='page'] {
+    color: var(--text-primary);
+  }
+
+  /* Four items no longer fit one 60px row on a narrow phone, so below
+     560px the bar relaxes: it grows to fit and the links wrap instead of
+     overflowing. Desktop layout is unchanged. */
   @media (max-width: 560px) {
+    .site-nav__inner {
+      height: auto;
+      min-height: 60px;
+      flex-wrap: wrap;
+      row-gap: 4px;
+      padding-block: 10px;
+    }
+
+    .site-nav__right {
+      gap: 14px;
+    }
+
     .site-nav__links {
-      gap: 16px;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+    }
+
+    .site-nav__links a {
+      font-size: 0.84rem;
     }
   }
 </style>

@@ -1,0 +1,78 @@
+---
+// Photo slot for the leadership case studies.
+//
+// Two things it guarantees:
+//  1. Nothing renders at all if the referenced file isn't in `public/` yet
+//     (see src/lib/media.ts), so slots can be declared ahead of the photo.
+//  2. Intrinsic width/height are always emitted and the CSS is
+//     `width:100%; height:auto`, so every source keeps its own aspect ratio
+//     — portrait, square and landscape all sit in the layout without
+//     cropping or shifting anything as they load.
+import { resolveImage, type ImageSlot } from '../lib/media';
+
+interface Props {
+  image?: ImageSlot;
+  variant?: 'hero' | 'inline';
+}
+
+const { image, variant = 'inline' } = Astro.props;
+const resolved = resolveImage(image);
+---
+
+{
+  resolved && (
+    <figure
+      class:list={[
+        'case-image',
+        `case-image--${variant}`,
+        resolved.size === 'small' && 'case-image--small',
+      ]}
+    >
+      <img
+        src={resolved.src}
+        alt={resolved.alt}
+        width={resolved.width}
+        height={resolved.height}
+        loading={variant === 'hero' ? 'eager' : 'lazy'}
+        decoding="async"
+        fetchpriority={variant === 'hero' ? 'high' : undefined}
+      />
+      {resolved.caption && <figcaption>{resolved.caption}</figcaption>}
+    </figure>
+  )
+}
+
+<style>
+  .case-image {
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .case-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    background: var(--border-soft);
+  }
+
+  .case-image--hero {
+    margin-top: 8px;
+  }
+
+  /* Low-resolution sources: cap the box so they never visibly upscale. */
+  .case-image--small {
+    max-width: 260px;
+  }
+
+  .case-image figcaption {
+    margin: 10px 2px 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-style: italic;
+    max-width: 68ch;
+  }
+</style>

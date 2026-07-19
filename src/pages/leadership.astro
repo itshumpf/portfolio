@@ -1,0 +1,292 @@
+---
+// Operations-leadership lane. The homepage is the engineering lane; this
+// route carries the operations case studies. Copy lives in the `leadership`
+// content collection (src/content/leadership/*.md), never here.
+//
+// ---------------------------------------------------------------------
+// Photos live in `public/leadership/`. Each slot is declared in the
+// markdown frontmatter with its intrinsic width/height (emitted as HTML
+// attributes, so no layout shift and no forced crop), and any slot whose
+// file is missing is omitted entirely at build time (src/lib/media.ts) —
+// so new slots can be declared before the photo exists.
+//
+//   honey-lake-hero.jpg             960x540  hero, ridge over the pit area
+//   honey-lake-sign.jpg             496x403  park roadside sign
+//   honey-lake-start-straight.jpg   498x312  groomed start straight
+//   honey-lake-hillside-track.jpg   438x278  hillside switchbacks
+//   honey-lake-gate-drop.jpg        206x206  gate drop (low-res, small)
+//   honey-lake-pits.jpg             206x206  riders in the pits (low-res)
+//   honey-lake-rock-section.jpg     547x365  rock section with spectators
+//
+// To swap or add a photo: drop the file here, then edit the `images:`
+// block in src/content/leadership/*.md — never hardcode a path in this file.
+// ---------------------------------------------------------------------
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import CaseImage from '../components/CaseImage.astro';
+
+const [profile] = await getCollection('profile');
+
+const entries = (await getCollection('leadership')).sort((a, b) => a.data.order - b.data.order);
+
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({
+    entry,
+    Content: entry.data.status === 'published' ? (await render(entry)).Content : null,
+  })),
+);
+---
+
+<BaseLayout
+  title="Leadership — Braeden Keena"
+  description="Operations leadership case studies: reviving and running a ~500-acre motocross park with full P&L responsibility, a 120-person event workforce, and a two-day race weekend peaking at 6,500 attendees."
+>
+  <Nav name={profile.data.name} />
+
+  <section class="lead-hero">
+    <div class="wrap wrap--wide">
+      <p class="eyebrow">Operations leadership</p>
+      <h1 class="lead-hero__title">Running the thing, not just building it.</h1>
+      <p class="section-sub">
+        A decade of operations work sits behind the engineering. These are the case studies for
+        that side of it — permits, payroll constraints, safety programs, and the people who have
+        to be somewhere at a specific time for any of it to work.
+      </p>
+    </div>
+  </section>
+
+  {
+    rendered.map(({ entry, Content }) => {
+      const d = entry.data;
+
+      if (d.status === 'stub') {
+        return (
+          <section class="case case--stub" id={entry.id}>
+            <div class="wrap wrap--wide">
+              <hr class="hr case__rule" />
+              <p class="eyebrow">Case study · in progress</p>
+              <h2 class="section-title">{d.title}</h2>
+              <p class="case__meta">
+                {d.role} · {d.period}
+              </p>
+              <div class="stub-slot">
+                <p class="stub-slot__label">Write-up pending</p>
+                {d.stubNote && <p class="stub-slot__note">{d.stubNote}</p>}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      return (
+        <section class="case" id={entry.id}>
+          <div class="wrap wrap--wide">
+            <hr class="hr case__rule" />
+
+            <div class="section-head">
+              <p class="eyebrow">Case study</p>
+              <h2 class="section-title case__title">{d.title}</h2>
+              <p class="case__meta">
+                {d.role} · {d.org}
+                {d.location && `, ${d.location}`} · {d.period}
+              </p>
+              {d.summary && <p class="section-sub case__summary">{d.summary}</p>}
+            </div>
+
+            <CaseImage image={d.heroImage} variant="hero" />
+
+            {d.headlineStat && (
+              <p class="case__headline">
+                <span class="case__headline-value">{d.headlineStat.value}</span>
+                <span class="case__headline-label">{d.headlineStat.label}</span>
+              </p>
+            )}
+
+            {d.stats && (
+              <div class="stat-row case__stats">
+                {d.stats.map((stat) => (
+                  <div class="stat">
+                    <span class="stat-value">{stat.value}</span>
+                    <span class="stat-label">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {Content && (
+              <div class="case__narrative">
+                <Content />
+              </div>
+            )}
+
+            {d.sections?.map((block) => (
+              <div class="case__block">
+                <h3 class="case__block-title">{block.title}</h3>
+                <div class="case__prose">
+                  {block.body.map((para) => (
+                    <p>{para}</p>
+                  ))}
+                </div>
+                {block.images && (
+                  <div class:list={['case__figures', block.images.length > 1 && 'case__figures--pair']}>
+                    {block.images.map((img) => (
+                      <CaseImage image={img} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    })
+  }
+
+  <Footer profile={profile} />
+</BaseLayout>
+
+<style>
+  .lead-hero {
+    padding-top: clamp(56px, 9vw, 92px);
+    padding-bottom: clamp(28px, 4vw, 40px);
+  }
+
+  .lead-hero__title {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    max-width: 20ch;
+    margin-bottom: 16px;
+  }
+
+  .case {
+    padding-top: 0;
+  }
+
+  .case__rule {
+    margin-bottom: clamp(40px, 6vw, 64px);
+  }
+
+  .case__title {
+    max-width: 22ch;
+    margin-bottom: 8px;
+  }
+
+  .case__meta {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .case__summary {
+    max-width: 66ch;
+  }
+
+  .case__headline {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    margin-bottom: 6px;
+  }
+
+  .case__headline-value {
+    font-family: var(--font-mono);
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .case__headline-label {
+    color: var(--text-secondary);
+    font-size: 0.98rem;
+    max-width: 46ch;
+  }
+
+  .case__stats {
+    margin-bottom: 52px;
+  }
+
+  .case__narrative {
+    max-width: 68ch;
+    color: var(--text-secondary);
+    font-size: 1.02rem;
+    margin-bottom: 52px;
+  }
+
+  .case__narrative :global(p) {
+    margin-bottom: 18px;
+  }
+
+  .case__narrative :global(strong) {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .case__block {
+    margin-bottom: 52px;
+  }
+
+  .case__block-title {
+    font-size: 1.08rem;
+    margin-bottom: 20px;
+  }
+
+  .case__prose {
+    max-width: 68ch;
+    color: var(--text-secondary);
+    font-size: 0.96rem;
+  }
+
+  .case__prose p + p {
+    margin-top: 16px;
+  }
+
+  .case__figures {
+    margin-top: 28px;
+    display: grid;
+    gap: 16px;
+    /* Single figure: hold it to the reading measure so it sits with the
+       prose rather than running the full 980px wrap. */
+    max-width: 68ch;
+    align-items: start;
+  }
+
+  .case__figures--pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 860px;
+  }
+
+  @media (max-width: 640px) {
+    .case__figures--pair {
+      grid-template-columns: 1fr;
+      max-width: 100%;
+    }
+  }
+
+  /* Stub entry — same dashed-placeholder language as the demo slot. */
+  .stub-slot {
+    margin-top: 28px;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 32px 28px;
+    text-align: center;
+  }
+
+  .stub-slot__label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.94rem;
+    margin-bottom: 6px;
+  }
+
+  .stub-slot__note {
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    max-width: 52ch;
+    margin-inline: auto;
+  }
+</style>
