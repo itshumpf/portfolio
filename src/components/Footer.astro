@@ -1,0 +1,93 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  profile: CollectionEntry<'profile'>;
+}
+
+const { profile } = Astro.props;
+const { name, email, location } = profile.data;
+const year = new Date().getFullYear();
+---
+
+<footer id="contact">
+  <div class="wrap footer__inner">
+    <p>
+      <a class="text-link" href={`mailto:${email}`}>{email}</a>
+    </p>
+    <p class="footer__fine">
+      {name} · {location} · © {year}
+    </p>
+  </div>
+  <div class="wrap footer__colophon-wrap">
+    <hr class="hr footer__divider" />
+    <p class="footer__colophon">
+      Built with Astro · minimal JS · deployed on Cloudflare Pages ·{' '}
+      <a
+        class="text-link"
+        href="https://github.com/itshumpf/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        source on GitHub →
+      </a>
+    </p>
+    <p class="footer__meta-line">
+      <span class="footer__perf">100/100 Lighthouse performance</span>
+      <span class="footer__mark" aria-hidden="true">humpf</span>
+    </p>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--border-soft);
+    padding-block: 40px;
+  }
+
+  .footer__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .footer__fine {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .footer__colophon-wrap {
+    margin-top: 28px;
+  }
+
+  .footer__divider {
+    margin-bottom: 20px;
+  }
+
+  .footer__colophon {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.01em;
+  }
+
+  .footer__meta-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-top: 8px;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
+  }
+
+  .footer__mark {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+  }
+</style>

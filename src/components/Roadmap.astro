@@ -1,0 +1,76 @@
+---
+import { getCollection, render } from 'astro:content';
+
+const items = (await getCollection('roadmap')).sort((a, b) => a.data.order - b.data.order);
+
+const categoryMeta: Record<string, string> = {
+  'landing-soon': 'Landing soon',
+  frontier: 'Cracking the clock-twin frontier',
+  hardware: 'Hardware & deployment',
+};
+
+const groups = ['landing-soon', 'frontier', 'hardware'] as const;
+
+const rendered = await Promise.all(
+  items.map(async (item) => ({ item, Content: (await render(item)).Content })),
+);
+---
+
+<div class="roadmap">
+  <h3 class="csi__block-title">What's next</h3>
+  <div class="roadmap__groups">
+    {
+      groups.map((group) => (
+        <div class="roadmap__group">
+          <p class="roadmap__group-label">{categoryMeta[group]}</p>
+          <ul class="roadmap__list">
+            {rendered
+              .filter(({ item }) => item.data.category === group)
+              .map(({ item, Content }) => (
+                <li class="roadmap__item">
+                  <h4>{item.data.title}</h4>
+                  <div class="roadmap__desc">
+                    <Content />
+                  </div>
+                </li>
+              ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .roadmap__groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 28px;
+  }
+
+  .roadmap__group-label {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  .roadmap__item {
+    margin-bottom: 16px;
+  }
+
+  .roadmap__item h4 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .roadmap__desc {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+
+  .roadmap__desc :global(p) {
+    margin: 0;
+  }
+</style>

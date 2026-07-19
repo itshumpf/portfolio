@@ -1,0 +1,273 @@
+---
+import { getCollection, render } from 'astro:content';
+import DemoSlot from './DemoSlot.astro';
+import Roadmap from './Roadmap.astro';
+
+const [caseStudy] = (await getCollection('case-studies')).sort((a, b) => a.data.order - b.data.order);
+const { Content } = await render(caseStudy);
+const {
+  title,
+  subtitle,
+  headlineStat,
+  secondaryStats,
+  scaleStat,
+  approach,
+  results,
+  limitations,
+  techStack,
+  demoSlot,
+} = caseStudy.data;
+---
+
+<section id="csi-project" class="csi">
+  <div class="wrap wrap--wide">
+    <div class="section-head">
+      <p class="eyebrow">Case study</p>
+      <h2 class="section-title csi__title">{title}</h2>
+      <p class="section-sub">{subtitle}</p>
+    </div>
+
+    <p class="csi__headline">
+      <span class="csi__headline-value">{headlineStat.value}</span>
+      <span class="csi__headline-label">{headlineStat.label}</span>
+    </p>
+
+    <div class="stat-row">
+      {
+        secondaryStats.map((stat) => (
+          <div class="stat">
+            <span class="stat-value">{stat.value}</span>
+            <span class="stat-label">{stat.label}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="csi__scale">
+      <span class="csi__scale-value">{scaleStat.value}</span> {scaleStat.label}.
+      <span class="csi__scale-caveat">{scaleStat.caveat}</span>
+    </p>
+
+    <div class="csi__narrative">
+      <Content />
+    </div>
+
+    <div class="csi__block">
+      <h3 class="csi__block-title">Demo</h3>
+      <DemoSlot
+        status={demoSlot.status}
+        label={demoSlot.label}
+        note={demoSlot.note}
+        mediaUrl={demoSlot.mediaUrl}
+        mediaUrl2={demoSlot.mediaUrl2}
+      />
+    </div>
+
+    <div class="csi__block">
+      <h3 class="csi__block-title">How it works</h3>
+      <div class="approach-list">
+        {
+          approach.map((step) => (
+            <div class="approach-item">
+              <h4>{step.title}</h4>
+              <p>{step.description}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="csi__block csi__results">
+      <div>
+        <h3 class="csi__block-title">Results</h3>
+        <ul class="results-list">
+          {results.map((r) => <li>{r}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h3 class="csi__block-title">Honest limitations</h3>
+        <ul class="limitations-list">
+          {
+            limitations.map((l) => (
+              <li>
+                <h4>{l.title}</h4>
+                <p>{l.description}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="csi__block">
+      <h3 class="csi__block-title">Tech stack</h3>
+      <div class="stack-grid">
+        {
+          techStack.map((group) => (
+            <div>
+              <p class="stack-group__label">{group.category}</p>
+              <p class="tag-list">{group.items.join(' · ')}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="csi__block">
+      <Roadmap />
+    </div>
+  </div>
+</section>
+
+<style>
+  .csi {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .csi__title {
+    max-width: 22ch;
+  }
+
+  .csi__headline {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+
+  .csi__headline-value {
+    font-family: var(--font-mono);
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .csi__headline-label {
+    color: var(--text-secondary);
+    font-size: 0.98rem;
+    max-width: 46ch;
+  }
+
+  .stat-row {
+    margin-bottom: 20px;
+  }
+
+  .csi__scale {
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    max-width: 68ch;
+    margin-bottom: 52px;
+  }
+
+  .csi__scale-value {
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+  }
+
+  .csi__scale-caveat {
+    display: block;
+    margin-top: 4px;
+  }
+
+  .csi__narrative {
+    max-width: 68ch;
+    color: var(--text-secondary);
+    font-size: 1.02rem;
+    margin-bottom: 52px;
+  }
+
+  .csi__narrative :global(p) {
+    margin-bottom: 18px;
+  }
+
+  .csi__narrative :global(strong) {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .csi__block {
+    margin-bottom: 52px;
+  }
+
+  .csi__block-title {
+    font-size: 1.08rem;
+    margin-bottom: 20px;
+  }
+
+  .approach-list {
+    display: grid;
+    gap: 22px;
+  }
+
+  .approach-item h4 {
+    font-size: 0.98rem;
+    margin-bottom: 6px;
+  }
+
+  .approach-item p {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    max-width: 68ch;
+  }
+
+  .csi__results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .results-list li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 14px;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+  }
+
+  .results-list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+  }
+
+  .limitations-list li {
+    margin-bottom: 16px;
+    padding-left: 16px;
+    border-left: 2px solid var(--border);
+  }
+
+  .limitations-list h4 {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .limitations-list p {
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+  }
+
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+
+  .stack-group__label {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  @media (max-width: 720px) {
+    .csi__results {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+</style>

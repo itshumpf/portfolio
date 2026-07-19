@@ -1,0 +1,140 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+
+interface Props {
+  profile: CollectionEntry<'profile'>;
+}
+
+const { profile } = Astro.props;
+const { Content } = await render(profile);
+const experience = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
+const skills = (await getCollection('skills')).sort((a, b) => a.id.localeCompare(b.id));
+---
+
+<section id="about">
+  <div class="wrap">
+    <p class="eyebrow">Background</p>
+
+    <div class="story">
+      <Content />
+    </div>
+
+    <hr class="hr story__divider" />
+
+    <h3 class="about__col-title">Operations experience</h3>
+    <ul class="timeline">
+      {
+        experience.map((job) => (
+          <li class="timeline__item">
+            <div class="timeline__dates">
+              {job.data.startDate} – {job.data.endDate}
+            </div>
+            <div class="timeline__body">
+              <span class="timeline__role">{job.data.role}</span>
+              <span class="timeline__org">
+                {job.data.org}
+                {job.data.location && `, ${job.data.location}`}
+              </span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h3 class="about__col-title about__col-title--skills">Technical skills</h3>
+    <div class="skills">
+      {
+        skills.map((group) => (
+          <p class="skills__row">
+            <span class="skills__label">{group.data.category}</span>
+            <span class="tag-list">{group.data.items.join(' · ')}</span>
+          </p>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .story {
+    color: var(--text-secondary);
+    font-size: 1.02rem;
+    max-width: 68ch;
+  }
+
+  .story :global(p) {
+    margin-bottom: 20px;
+  }
+
+  .story :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .story__divider {
+    margin-block: 44px;
+  }
+
+  .about__col-title {
+    font-size: 0.82rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .about__col-title--skills {
+    margin-top: 44px;
+  }
+
+  .timeline__item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    padding-block: 10px;
+    border-top: 1px solid var(--border-soft);
+    font-size: 0.92rem;
+  }
+
+  .timeline__item:last-child {
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .timeline__dates {
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+
+  .timeline__role {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .timeline__org {
+    color: var(--text-secondary);
+  }
+
+  .timeline__org::before {
+    content: " — ";
+    color: var(--text-muted);
+  }
+
+  .skills__row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    padding-block: 8px;
+    font-size: 0.92rem;
+  }
+
+  .skills__label {
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 560px) {
+    .timeline__item,
+    .skills__row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+</style>

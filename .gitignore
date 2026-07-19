@@ -1,0 +1,64 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# ---------------------------------------------------------------------
+# Privacy lock-in — CSI project data.
+# The public site carries methodology and aggregate results only. Raw
+# captures, device identifiers, and spatial/floor-plan data must never
+# be committed. See README "Privacy" section before adding any CSI
+# asset to this repo — when in doubt, keep it out of git.
+# ---------------------------------------------------------------------
+
+# Catch-all: anything placed in these directories is never committed,
+# regardless of file type.
+/private/
+/raw-data/
+/captures/
+/sessions/
+
+# Raw CSI capture formats and session data.
+*.pcap
+*.pcapng
+*.csi
+*.iq
+session_*.csv
+*_session.csv
+*.sqlite
+*.sqlite3
+
+# Device / network identifiers (MACs, SSIDs, node identity dumps).
+*device-fingerprints*
+*mac-address*
+*mac-table*
+*ssid-list*
+nvs_identity*
+
+# Floor plans / apartment maps / spatial-mapping outputs.
+*floorplan*
+*floor-plan*
+*apartment-map*
+*spatial-map*
+*zone-map*
+*.dxf

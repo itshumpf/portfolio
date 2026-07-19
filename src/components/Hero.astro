@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  profile: CollectionEntry<'profile'>;
+}
+
+const { profile } = Astro.props;
+const { name, oneLiner, email, resumeUrl, links } = profile.data;
+const activeLinks = links.filter((l) => l.url);
+---
+
+<section class="hero">
+  <div class="wrap wrap--wide">
+    <h1 class="hero__name">{name}</h1>
+    <p class="hero__line">{oneLiner}</p>
+
+    <div class="hero__links">
+      {
+        activeLinks.map((link) => (
+          <a class="text-link" href={link.url} target="_blank" rel="noopener noreferrer">
+            {link.label}
+          </a>
+        ))
+      }
+      <a class="text-link" href={`mailto:${email}`}>
+        Email
+      </a>
+      {resumeUrl && (
+        <a class="text-link" href={resumeUrl} download>
+          Resume
+        </a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: clamp(64px, 10vw, 108px);
+    padding-bottom: clamp(40px, 6vw, 64px);
+  }
+
+  .hero__name {
+    font-size: clamp(1.9rem, 4vw, 2.5rem);
+    margin-bottom: 16px;
+  }
+
+  .hero__line {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 58ch;
+    margin-bottom: 24px;
+  }
+
+  .hero__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    font-size: 0.92rem;
+  }
+</style>

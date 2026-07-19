@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import CsiShowcase from '../components/CsiShowcase.astro';
+import Projects from '../components/Projects.astro';
+import Footer from '../components/Footer.astro';
+
+const [profile] = await getCollection('profile');
+---
+
+<BaseLayout
+  title="Braeden Keena"
+  description="Full-stack builder with an IoT/firmware background — a decade of operations leadership behind eighteen months of self-taught engineering, including a 99.6%-accurate WiFi-CSI RF-fingerprinting sensor array."
+>
+  <Nav name={profile.data.name} />
+  <Hero profile={profile} />
+  <CsiShowcase />
+  <About profile={profile} />
+  <Projects />
+  <Footer profile={profile} />
+</BaseLayout>

@@ -1,0 +1,158 @@
+---
+interface Props {
+  status: 'coming-soon' | 'gif' | 'video' | 'live-embed';
+  label: string;
+  note: string;
+  mediaUrl?: string;
+  mediaUrl2?: string;
+}
+
+const { status, label, note, mediaUrl, mediaUrl2 } = Astro.props;
+---
+
+<div class="demo-slot" data-status={status}>
+  {
+    status === 'coming-soon' && (
+      <div class="demo-slot__placeholder">
+        <div class="demo-slot__scope" aria-hidden="true">
+          <svg viewBox="0 0 320 60" preserveAspectRatio="none">
+            <polyline
+              points="0,30 20,30 28,12 36,48 44,30 60,30 66,20 72,40 78,30 100,30 106,8 112,52 118,30 320,30"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.25"
+            />
+          </svg>
+        </div>
+        <p class="demo-slot__label">{label}</p>
+        <p class="demo-slot__note">{note}</p>
+      </div>
+    )
+  }
+  {
+    status === 'gif' && mediaUrl && (
+      <div class="demo-slot__frame">
+        <div class="demo-slot__media">
+          <figure class="demo-slot__figure demo-slot__figure--main">
+            <img src={mediaUrl} alt={label} loading="lazy" />
+          </figure>
+          {mediaUrl2 && (
+            <figure class="demo-slot__figure demo-slot__figure--secondary">
+              <img src={mediaUrl2} alt={label} loading="lazy" />
+            </figure>
+          )}
+        </div>
+        <p class="demo-slot__caption">{note}</p>
+      </div>
+    )
+  }
+  {
+    status === 'video' && mediaUrl && (
+      <div class="demo-slot__frame">
+        <video src={mediaUrl} controls preload="none" aria-label={label} />
+        <p class="demo-slot__caption">{note}</p>
+      </div>
+    )
+  }
+  {
+    status === 'live-embed' && mediaUrl && (
+      <div class="demo-slot__frame">
+        <iframe src={mediaUrl} title={label} loading="lazy" />
+        <p class="demo-slot__caption">{note}</p>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .demo-slot__placeholder {
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    aspect-ratio: 16 / 7;
+    margin: auto;
+    text-align: center;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .demo-slot__scope {
+    width: min(100%, 280px);
+    height: 60px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .demo-slot__scope svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .demo-slot__label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.94rem;
+  }
+
+  .demo-slot__note {
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    max-width: 42ch;
+  }
+
+  .demo-slot__frame {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .demo-slot__media {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 12px;
+  }
+
+  .demo-slot__figure {
+    margin: 0;
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    overflow: hidden;
+    line-height: 0;
+    aspect-ratio: 760 / 444;
+  }
+
+  .demo-slot__figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .demo-slot__frame video,
+  .demo-slot__frame iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    display: block;
+  }
+
+  .demo-slot__caption {
+    margin: 12px 2px 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-style: italic;
+    max-width: 68ch;
+  }
+
+  @media (max-width: 640px) {
+    .demo-slot__media {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

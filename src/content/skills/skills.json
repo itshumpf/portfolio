@@ -1,0 +1,22 @@
+[
+  {
+    "id": "languages",
+    "category": "Languages",
+    "items": ["Python (scraping, data pipelines, automation)", "JavaScript", "SQL", "HTML/CSS"]
+  },
+  {
+    "id": "web-data",
+    "category": "Web & Data",
+    "items": ["REST APIs", "API reverse-engineering", "Static site generation", "Technical SEO", "Leaflet.js mapping", "JSON data architecture"]
+  },
+  {
+    "id": "devops",
+    "category": "DevOps",
+    "items": ["Git / GitHub", "CI/CD (Cloudflare Pages, Netlify)", "Windows task automation", "Scheduled data-refresh systems"]
+  },
+  {
+    "id": "hardware-iot",
+    "category": "Hardware / IoT",
+    "items": ["ESP32 firmware (C / ESP-IDF)", "ESP-NOW & BLE", "I2C peripherals", "Sensor networks", "3D printing & CAD (OpenSCAD)"]
+  }
+]

@@ -1,0 +1,87 @@
+---
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+const statusLabel: Record<string, string> = {
+  live: 'Live',
+  sunset: 'Sunset',
+  wip: 'In progress',
+};
+---
+
+<section id="work">
+  <div class="wrap">
+    <p class="eyebrow">Other work</p>
+    <h2 class="section-title">A few more, briefly.</h2>
+
+    <div class="project-list">
+      {
+        projects.map((project) => (
+          <article class="project">
+            <div class="project__head">
+              <h3>{project.data.title}</h3>
+              <span class="project__meta">
+                {statusLabel[project.data.status]} · {project.data.period}
+              </span>
+            </div>
+            <p class="project__tagline">{project.data.tagline}</p>
+            <p class="tag-list project__tech">{project.data.tech.join(' · ')}</p>
+            {project.data.links.live && (
+              <a class="text-link" href={project.data.links.live} target="_blank" rel="noopener noreferrer">
+                {project.data.links.live.replace(/^https?:\/\//, '')}
+              </a>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .project-list {
+    display: grid;
+    gap: 0;
+  }
+
+  .project {
+    padding-block: 28px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .project:last-child {
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .project__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .project__head h3 {
+    font-size: 1.05rem;
+  }
+
+  .project__meta {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .project__tagline {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    max-width: 62ch;
+    margin-bottom: 12px;
+  }
+
+  .project__tech {
+    margin-bottom: 12px;
+  }
+</style>
