@@ -44,6 +44,9 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     tagline: z.string(),
+    // When true, the card renders the markdown body (multi-paragraph,
+    // CSI-case-study style) instead of the single-line tagline.
+    expandedBody: z.boolean().optional(),
     period: z.string(),
     role: z.string(),
     status: z.enum(['live', 'sunset', 'wip']),

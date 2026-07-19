@@ -1,7 +1,14 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+const rendered = await Promise.all(
+  projects.map(async (project) => ({
+    project,
+    Content: project.data.expandedBody ? (await render(project)).Content : null,
+  })),
+);
 
 const statusLabel: Record<string, string> = {
   live: 'Live',
@@ -13,11 +20,11 @@ const statusLabel: Record<string, string> = {
 <section id="work">
   <div class="wrap">
     <p class="eyebrow">Other work</p>
-    <h2 class="section-title">A few more, briefly.</h2>
+    <h2 class="section-title">Selected work.</h2>
 
     <div class="project-list">
       {
-        projects.map((project) => (
+        rendered.map(({ project, Content }) => (
           <article class="project">
             <div class="project__head">
               <h3>{project.data.title}</h3>
@@ -25,7 +32,13 @@ const statusLabel: Record<string, string> = {
                 {statusLabel[project.data.status]} · {project.data.period}
               </span>
             </div>
-            <p class="project__tagline">{project.data.tagline}</p>
+            {Content ? (
+              <div class="project__body">
+                <Content />
+              </div>
+            ) : (
+              <p class="project__tagline">{project.data.tagline}</p>
+            )}
             <p class="tag-list project__tech">{project.data.tech.join(' · ')}</p>
             {project.data.links.live && (
               <a class="text-link" href={project.data.links.live} target="_blank" rel="noopener noreferrer">
@@ -79,6 +92,20 @@ const statusLabel: Record<string, string> = {
     font-size: 0.95rem;
     max-width: 62ch;
     margin-bottom: 12px;
+  }
+
+  .project__body {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    max-width: 68ch;
+  }
+
+  .project__body :global(p) {
+    margin-bottom: 12px;
+  }
+
+  .project__body :global(p:last-child) {
+    margin-bottom: 0;
   }
 
   .project__tech {

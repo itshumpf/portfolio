@@ -1,11 +1,12 @@
 ---
 title: "nacup.us"
 tagline: "Live World Cup 2026 fan hub — host-city info, news, and live scores in one place."
+expandedBody: true
 period: "2026"
 role: "Founder / Developer"
 status: "live"
 order: 1
-tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "Cloudflare Pages", "GitHub CI/CD"]
+tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "Cloudflare Workers", "GitHub Actions"]
 links:
   live: "https://nacup.us"
 stats:
@@ -16,11 +17,15 @@ stats:
   - value: "80+"
     label: "programmatically generated SEO pages across 38 host cities"
 ---
-Designed, built, and deployed a full-stack production site in 48 hours, timed to a live global
-event. A multi-source data pipeline (Google Places API, RSS, news scraping, a live-scores REST
-API) merges and dedupes across 38 host-city feeds, with trust-tier scoring and freshness-decay
-ranking so stale sources don't win over live ones.
+Built because I wanted one place for everything World Cup 2026 — every morsel of news, plus which
+bars and fan events were happening near me. It became my own daily driver during the tournament,
+and now serves ~11k visits a month.
 
-On top of that pipeline sit 80+ programmatically generated static SEO pages with JSON-LD
-structured data, a sitemap, and Search Console integration — plus live-score polling with caching
-and fallback states so the site stays useful even when an upstream API hiccups.
+News is aggregated from 16+ feeds and ranked by a time-decay scoring formula that weighs source
+credibility, team and player entity matches, and whether a team is playing that day — with
+near-duplicate coverage clustered instead of repeated. The venue map merges Yelp, Foursquare,
+OpenStreetMap and Google Places into single records using geographic proximity and name-token
+similarity, each carrying a confidence score based on how many independent sources agree.
+
+A daily GitHub Actions pipeline regenerates the site — 48 team pages, 97 match pages, 38 city
+pages and a 185-URL sitemap — for programmatic SEO across every team, match, and host city.
