@@ -1,6 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { navLinks } from '../lib/nav';
+// Carries the theme switch AND party mode (it imports party.css). The
+// one-page consolidation dropped the shared Nav component from the
+// homepage, which silently took party mode with it — it only survived on
+// /leadership, which still renders Nav. Keep this mounted here.
+import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
   profile: CollectionEntry<'profile'>;
@@ -71,6 +76,7 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
           </li>
         ))}
       </ul>
+      <ThemeToggle />
     </nav>
   </div>
 </section>
@@ -162,12 +168,19 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
   }
 
   /* Navigation styling */
+  /* Nav links and the theme/party control share one row and wrap together
+     on narrow screens rather than the control being pushed off-screen. */
   .hero__nav {
     margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
   }
 
   .hero__nav-list {
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
     list-style: none;
     padding: 0;

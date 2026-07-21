@@ -105,6 +105,12 @@ const projects = defineCollection({
         }),
       )
       .optional(),
+    // Product screenshots under `public/work/`. These describe visual
+    // products, so prose alone undersells them. Rendered below the body at
+    // full column width, except `size: 'small'` (phone captures), which is
+    // capped so it displays at something like handset scale instead of
+    // upscaling a narrow source across the column.
+    screenshots: z.array(imageSlot).optional(),
   }),
 });
 

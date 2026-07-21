@@ -17,6 +17,17 @@ stats:
     label: "advertised price changes logged across 9 snapshot dates"
   - value: "354"
     label: "ZIP3 markets computed automatically, not hand-curated"
+screenshots:
+  - src: "/work/findstorage-directory.jpg"
+    alt: "The findstorage directory view: a filter bar and a grid of store cards, each listing site number, address, phone, and a per-size table of advertised monthly prices and promotions."
+    width: 1868
+    height: 940
+    caption: "Directory view — advertised price by unit size for each store, including stores with no vacancy."
+  - src: "/work/findstorage-trends.jpg"
+    alt: "The findstorage trends page: national advertised inventory and national median 10x10 price plotted across daily snapshots from April to July 2026."
+    width: 1868
+    height: 940
+    caption: "Trends — national advertised inventory and median 10x10 price across daily snapshots."
 ---
 A national directory of advertised self-storage prices, and the market research that falls out of
 tracking them over time. A seven-pass discovery scraper collects publicly published rates for

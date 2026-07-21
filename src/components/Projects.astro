@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import CaseImage from './CaseImage.astro';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 
@@ -38,6 +39,13 @@ const statusLabel: Record<string, string> = {
               </div>
             ) : (
               <p class="project__tagline">{project.data.tagline}</p>
+            )}
+            {project.data.screenshots && project.data.screenshots.length > 0 && (
+              <div class="project__shots">
+                {project.data.screenshots.map((shot) => (
+                  <CaseImage image={shot} />
+                ))}
+              </div>
             )}
             <p class="tag-list project__tech">{project.data.tech.join(' · ')}</p>
             {project.data.links.live && (
@@ -106,6 +114,16 @@ const statusLabel: Record<string, string> = {
 
   .project__body :global(p:last-child) {
     margin-bottom: 0;
+  }
+
+  /* Screenshots sit between the prose and the tech list. Single column so
+     wide captures stay legible — side by side they'd shrink below the point
+     where the pricing tables can be read. */
+  .project__shots {
+    display: grid;
+    gap: 16px;
+    margin-block: 18px;
+    max-width: 68ch;
   }
 
   .project__tech {
