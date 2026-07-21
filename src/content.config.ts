@@ -13,8 +13,15 @@ const profile = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/profile' }),
   schema: z.object({
     name: z.string(),
+    // The lead claim. Carries the hero on its own — typography and
+    // hierarchy do the work, deliberately no motion anywhere on the page.
+    claim: z.string(),
     // One honest, specific sentence — not a tagline or positioning slogan.
+    // Renders under the claim as supporting detail, not as the opener.
     oneLiner: z.string(),
+    // Small status indicator near the top of the hero, e.g. what he is
+    // doing right now. Rendered as a quiet mono line, never a headline.
+    status: z.string().optional(),
     location: z.string(),
     email: z.string(),
     resumeUrl: z.string().optional(),

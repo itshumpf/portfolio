@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { profile } = Astro.props;
-const { name, oneLiner, email, resumeUrl, links } = profile.data;
+const { name, claim, oneLiner, status, email, resumeUrl, links } = profile.data;
 const activeLinks = links.filter((l) => l.url);
 
 // Path logic for the navigation links
@@ -16,7 +16,19 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
 
 <section class="hero">
   <div class="wrap wrap--wide">
-    <h1 class="hero__name">{name}</h1>
+    <div class="hero__ident">
+      <p class="hero__name">{name}</p>
+      {
+        status && (
+          <p class="hero__status">
+            <span class="hero__status-dot" aria-hidden="true" />
+            Currently: {status}
+          </p>
+        )
+      }
+    </div>
+
+    <h1 class="hero__claim">{claim}</h1>
     <p class="hero__line">{oneLiner}</p>
 
     <div class="hero__links">
@@ -57,16 +69,57 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
     padding-bottom: clamp(40px, 6vw, 64px);
   }
 
+  /* The name is a quiet label; the claim below it is the largest type on
+     the site. Hierarchy and spacing carry the hero — there is deliberately
+     no motion here of any kind. */
+  .hero__ident {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 20px;
+    margin-bottom: clamp(20px, 3vw, 30px);
+  }
+
   .hero__name {
-    font-size: clamp(1.9rem, 4vw, 2.5rem);
-    margin-bottom: 16px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .hero__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+  }
+
+  .hero__status-dot {
+    width: 6px;
+    height: 6px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .hero__claim {
+    font-size: clamp(2rem, 5.2vw, 3.05rem);
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+    max-width: 21ch;
+    text-wrap: balance;
+    margin-bottom: clamp(20px, 3vw, 28px);
   }
 
   .hero__line {
     color: var(--text-secondary);
-    font-size: 1.1rem;
-    max-width: 58ch;
-    margin-bottom: 24px;
+    font-size: 1.05rem;
+    max-width: 56ch;
+    margin-bottom: 28px;
   }
 
   .hero__links {

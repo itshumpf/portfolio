@@ -6,7 +6,7 @@
 // works from both lanes of the site.
 export const navLinks = [
   { href: '#csi-project', label: 'CSI Project' },
-  { href: '/leadership', label: 'Leadership' },
   { href: '#about', label: 'Background' },
+  { href: '#leadership', label: 'Leadership' },
   { href: '#work', label: 'Work' },
 ] as const;

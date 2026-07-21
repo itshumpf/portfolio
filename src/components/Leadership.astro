@@ -1,0 +1,103 @@
+---
+// Condensed operations-leadership section for the homepage.
+//
+// The homepage already carries one full-length case study (CSI). Pasting a
+// second full write-up inline makes the page unreadable, so this renders
+// only the frontmatter précis of each `leadership` entry — summary plus
+// three figures — and links through to /leadership for the deep version.
+// Recruiters skim the one-pager; anyone who wants depth clicks.
+//
+// No copy is duplicated: everything here is read from the same collection
+// the /leadership route renders. Only the section framing lives in this
+// component, mirroring how leadership.astro frames its own hero.
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('leadership'))
+  .filter((entry) => entry.data.status === 'published')
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Three figures is the most a skimmable précis can carry; the full set
+// renders on the case-study page.
+const PREVIEW_STATS = 3;
+---
+
+<section id="leadership">
+  <div class="wrap wrap--wide">
+    <div class="section-head">
+      <p class="eyebrow">Operations leadership</p>
+      <h2 class="section-title">Running the thing, not just building it.</h2>
+      <p class="section-sub">
+        A decade of operations work sits behind the engineering — permits, payroll constraints,
+        safety programs, and the people who have to be somewhere at a specific time for any of it
+        to work. Two of those jobs are written up in full.
+      </p>
+    </div>
+
+    {
+      entries.map((entry, i) => {
+        const d = entry.data;
+        return (
+          <article class="lead-brief">
+            {i > 0 && <hr class="hr lead-brief__rule" />}
+            <h3 class="lead-brief__title">{d.title}</h3>
+            <p class="lead-brief__meta">
+              {d.role} · {d.org}
+              {d.location && `, ${d.location}`} · {d.period}
+            </p>
+            {d.summary && <p class="lead-brief__summary">{d.summary}</p>}
+
+            {d.stats && (
+              <div class="stat-row lead-brief__stats">
+                {d.stats.slice(0, PREVIEW_STATS).map((stat) => (
+                  <div class="stat">
+                    <span class="stat-value">{stat.value}</span>
+                    <span class="stat-label">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <p class="lead-brief__more">
+              <a class="text-link" href={`/leadership#${entry.id}`}>
+                Read the full {d.title} case study →
+              </a>
+            </p>
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .lead-brief__rule {
+    margin-block: clamp(36px, 5vw, 52px);
+  }
+
+  .lead-brief__title {
+    font-size: 1.08rem;
+    margin-bottom: 6px;
+  }
+
+  .lead-brief__meta {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .lead-brief__summary {
+    color: var(--text-secondary);
+    font-size: 0.98rem;
+    max-width: 68ch;
+  }
+
+  .lead-brief__stats {
+    margin-top: 24px;
+  }
+
+  .lead-brief__more {
+    margin-top: 18px;
+    font-size: 0.92rem;
+  }
+</style>

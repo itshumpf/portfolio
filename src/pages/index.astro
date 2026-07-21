@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import CsiShowcase from '../components/CsiShowcase.astro';
 import About from '../components/About.astro';
+import Leadership from '../components/Leadership.astro';
 import Projects from '../components/Projects.astro';
 import Footer from '../components/Footer.astro';
 
@@ -12,11 +13,12 @@ const [profile] = await getCollection('profile');
 
 <BaseLayout
   title="Braeden Keena"
-  description="Full-stack builder with an IoT/firmware background — a decade of operations leadership behind eighteen months of self-taught engineering, including a 99.6%-accurate WiFi-CSI RF-fingerprinting sensor array."
+  description="Built and sold a 500-acre business, then taught myself engineering. Full-stack and IoT/firmware work behind a decade of operations leadership — including a 99.6%-accurate WiFi-CSI RF-fingerprinting sensor array."
 >
   <Hero profile={profile} />
   <CsiShowcase />
   <About profile={profile} />
+  <Leadership />
   <Projects />
   <Footer profile={profile} />
 </BaseLayout>
