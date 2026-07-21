@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import HeaderPhoto from '../components/HeaderPhoto.astro';
 import CsiShowcase from '../components/CsiShowcase.astro';
 import About from '../components/About.astro';
 import Leadership from '../components/Leadership.astro';
@@ -16,6 +17,7 @@ const [profile] = await getCollection('profile');
   description="Built and sold a 500-acre business, then taught myself engineering. Full-stack and IoT/firmware work behind a decade of operations leadership — including a 99.6%-accurate WiFi-CSI RF-fingerprinting sensor array."
 >
   <Hero profile={profile} />
+  <HeaderPhoto profile={profile} />
   <CsiShowcase />
   <About profile={profile} />
   <Leadership />

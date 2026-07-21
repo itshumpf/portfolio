@@ -1,0 +1,46 @@
+---
+// The homepage's one piece of editorial photography, sitting as a wide band
+// directly below the hero text block and above the CSI case study.
+//
+// Placement is the whole point of this component. The photo is deliberately
+// NOT behind the hero copy: text over a hero photograph is the generic
+// marketing-landing-page look this site avoids, and it costs contrast and
+// legibility for nothing. Putting the land underneath the claim instead
+// means the reader has just read "500-acre business" and is looking at the
+// 500 acres while they start the RF-sensing case study below.
+//
+// Rendering is delegated to CaseImage, which already guarantees intrinsic
+// width/height attributes, `width:100%; height:auto`, and omission of the
+// slot entirely if the file isn't in `public/` (see src/lib/media.ts). The
+// `hero` variant loads eagerly with high fetch priority because this band
+// is above the fold on most desktop viewports.
+import type { CollectionEntry } from 'astro:content';
+import CaseImage from './CaseImage.astro';
+
+interface Props {
+  profile: CollectionEntry<'profile'>;
+}
+
+const { profile } = Astro.props;
+const { headerImage } = profile.data;
+---
+
+{
+  headerImage && (
+    <section class="header-photo">
+      <div class="wrap wrap--wide">
+        <CaseImage image={headerImage} variant="hero" />
+      </div>
+    </section>
+  )
+}
+
+<style>
+  /* The hero already supplies its own generous bottom padding and the CSI
+     section supplies its own top padding, so this band adds none of its
+     own — it would otherwise read as a detached, floating decoration
+     rather than as a continuation of the block above it. */
+  .header-photo {
+    padding-block: 0;
+  }
+</style>

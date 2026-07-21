@@ -26,6 +26,15 @@ heroImage:
   alt: "View from the ridge over the pit area during a race weekend at Honey Lake Motocross Park: riders on their bikes in the foreground, rows of RVs and trailers along the valley floor below, mountains on the horizon."
   width: 960
   height: 540
+previewImages:
+  - src: "/leadership/honey-lake-start-straight.jpg"
+    alt: "The rebuilt start straight at Honey Lake: groomed hard-pack dirt running toward the hillside track, with snow-capped mountains behind it."
+    width: 498
+    height: 312
+  - src: "/leadership/honey-lake-rock-section.jpg"
+    alt: "Riders working through the rock section of the Honey Lake track while spectators watch from the bank above."
+    width: 547
+    height: 365
 sections:
   - title: "The property"
     body:

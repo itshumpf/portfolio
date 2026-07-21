@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { profile } = Astro.props;
-const { name, claim, oneLiner, status, email, resumeUrl, links } = profile.data;
+const { name, claim, oneLiner, status, email, resumeUrl, links, ctas } = profile.data;
 const activeLinks = links.filter((l) => l.url);
 
 // Path logic for the navigation links
@@ -30,6 +30,18 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
 
     <h1 class="hero__claim">{claim}</h1>
     <p class="hero__line">{oneLiner}</p>
+
+    {
+      ctas.length > 0 && (
+        <div class="hero__ctas">
+          {ctas.map((cta) => (
+            <a class="btn" href={cta.href}>
+              {cta.label}
+            </a>
+          ))}
+        </div>
+      )
+    }
 
     <div class="hero__links">
       {
@@ -120,6 +132,26 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
     font-size: 1.05rem;
     max-width: 56ch;
     margin-bottom: 28px;
+  }
+
+  /* The two primary destinations. `.btn` is the site's single bordered,
+     unfilled button style — deliberately not a coloured marketing CTA, and
+     like everything else here it has no motion beyond the colour change on
+     hover that every link already has. */
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  /* Both labels are full sentences, so at narrow widths they have to wrap
+     inside the border rather than force the button past the viewport.
+     `.btn` centres its content vertically for single-line labels; once the
+     text wraps, left-align it so the second line starts under the first. */
+  .hero__ctas .btn {
+    text-align: left;
+    max-width: 100%;
   }
 
   .hero__links {

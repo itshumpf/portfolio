@@ -11,6 +11,17 @@ links:
     url: "https://github.com/itshumpf/"
   - label: "LinkedIn"
     url: "https://www.linkedin.com/in/braeden-keena-68a07860/"
+ctas:
+  - label: "Read the motocross story →"
+    href: "/leadership#honey-lake"
+  - label: "Read the crystal-clock case study →"
+    href: "#csi-project"
+headerImage:
+  src: "/leadership/honey-lake-hero.jpg"
+  alt: "View from the ridge at Honey Lake Motocross Park: riders sitting on their bikes in the foreground, rows of RVs and trailers parked along the valley floor below, and open high-desert rangeland running out to a mountain range on the horizon."
+  width: 960
+  height: 540
+  caption: "Honey Lake Motocross Park, Milford CA — the 500 acres."
 ---
 I bought a ~500-acre motocross park that had been shut down for nine years, spent two years
 re-permitting it, rebuilding it and running it, and exited by selling my stake to my partners.

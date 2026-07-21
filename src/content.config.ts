@@ -9,6 +9,21 @@
 import { defineCollection, z } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 
+// A photo in `public/`, with its intrinsic dimensions so the renderer can
+// reserve layout space and respect the source aspect ratio. Declared here,
+// above the first collection that uses it, because both `profile` (the
+// homepage header band) and `leadership` (case-study photography) consume it.
+const imageSlot = z.object({
+  src: z.string(),
+  alt: z.string(),
+  width: z.number(),
+  height: z.number(),
+  caption: z.string().optional(),
+  // 'small' constrains display width — for low-resolution sources that
+  // would visibly upscale at full column width.
+  size: z.enum(['default', 'small']).optional(),
+});
+
 const profile = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/profile' }),
   schema: z.object({
@@ -31,6 +46,25 @@ const profile = defineCollection({
         url: z.string(),
       }),
     ),
+    // The hero's two primary destinations — one per lane of the site
+    // (operations, engineering). Rendered as understated bordered `.btn`
+    // links, never as filled marketing buttons. `href` is same-origin, so
+    // these are plain internal links, distinct from the external `links`
+    // row below them.
+    ctas: z
+      .array(
+        z.object({
+          label: z.string(),
+          href: z.string(),
+        }),
+      )
+      .default([]),
+    // Editorial photograph rendered as a wide band directly BELOW the hero
+    // text block — never behind it. Text over a photo is the generic
+    // landing-page look this site deliberately avoids, and it costs
+    // contrast. The band is context for the claim above it, so it carries a
+    // factual caption rather than sitting purely decorative.
+    headerImage: imageSlot.optional(),
   }),
 });
 
@@ -131,19 +165,6 @@ const caseStudies = defineCollection({
   }),
 });
 
-// A photo in `public/`, with its intrinsic dimensions so the renderer can
-// reserve layout space and respect the source aspect ratio.
-const imageSlot = z.object({
-  src: z.string(),
-  alt: z.string(),
-  width: z.number(),
-  height: z.number(),
-  caption: z.string().optional(),
-  // 'small' constrains display width — for low-resolution sources that
-  // would visibly upscale at full column width.
-  size: z.enum(['default', 'small']).optional(),
-});
-
 // Operations-leadership case studies — the second lane of the site,
 // rendered at /leadership. Same content-first discipline as the technical
 // case studies: narrative lives in the markdown body, structured figures
@@ -183,6 +204,11 @@ const leadership = defineCollection({
     // The page also checks the filesystem at build time and omits any slot
     // whose file is absent, so slots can be declared ahead of the photo.
     heroImage: imageSlot.optional(),
+    // Photos for the condensed homepage précis only — the /leadership route
+    // ignores these and renders `heroImage` plus the per-section `images`.
+    // Kept separate so the homepage can show a different frame than the one
+    // already used as the page header band, instead of repeating it.
+    previewImages: z.array(imageSlot).optional(),
     sections: z
       .array(
         z.object({
