@@ -54,5 +54,15 @@ const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : unde
   </head>
   <body id="top">
     <slot />
+
+    <!-- Cloudflare Web Analytics — privacy-first, cookieless page/visit metrics.
+         Loaded at end of body and defer-fetched so it never blocks render or
+         dents the Lighthouse score. The token is a public site identifier. -->
+    <script
+      is:inline
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "e30cff17b2b248789a78e374e063def1"}'
+    ></script>
   </body>
 </html>
