@@ -26,7 +26,7 @@ screenshots:
 ---
 Built because I wanted one place for everything World Cup 2026 — every morsel of news, plus which
 bars and fan events were happening near me. It became my own daily driver during the tournament,
-and now serves ~11k visits a month.
+and drew around 1,500 unique visitors a month while the World Cup was on.
 
 News is aggregated from 16+ feeds and ranked by a time-decay scoring formula that weighs source
 credibility, team and player entity matches, and whether a team is playing that day — with
