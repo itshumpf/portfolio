@@ -1,7 +1,7 @@
 ---
 name: "Braeden Keena"
 claim: "I built and sold a 500-acre business, then taught myself engineering."
-oneLiner: "Now I build full-stack systems and IoT firmware — most recently a WiFi sensor array that identifies devices from their hardware clock signatures at 99.6% accuracy."
+oneLiner: "I build data pipelines that know when they're lying to you — backed by a decade of operations leadership, validation rails, and embedded RF systems."
 status: "Independent Technical Consultant"
 location: "Overland Park, KS"
 email: "Braeden@thekeenas.com"
