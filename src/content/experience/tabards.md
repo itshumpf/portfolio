@@ -1,9 +1,8 @@
 ---
-role: "Server"
+role: "Bartender & Operations Lead"
 org: "Tabard's Kitchen"
 startDate: "2019"
 endDate: "2020"
-order: 3
+order: 2
 ---
-Served guests in a high-volume restaurant: took and delivered orders, processed payments, and
-maintained service and food-safety standards through busy shifts.
+Managed bar service and restaurant operations, running high-volume weekday lunch shifts solo (handling front-of-house and back-of-house simultaneously) — order taking, kitchen prep, food running, payments, and guest relations.

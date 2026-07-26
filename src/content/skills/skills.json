@@ -2,26 +2,63 @@
   {
     "id": "languages",
     "category": "Languages",
-    "items": ["Python (scraping, data pipelines, automation)", "JavaScript", "SQL", "HTML/CSS"]
+    "items": [
+      "Python (scraping, data pipelines, automation)",
+      "JavaScript / TypeScript",
+      "SQL",
+      "HTML5 / Modern CSS"
+    ]
+  },
+  {
+    "id": "ai-agentic",
+    "category": "AI & Agentic Systems",
+    "items": [
+      "Agentic Engineering & AI Coding Tools (Claude Code, Antigravity/AGY)",
+      "Empirical Test Harnesses & AI Verification",
+      "LLM API Integration & Automated Workflows"
+    ]
   },
   {
     "id": "web-data",
     "category": "Web & Data",
-    "items": ["REST APIs", "API reverse-engineering", "Static site generation", "Technical SEO", "Leaflet.js mapping", "JSON data architecture"]
+    "items": [
+      "Astro v5 (Content Collections & SSG)",
+      "REST APIs & API Reverse-Engineering",
+      "Technical SEO & Schema.org JSON-LD",
+      "Leaflet.js & MarkerCluster Mapping",
+      "JSON & SQLite Data Architecture"
+    ]
   },
   {
     "id": "devops",
-    "category": "DevOps",
-    "items": ["Git / GitHub", "CI/CD (Cloudflare Pages, Netlify)", "Windows task automation", "Scheduled data-refresh systems"]
+    "category": "DevOps & Automation",
+    "items": [
+      "Git / GitHub",
+      "CI/CD (Cloudflare Pages, Netlify)",
+      "Windows Task Automation",
+      "Scheduled Data-Refresh Engines & Validation Rails"
+    ]
   },
   {
     "id": "hardware-iot",
     "category": "Hardware / IoT",
-    "items": ["ESP32 firmware (C / ESP-IDF)", "ESP-NOW & BLE", "I2C peripherals", "Sensor networks", "3D printing & CAD (OpenSCAD)"]
+    "items": [
+      "ESP32 Firmware (C / ESP-IDF)",
+      "ESP-NOW & BLE Protocols",
+      "I2C & SPI Sensor Networks",
+      "RF Signal Processing (WiFi-CSI)",
+      "3D Printing & CAD (OpenSCAD)"
+    ]
   },
   {
     "id": "operations-leadership",
     "category": "Operations & Leadership",
-    "items": ["500-acre business management", "Full P&L responsibility", "Teams of up to 100 people", "Vendor & county permitting", "Emergency safety & medical planning"]
+    "items": [
+      "500-Acre Business Management",
+      "Full P&L Responsibility",
+      "Teams of up to 100 People",
+      "Vendor & County Permitting",
+      "Emergency Safety & Medevac Planning"
+    ]
   }
 ]
