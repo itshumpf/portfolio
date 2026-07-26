@@ -5,7 +5,7 @@ expandedBody: true
 period: "2025–2026"
 role: "Founder / Developer"
 status: "live"
-order: 2
+order: 3
 tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "GitHub Actions", "Cloudflare Pages"]
 links:
   live: "https://findstorage.pages.dev"

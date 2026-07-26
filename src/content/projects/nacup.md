@@ -5,7 +5,7 @@ expandedBody: true
 period: "2026"
 role: "Founder / Developer"
 status: "live"
-order: 1
+order: 4
 tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "Cloudflare Workers", "GitHub Actions"]
 links:
   live: "https://nacup.us"

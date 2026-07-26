@@ -4,7 +4,7 @@ tagline: "A digital time-capsule product — users seal photos & messages for fu
 period: "2025"
 role: "Founder (launched & sunset)"
 status: "sunset"
-order: 3
+order: 5
 tech: ["Firebase", "AI/ML image tagging", "Stripe payments", "Full-stack web"]
 links: {}
 stats:

@@ -123,12 +123,18 @@ html.party-mode h3 {
 }
 
 html.party-mode section,
+html.party-mode .pathway-card,
 html.party-mode .party-modal__box,
 html.party-mode footer {
-  background: rgba(10, 0, 30, 0.55);
+  background: linear-gradient(135deg, rgba(255, 0, 128, 0.2), rgba(0, 200, 255, 0.2), rgba(255, 230, 0, 0.2)), rgba(10, 0, 30, 0.75) !important;
   border: 3px dashed #ffee00 !important;
   border-radius: 14px;
-  box-shadow: 0 0 24px rgba(255, 0, 200, 0.4);
+  box-shadow: 0 0 30px rgba(255, 0, 200, 0.5), inset 0 0 15px rgba(0, 230, 255, 0.3) !important;
+  transition: transform 0.3s ease;
+}
+
+html.party-mode .pathway-card:hover {
+  transform: scale(1.03) rotate(1deg) !important;
 }
 
 html.party-mode a {

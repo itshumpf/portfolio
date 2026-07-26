@@ -18,5 +18,10 @@
     "id": "hardware-iot",
     "category": "Hardware / IoT",
     "items": ["ESP32 firmware (C / ESP-IDF)", "ESP-NOW & BLE", "I2C peripherals", "Sensor networks", "3D printing & CAD (OpenSCAD)"]
+  },
+  {
+    "id": "operations-leadership",
+    "category": "Operations & Leadership",
+    "items": ["500-acre business management", "Full P&L responsibility", "Teams of up to 100 people", "Vendor & county permitting", "Emergency safety & medical planning"]
   }
 ]

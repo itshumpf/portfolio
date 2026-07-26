@@ -7,7 +7,7 @@ import '../styles/party.css';
   class="theme-toggle"
   type="button"
   aria-label="Toggle color theme"
-  title="Toggle theme"
+  title="Toggle theme (hint: double click for a surprise)"
 >
   <svg class="icon icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
     <circle cx="12" cy="12" r="4.2" />
@@ -21,17 +21,17 @@ import '../styles/party.css';
 <div id="party-modal" class="party-modal" hidden>
   <div class="party-modal__backdrop" data-party-close></div>
   <div class="party-modal__box" role="dialog" aria-modal="true" aria-labelledby="party-modal-title">
-    <p id="party-modal-title" class="party-modal__title">You found it.</p>
-    <p class="party-modal__sub">Proceed at your own risk.</p>
-    <button id="party-enter" class="party-modal__enter" type="button">ENTER PARTY MODE</button>
+    <p id="party-modal-title" class="party-modal__title">🎉 YOU FOUND PARTY MODE! 🎉</p>
+    <p class="party-modal__sub">500 Acres of Raw Motocross Power & 8-Bit Retro Chiptunes await.</p>
+    <button id="party-enter" class="party-modal__enter" type="button">ENTER PARTY MODE 🚀</button>
     <button class="party-modal__cancel" type="button" data-party-close>never mind</button>
   </div>
 </div>
 
 <div id="party-marquee" class="party-marquee" hidden>
   <div class="party-marquee__track">
-    <span>🎉 YOU ARE NOW IN PARTY MODE 🎉 &nbsp; · &nbsp; WELCOME TO THE INTERNET CIRCA 2005 &nbsp; · &nbsp; SIGN MY GUESTBOOK &nbsp; · &nbsp; BEST VIEWED IN 800×600 &nbsp; · &nbsp; 🦄 THANKS FOR VISITING 🦄 &nbsp; · &nbsp; </span>
-    <span aria-hidden="true">🎉 YOU ARE NOW IN PARTY MODE 🎉 &nbsp; · &nbsp; WELCOME TO THE INTERNET CIRCA 2005 &nbsp; · &nbsp; SIGN MY GUESTBOOK &nbsp; · &nbsp; BEST VIEWED IN 800×600 &nbsp; · &nbsp; 🦄 THANKS FOR VISITING 🦄 &nbsp; · &nbsp; </span>
+    <span>🎉 UNLOCKED BRAEDEN'S PARTY MODE 🎉 &nbsp; · &nbsp; 500 ACRES OF MOTOCROSS POWER &nbsp; · &nbsp; 9,915 PDF PAGES PARSED &nbsp; · &nbsp; BEST VIEWED ON A 1999 CRT MONITOR &nbsp; · &nbsp; 🦄 WELCOME TO THE INTERNET 🦄 &nbsp; · &nbsp; </span>
+    <span aria-hidden="true">🎉 UNLOCKED BRAEDEN'S PARTY MODE 🎉 &nbsp; · &nbsp; 500 ACRES OF MOTOCROSS POWER &nbsp; · &nbsp; 9,915 PDF PAGES PARSED &nbsp; · &nbsp; BEST VIEWED ON A 1999 CRT MONITOR &nbsp; · &nbsp; 🦄 WELCOME TO THE INTERNET 🦄 &nbsp; · &nbsp; </span>
   </div>
 </div>
 
@@ -50,7 +50,7 @@ import '../styles/party.css';
     try {
       localStorage.setItem('theme', theme);
     } catch {
-      /* private browsing / storage disabled — theme just won't persist */
+      /* private browsing */
     }
   }
 
@@ -80,14 +80,14 @@ import '../styles/party.css';
     if (event.key === 'Escape' && modal && !modal.hidden) closeModal();
   });
 
-  const SPARKLES = ['✨', '⭐', '💖', '🌈', '💫', '🔥', '👽', '🦄', '🌟'];
+  const SPARKLES = ['✨', '⭐', '💖', '🌈', '💫', '🔥', '🏍️', '🏎️', '🚀', '🦄', '🌟'];
   let trailHandler: ((event: PointerEvent) => void) | null = null;
 
   function startCursorTrail() {
     let last = 0;
     trailHandler = (event: PointerEvent) => {
       const now = performance.now();
-      if (now - last < 45) return;
+      if (now - last < 40) return;
       last = now;
       const el = document.createElement('span');
       el.className = 'party-sparkle';
@@ -106,12 +106,39 @@ import '../styles/party.css';
     document.querySelectorAll('.party-sparkle').forEach((el) => el.remove());
   }
 
+  // Native Web Audio API 8-Bit Victory Fanfare (0 external downloads!)
+  function play8BitSynthFanfare() {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50]; // C4, E4, G4, C5, E5, G5, C6
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.value = freq;
+        const startTime = ctx.currentTime + i * 0.07;
+        const duration = i === notes.length - 1 ? 0.35 : 0.1;
+        gain.gain.setValueAtTime(0.08, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + duration);
+      });
+    } catch {
+      /* Audio context blocked or not supported */
+    }
+  }
+
   function enterParty() {
     root.classList.add('party-mode');
     if (exitBtn) exitBtn.hidden = false;
     if (marquee) marquee.hidden = false;
     closeModal();
     startCursorTrail();
+    play8BitSynthFanfare();
   }
 
   function exitParty() {
@@ -162,13 +189,6 @@ import '../styles/party.css';
     display: block;
   }
 
-  /* ---------------------------------------------------------------------
-     Party mode modal — normal-site styling, matches the restrained design
-     language even though what it triggers is anything but.
-     ------------------------------------------------------------------- */
-  /* display:none by default, independent of the browser's [hidden] UA rule
-     (which a same-specificity class rule can otherwise beat on source
-     order) — this must never render before its JS trigger fires. */
   .party-modal {
     display: none;
     position: fixed;
@@ -195,12 +215,12 @@ import '../styles/party.css';
     border-radius: 10px;
     padding: 32px 36px;
     text-align: center;
-    max-width: 320px;
+    max-width: 340px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
   }
 
   .party-modal__title {
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1.1rem;
     margin-bottom: 6px;
   }
