@@ -1,0 +1,69 @@
+---
+// A single client quote. Deliberately plain: no card, no shadow, no big
+// decorative quotation glyph, no star-icon graphic — the site's whole
+// aesthetic is restrained typography, and a testimonial widget is the
+// easiest place to accidentally break that.
+interface Props {
+  quote: string;
+  attribution: string;
+  rating?: number;
+  sourceUrl?: string;
+  sourceLabel?: string;
+  note?: string;
+}
+
+const { quote, attribution, rating, sourceUrl, sourceLabel, note } = Astro.props;
+---
+
+<figure class="testimonial">
+  <blockquote class="testimonial__quote">&ldquo;{quote}&rdquo;</blockquote>
+  <figcaption class="testimonial__caption">
+    <span>{attribution}</span>
+    {typeof rating === 'number' && <span class="testimonial__rating">★ {rating.toFixed(1)}</span>}
+    {sourceUrl && (
+      <a class="text-link" href={sourceUrl} target="_blank" rel="noopener noreferrer">
+        {sourceLabel ?? 'Verify →'}
+      </a>
+    )}
+  </figcaption>
+  {note && <p class="testimonial__note">{note}</p>}
+</figure>
+
+<style>
+  .testimonial {
+    margin: 0;
+    padding-left: 16px;
+    border-left: 2px solid var(--border);
+  }
+
+  .testimonial__quote {
+    margin: 0 0 10px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    line-height: 1.55;
+    font-style: italic;
+    max-width: 62ch;
+  }
+
+  .testimonial__caption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .testimonial__rating {
+    color: var(--accent);
+  }
+
+  .testimonial__note {
+    margin-top: 8px;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    font-style: normal;
+    max-width: 62ch;
+  }
+</style>

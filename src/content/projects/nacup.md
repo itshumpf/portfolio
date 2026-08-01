@@ -1,6 +1,7 @@
 ---
 title: "nacup.us"
 tagline: "Live World Cup 2026 fan hub — host-city info, news, and live scores in one place."
+thesis: "Built because World Cup 2026 news and local watch-party info lived in a dozen different places and nowhere at once. It's a single aggregation-and-generation pipeline: news from 16+ feeds deduplicated and ranked by relevance, venues merged from four independent sources into confidence-scored records, and the whole site rebuilt daily so every team, match, and city page stays current without anyone touching it by hand."
 expandedBody: true
 period: "2026"
 role: "Founder / Developer"
@@ -23,6 +24,7 @@ screenshots:
     height: 1865
     size: "small"
     caption: "Host-city panel on mobile — the tournament schedule and nearby watch parties for one city."
+impact: "Built in 48 hours, the site still reached first-page organic search within 24 hours and pulled 700+ visitors on day one — proof the programmatic SEO scaffolding (48 team pages, 97 match pages, 38 city pages, a 185-URL sitemap) did its job before the tournament had even started."
 ---
 Built because I wanted one place for everything World Cup 2026 — every morsel of news, plus which
 bars and fan events were happening near me. It became my own daily driver during the tournament,
@@ -34,5 +36,5 @@ near-duplicate coverage clustered instead of repeated. The venue map merges Yelp
 OpenStreetMap and Google Places into single records using geographic proximity and name-token
 similarity, each carrying a confidence score based on how many independent sources agree.
 
-A daily GitHub Actions pipeline regenerates the site — 48 team pages, 97 match pages, 38 city
-pages and a 185-URL sitemap — for programmatic SEO across every team, match, and host city.
+A daily GitHub Actions pipeline regenerates the site — 48 team pages, 99 match pages, 38 city
+pages and a 187-URL sitemap — for programmatic SEO across every team, match, and host city.

@@ -86,16 +86,29 @@ const projects = defineCollection({
     title: z.string(),
     tagline: z.string(),
     // When true, the card renders the markdown body (multi-paragraph,
-    // CSI-case-study style) instead of the single-line tagline.
+    // CSI-case-study style) instead of the single-line tagline. Always
+    // rendered in full — nothing on this site collapses or requires a
+    // click to reveal; the depth is the point.
     expandedBody: z.boolean().optional(),
     period: z.string(),
     role: z.string(),
-    status: z.enum(['live', 'sunset', 'wip']),
+    // 'delivered' is for client work that's finished and shipped but has
+    // no public URL to point 'live' at (confidential deliverables, etc).
+    status: z.enum(['live', 'sunset', 'wip', 'delivered']),
+    // Distinguishes commissioned/contract work from self-directed
+    // founder projects. Defaults to 'personal' so existing entries don't
+    // need updating; the card only shows a badge when it's 'client'.
+    kind: z.enum(['personal', 'client']).default('personal'),
     order: z.number(),
     tech: z.array(z.string()),
     links: z.object({
       live: z.string().optional(),
       repo: z.string().optional(),
+      // Shown instead of a link when a project has neither — e.g.
+      // confidential client work with no public repo or deployment —
+      // so the card reads as complete rather than as a broken card
+      // missing its link.
+      noLinkNote: z.string().optional(),
     }),
     stats: z
       .array(
@@ -111,6 +124,34 @@ const projects = defineCollection({
     // capped so it displays at something like handset scale instead of
     // upscaling a narrow source across the column.
     screenshots: z.array(imageSlot).optional(),
+    // A short opening lede, rendered above the tagline/body: why the
+    // project was done, why it was built the way it was, and what it
+    // actually does or enables. The abstract, not a summary that lets a
+    // reader skip the rest — everything below it still renders in full.
+    thesis: z.string().optional(),
+    // One visible closing sentence answering "so what" — every project
+    // here documents what was built; this is the field that says why it
+    // was worth building.
+    impact: z.string().optional(),
+    // A single client quote. Kept restrained on purpose: plain text quote
+    // + attribution, no card, no star-rating graphic, no carousel — the
+    // site's whole aesthetic is that it doesn't need one of those.
+    testimonial: z
+      .object({
+        quote: z.string(),
+        attribution: z.string(),
+        rating: z.number().optional(),
+        // Optional outside link that lets a reader verify the quote is
+        // real (e.g. the public review page). Left unset when no such
+        // link exists — never invent one.
+        sourceUrl: z.string().optional(),
+        sourceLabel: z.string().optional(),
+        // A plain factual follow-up sentence rendered next to the quote
+        // but visually distinct from it (not italicized as speech) —
+        // e.g. noting a repeat engagement. Stated as fact, not quoted.
+        note: z.string().optional(),
+      })
+      .optional(),
   }),
 });
 
@@ -245,6 +286,30 @@ const skills = defineCollection({
   }),
 });
 
+// Client case studies — rendered at /reviews, linked from the hero's
+// utility-link row (GitHub / LinkedIn / Email / Resume / Reviews), not from
+// the primary section nav. Same depth and voice as /leadership: narrative
+// lives in `sections`, and the testimonial/stats/tagline are pulled from
+// the matching `projects` entry via `projectId` rather than duplicated
+// here, so there's one source of truth for that copy.
+const reviews = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/reviews' }),
+  schema: z.object({
+    title: z.string(),
+    // id of the matching entry in the `projects` collection.
+    projectId: z.string(),
+    period: z.string(),
+    order: z.number(),
+    summary: z.string().optional(),
+    sections: z.array(
+      z.object({
+        title: z.string(),
+        body: z.array(z.string()),
+      }),
+    ),
+  }),
+});
+
 export const collections = {
   profile,
   experience,
@@ -253,4 +318,5 @@ export const collections = {
   leadership,
   roadmap,
   skills,
+  reviews,
 };

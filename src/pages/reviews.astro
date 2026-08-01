@@ -1,0 +1,192 @@
+---
+// Client case studies — a third lane alongside the homepage (engineering)
+// and /leadership (operations), but reached only from the hero's
+// GitHub/LinkedIn/Email/Resume utility-link row, not the primary section
+// nav. The site doesn't solicit work; this page exists because a client
+// review exists, not the other way around.
+//
+// Stats/tagline/testimonial are never re-typed here — each entry points at
+// its `projects` counterpart via `projectId` and reads that copy directly,
+// so there's exactly one place the numbers and the quote live.
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Testimonial from '../components/Testimonial.astro';
+
+const [profile] = await getCollection('profile');
+const projects = await getCollection('projects');
+
+const entries = (await getCollection('reviews')).sort((a, b) => a.data.order - b.data.order);
+
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({
+    entry,
+    project: projects.find((p) => p.id === entry.data.projectId),
+    Content: (await render(entry)).Content,
+  })),
+);
+---
+
+<BaseLayout
+  title="Reviews — Braeden Keena"
+  description="Client case studies: in-depth engineering write-ups of paid engagements, with the client's own review attached."
+>
+  <Nav name={profile.data.name} />
+
+  <section class="reviews-hero">
+    <div class="wrap wrap--wide">
+      <p class="eyebrow">Client work</p>
+      <h1 class="reviews-hero__title">Case studies with a client attached.</h1>
+      <p class="section-sub">
+        Same depth and the same rules as the rest of this site: real numbers, real tradeoffs, and
+        nothing dressed up. The difference is that someone else was paying, and one of them left a
+        review.
+      </p>
+    </div>
+  </section>
+
+  {
+    rendered.map(({ entry, project, Content }) => {
+      const d = entry.data;
+      return (
+        <section class="review" id={entry.id}>
+          <div class="wrap wrap--wide">
+            <hr class="hr review__rule" />
+
+            <div class="section-head">
+              <p class="eyebrow">Case study</p>
+              <h2 class="section-title review__title">{d.title}</h2>
+              <p class="review__meta">
+                {project?.data.role} · {d.period}
+              </p>
+              {d.summary && <p class="section-sub review__summary">{d.summary}</p>}
+            </div>
+
+            {project?.data.stats && (
+              <div class="stat-row review__stats">
+                {project.data.stats.map((stat) => (
+                  <div class="stat">
+                    <span class="stat-value">{stat.value}</span>
+                    <span class="stat-label">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {project?.data.testimonial && (
+              <div class="review__testimonial">
+                <Testimonial
+                  quote={project.data.testimonial.quote}
+                  attribution={project.data.testimonial.attribution}
+                  rating={project.data.testimonial.rating}
+                  sourceUrl={project.data.testimonial.sourceUrl}
+                  sourceLabel={project.data.testimonial.sourceLabel}
+                  note={project.data.testimonial.note}
+                />
+              </div>
+            )}
+
+            <div class="review__narrative">
+              <Content />
+            </div>
+
+            {d.sections.map((block) => (
+              <div class="review__block">
+                <h3 class="review__block-title">{block.title}</h3>
+                <div class="review__prose">
+                  {block.body.map((para) => (
+                    <p>{para}</p>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    })
+  }
+
+  <Footer profile={profile} />
+</BaseLayout>
+
+<style>
+  .reviews-hero {
+    padding-top: clamp(56px, 9vw, 92px);
+    padding-bottom: clamp(28px, 4vw, 40px);
+  }
+
+  .reviews-hero__title {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    max-width: 22ch;
+    margin-bottom: 16px;
+  }
+
+  .review {
+    padding-top: 0;
+  }
+
+  .review__rule {
+    margin-bottom: clamp(40px, 6vw, 64px);
+  }
+
+  .review__title {
+    max-width: 26ch;
+    margin-bottom: 8px;
+  }
+
+  .review__meta {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .review__summary {
+    max-width: 68ch;
+  }
+
+  .review__stats {
+    margin-top: 32px;
+    margin-bottom: 40px;
+  }
+
+  .review__testimonial {
+    max-width: 68ch;
+    margin-bottom: 44px;
+  }
+
+  .review__narrative {
+    max-width: 68ch;
+    color: var(--text-secondary);
+    font-size: 1.02rem;
+    margin-bottom: 52px;
+  }
+
+  .review__narrative :global(p) {
+    margin-bottom: 18px;
+  }
+
+  .review__narrative :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .review__block {
+    margin-bottom: 44px;
+  }
+
+  .review__block-title {
+    font-size: 1.08rem;
+    margin-bottom: 16px;
+  }
+
+  .review__prose {
+    max-width: 68ch;
+    color: var(--text-secondary);
+    font-size: 0.96rem;
+  }
+
+  .review__prose p + p {
+    margin-top: 16px;
+  }
+</style>

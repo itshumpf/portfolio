@@ -1,6 +1,7 @@
 ---
 title: "findstorage"
 tagline: "National self-storage pricing directory — advertised unit prices, tracked daily, with market-level analysis."
+thesis: "Self-storage pricing is public but scattered — every operator publishes its own rates, and nobody aggregates them into a market view. This is built to run unattended and stay correct even when the market itself moves: when a large operator merger added roughly 1,100 stores overnight, the daily pipeline absorbed the shift with zero manual intervention rather than needing to be rebuilt around it."
 expandedBody: true
 period: "2025–2026"
 role: "Founder / Developer"
@@ -11,12 +12,13 @@ links:
   live: "https://findstorage.pages.dev"
   repo: "https://github.com/itshumpf/storage-directory"
 stats:
-  - value: "~51,800"
+  - value: "~57,200"
     label: "individual units tracked across ~4,600 stores nationwide"
-  - value: "158,000+"
-    label: "advertised price changes logged across 14 snapshot dates"
+  - value: "245,000+"
+    label: "advertised price changes logged across 21 snapshot dates"
   - value: "414"
     label: "ZIP3 markets computed automatically, not hand-curated"
+impact: "In late July 2026, a National Storage Affiliates merger added roughly 1,100 stores to the market overnight. The daily discovery pipeline absorbed it with zero manual intervention: stores tracked jumped ~3,539 → 4,637, advertised inventory rose ~212,000 → ~292,000 units, and computed ZIP3 markets grew 354 → 414. The safety rails held, and the merger showed up as signal in the trend data instead of a system that needed babysitting."
 screenshots:
   - src: "/work/findstorage-directory.jpg"
     alt: "The findstorage directory view: a filter bar and a grid of store cards, each listing site number, address, phone, and a per-size table of advertised monthly prices and promotions."
@@ -31,11 +33,11 @@ screenshots:
 ---
 A national directory of advertised self-storage prices, and the market research that falls out of
 tracking them over time. A seven-pass discovery scraper collects publicly published rates for
-roughly 51,800 units across ~4,600 stores, and runs itself daily through GitHub Actions — commits
+roughly 57,200 units across ~4,600 stores, and runs itself daily through GitHub Actions — commits
 land in the repo unattended. The pipeline has safety rails: the run aborts rather than publishing
-if store count drops below a floor or falls more than 10% against the previous run. Seventeen daily
-snapshots are captured so far, and the rate-change log holds over 158,000 advertised price changes
-across fourteen dates. When a large operator merger added roughly 1,100 stores overnight — a ~30%
+if store count drops below a floor or falls more than 10% against the previous run. Twenty-three
+daily snapshots are captured so far, and the rate-change log holds over 245,000 advertised price
+changes across 21 dates. When a large operator merger added roughly 1,100 stores overnight — a ~30%
 jump — the pipeline absorbed it cleanly and surfaced the shift in the trend data instead of choking
 on it.
 

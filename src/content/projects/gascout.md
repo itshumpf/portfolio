@@ -1,6 +1,7 @@
 ---
 title: "GAScout"
 tagline: "Georgia public records pipeline & delinquent tax analytics dashboard."
+thesis: "Built because Georgia's delinquent-tax data exists only as a 9,915-page fixed-width mainframe PDF — a format built for a printer, not for analysis. The extraction engine's job is to turn that dump into something a policy researcher can query, cut, and trust: parsed and checksum-verified line by line, with zero dropped rows, so aggregate figures are traceable back to source instead of estimated."
 expandedBody: true
 period: "2026"
 role: "Founder / Developer"
@@ -17,6 +18,7 @@ stats:
     label: "line items parsed from 9,915 mainframe PDF pages with 0 dropped rows"
   - value: "90"
     label: "automated offline test fixtures verifying parser & checksum integrity"
+impact: "The checksum verification isn't a nice-to-have: it's what auto-corrected 32 column-overflow shifts in the source PDF and let the pipeline enforce 100% line accounting — zero dropped or malformed rows. That's what makes the $62.75M liability figure something a policy researcher can trust down to the row, not a rough estimate off a monolithic government PDF."
 ---
 A static public-records intelligence dashboard and daily extraction pipeline built on DeKalb County delinquent tax listings. 
 
