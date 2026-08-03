@@ -7,6 +7,7 @@ period: "2026"
 role: "Founder / Developer"
 status: "live"
 order: 2
+indexLabel: "Federal procurement intelligence"
 tech: ["Python 3.11", "SAM.gov API v2", "SQLite", "Regex Signal Classifier", "pytest"]
 links:
   repo: "https://github.com/itshumpf/govscout"

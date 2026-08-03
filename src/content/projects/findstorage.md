@@ -7,6 +7,7 @@ period: "2025–2026"
 role: "Founder / Developer"
 status: "live"
 order: 3
+indexLabel: "Self-storage pricing directory"
 tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "GitHub Actions", "Cloudflare Pages"]
 links:
   live: "https://findstorage.pages.dev"

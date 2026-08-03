@@ -138,6 +138,12 @@ const projects = defineCollection({
     // here documents what was built; this is the field that says why it
     // was worth building.
     impact: z.string().optional(),
+    // A 2-4 word descriptor shown next to the title in the homepage's
+    // project index (a table-of-contents jump list, not a summary). Tells a
+    // stranger whether the project is worth jumping to — e.g. "GAScout"
+    // alone means nothing outside Georgia, "Georgia public records" does.
+    // Deliberately not a second tagline: keep it shorter than that.
+    indexLabel: z.string().optional(),
     // A single client quote. Kept restrained on purpose: plain text quote
     // + attribution, no card, no star-rating graphic, no carousel — the
     // site's whole aesthetic is that it doesn't need one of those.

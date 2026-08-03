@@ -7,6 +7,7 @@ period: "2026"
 role: "Founder / Developer"
 status: "live"
 order: 1
+indexLabel: "Georgia public records"
 tech: ["Python", "Astro v5", "Vanilla JavaScript", "Cloudflare Pages", "pypdf"]
 links:
   live: "https://gascout.pages.dev"

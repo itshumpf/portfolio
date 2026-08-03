@@ -6,6 +6,7 @@ period: "2025"
 role: "Founder (launched & sunset)"
 status: "sunset"
 order: 5
+indexLabel: "Digital time-capsule product"
 tech: ["Firebase", "AI/ML image tagging", "Stripe payments", "Full-stack web"]
 links: {}
 stats:

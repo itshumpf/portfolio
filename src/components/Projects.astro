@@ -22,8 +22,28 @@ const statusLabel: Record<string, string> = {
 
 <section id="work">
   <div class="wrap">
-    <p class="eyebrow">Other work</p>
-    <h2 class="section-title">Selected work.</h2>
+    <div class="section-head">
+      <p class="eyebrow">Other work</p>
+      <h2 class="section-title">Selected work.</h2>
+    </div>
+
+    <nav class="project-index" aria-label="Jump to a project">
+      <ol class="project-index__list">
+        {
+          rendered.map(({ project }) => {
+            const d = project.data;
+            return (
+              <li>
+                <a class="project-index__link" href={`#project-${project.id}`}>
+                  <span class="project-index__title">{d.title}</span>
+                  {d.indexLabel && <span class="project-index__desc">{d.indexLabel}</span>}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </nav>
 
     <div class="project-list">
       {
@@ -31,7 +51,7 @@ const statusLabel: Record<string, string> = {
           const d = project.data;
           const hasLink = Boolean(d.links.live || d.links.repo);
           return (
-            <article class="project">
+            <article class="project" id={`project-${project.id}`}>
               <div class="project__head">
                 <h3 class="project__title">
                   {d.title}
@@ -119,6 +139,50 @@ const statusLabel: Record<string, string> = {
 </section>
 
 <style>
+  .project-index {
+    margin-bottom: clamp(28px, 5vw, 44px);
+  }
+
+  .project-index__list {
+    display: grid;
+  }
+
+  .project-index__link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    padding-block: 7px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .project-index__list li:first-child .project-index__link {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .project-index__title {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    text-decoration: underline;
+    text-decoration-color: var(--border);
+    text-underline-offset: 3px;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+  }
+
+  .project-index__link:hover .project-index__title {
+    color: var(--text-primary);
+    text-decoration-color: var(--accent);
+  }
+
+  .project-index__desc {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
   .project-list {
     display: grid;
     gap: 0;

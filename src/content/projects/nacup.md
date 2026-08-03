@@ -7,6 +7,7 @@ period: "2026"
 role: "Founder / Developer"
 status: "live"
 order: 4
+indexLabel: "World Cup fan hub"
 tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "Cloudflare Workers", "GitHub Actions"]
 links:
   live: "https://nacup.us"
