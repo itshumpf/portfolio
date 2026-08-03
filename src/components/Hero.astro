@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { profile } = Astro.props;
-const { name, claim, oneLiner, status, email, resumeUrl, links } = profile.data;
+const { name, claim, oneLiner, status, availability, email, resumeUrl, links } = profile.data;
 const activeLinks = links.filter((l) => l.url);
 const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
 ---
@@ -26,6 +26,12 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
           </span>
         )}
       </div>
+      {availability && (
+        <p class="hero__availability">
+          <span class="hero__availability-dot" aria-hidden="true" />
+          {availability}
+        </p>
+      )}
       <p class="hero__tagline">
         Operations & Business Leader <span class="hero__divider">•</span> Self-Taught Software & Systems Builder
       </p>
@@ -152,6 +158,24 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
     border-radius: 50%;
     background: #10b981;
     box-shadow: 0 0 8px #10b981;
+  }
+
+  .hero__availability {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .hero__availability-dot {
+    width: 7px;
+    height: 7px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #10b981;
   }
 
   .hero__tagline {

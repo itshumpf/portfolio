@@ -37,6 +37,11 @@ const profile = defineCollection({
     // Small status indicator near the top of the hero, e.g. what he is
     // doing right now. Rendered as a quiet mono line, never a headline.
     status: z.string().optional(),
+    // Availability fact (e.g. "Available for contract work"), paired with a
+    // small green dot next to the name. States a fact, not a CTA — no link,
+    // no verb aimed at the reader. Omit/blank this field to remove it
+    // entirely once it's no longer true; it's the only place that controls it.
+    availability: z.string().optional(),
     location: z.string(),
     email: z.string(),
     resumeUrl: z.string().optional(),
