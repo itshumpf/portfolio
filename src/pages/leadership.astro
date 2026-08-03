@@ -54,6 +54,12 @@ const rendered = await Promise.all(
         that side of it — permits, payroll constraints, safety programs, and the people who have
         to be somewhere at a specific time for any of it to work.
       </p>
+
+      {profile.data.leadershipIntro.length > 0 && (
+        <div class="lead-hero__story">
+          {profile.data.leadershipIntro.map((para) => <p>{para}</p>)}
+        </div>
+      )}
     </div>
   </section>
 
@@ -157,6 +163,21 @@ const rendered = await Promise.all(
     font-size: clamp(1.8rem, 4vw, 2.4rem);
     max-width: 20ch;
     margin-bottom: 16px;
+  }
+
+  .lead-hero__story {
+    color: var(--text-secondary);
+    font-size: 1.02rem;
+    max-width: 68ch;
+    margin-top: 28px;
+  }
+
+  .lead-hero__story p {
+    margin-bottom: 20px;
+  }
+
+  .lead-hero__story p:last-child {
+    margin-bottom: 0;
   }
 
   .case {

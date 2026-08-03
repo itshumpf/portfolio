@@ -70,6 +70,14 @@ const profile = defineCollection({
     // contrast. The band is context for the claim above it, so it carries a
     // factual caption rather than sitting purely decorative.
     headerImage: imageSlot.optional(),
+    // The personal-narrative opening for /leadership — the motocross-park
+    // acquisition through the GED / self-taught-engineering pivot. Lives
+    // here rather than in the `leadership` collection because it's
+    // site-wide bio, not specific to either case study. Consumed only by
+    // leadership.astro, as that page's opening prose. The markdown body
+    // below is the other half of the same story: just the closing bridge
+    // paragraph, rendered by the homepage's `About` section.
+    leadershipIntro: z.array(z.string()).default([]),
   }),
 });
 
@@ -138,12 +146,17 @@ const projects = defineCollection({
     // here documents what was built; this is the field that says why it
     // was worth building.
     impact: z.string().optional(),
-    // A 2-4 word descriptor shown next to the title in the homepage's
-    // project index (a table-of-contents jump list, not a summary). Tells a
+    // A 2-4 word descriptor used as the hover tooltip on this project's link
+    // in the homepage's jump bar (title + " — " + indexLabel). Tells a
     // stranger whether the project is worth jumping to — e.g. "GAScout"
     // alone means nothing outside Georgia, "Georgia public records" does.
     // Deliberately not a second tagline: keep it shorter than that.
     indexLabel: z.string().optional(),
+    // Abbreviated form of `title` for the homepage's horizontal jump bar,
+    // where six full titles side by side don't fit one line. Falls back to
+    // `title` when unset — only needed for the couple of titles too long
+    // for the bar. The full title is unaffected everywhere else.
+    shortTitle: z.string().optional(),
     // A single client quote. Kept restrained on purpose: plain text quote
     // + attribution, no card, no star-rating graphic, no carousel — the
     // site's whole aesthetic is that it doesn't need one of those.
@@ -240,6 +253,12 @@ const leadership = defineCollection({
     order: z.number(),
     status: z.enum(['published', 'stub']).default('published'),
     summary: z.string().optional(),
+    // Override for the homepage précis only (Leadership.astro). Falls back
+    // to `summary` when unset. Exists so the first case study's homepage
+    // teaser doesn't read byte-identical to what /leadership opens with —
+    // a reader who's already seen the teaser should find something new,
+    // not a repeat, when they click through.
+    homepageSummary: z.string().optional(),
     stubNote: z.string().optional(),
     headlineStat: z
       .object({

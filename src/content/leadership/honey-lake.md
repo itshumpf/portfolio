@@ -7,6 +7,7 @@ period: "2016–2018"
 order: 1
 status: "published"
 summary: "Acquired a ~500-acre desert motocross park that had been dormant since 2007, re-entitled it for racing, and ran it to a two-day race weekend peaking at 6,500 attendees — with full P&L responsibility and no prior experience in the sport."
+homepageSummary: "A two-day race weekend that peaked at 6,500 attendees, ~1,200 of them racing, directed by a 120-person crew of staff, contractors and volunteers with full P&L responsibility throughout — and no payroll budget for any of them."
 headlineStat:
   value: "6,500"
   label: "Peak attendance across a two-day race weekend, run by 120 staff, contractors and volunteers on a property with no payroll budget."

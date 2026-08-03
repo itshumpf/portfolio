@@ -52,7 +52,9 @@ const PREVIEW_STATS = 3;
               {d.role} · {d.org}
               {d.location && `, ${d.location}`} · {d.period}
             </p>
-            {d.summary && <p class="lead-brief__summary">{d.summary}</p>}
+            {(d.homepageSummary ?? d.summary) && (
+              <p class="lead-brief__summary">{d.homepageSummary ?? d.summary}</p>
+            )}
 
             {d.stats && (
               <div class="stat-row lead-brief__stats">

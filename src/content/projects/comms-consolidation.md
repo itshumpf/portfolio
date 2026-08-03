@@ -9,6 +9,7 @@ status: "delivered"
 kind: "client"
 order: 0
 indexLabel: "Legal record consolidation"
+shortTitle: "Comms Consolidation"
 tech: ["Python", "ETL & data reconciliation", "Timezone/DST-aware normalization", "PDF report generation"]
 links:
   noLinkNote: "Confidential client engagement — no public repo or live URL."
