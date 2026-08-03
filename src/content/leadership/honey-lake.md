@@ -81,7 +81,7 @@ sections:
   - title: "What outlasted me"
     body:
       - "During my tenure the park hosted the founding of the Corey Herring Memorial race, in memory of a boy who loved the track. I ran one edition of it. The race continued annually through 2023 — five years after I sold my stake — which is the part that matters: what was built at the property kept running without me."
-      - "I held full P&L responsibility throughout: pricing, sponsorship sales, staffing, and marketing. I exited by selling my ownership stake to my partners."
+      - "I held full P&L responsibility throughout: pricing, sponsorship sales, staffing, and marketing. I exited by selling my ownership stake to my partners after becoming a parent."
     images:
       - src: "/leadership/honey-lake-rock-section.jpg"
         alt: "A rider descending a rocky hillside section of the course beside running water, with spectators watching from the bank above."
