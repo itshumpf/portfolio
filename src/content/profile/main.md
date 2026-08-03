@@ -1,7 +1,7 @@
 ---
 name: "Braeden Keena"
 claim: "I built and sold a 500-acre business, then taught myself engineering."
-oneLiner: "I build data pipelines that know when they're lying to you — backed by a decade of operations leadership, validation rails, and embedded RF systems."
+oneLiner: "I build data pipelines that know when they're lying to you — backed by operations leadership, validation rails, and embedded RF systems."
 status: "Independent Technical Consultant"
 availability: "Available for contract work"
 location: "Overland Park, KS"
@@ -27,8 +27,8 @@ leadershipIntro:
   - >-
     I bought a ~500-acre motocross park that had been shut down for nine years, spent two years
     re-permitting it, rebuilding it and running it, and exited by selling my stake to my partners.
-    That was the largest of a decade of operations work — restaurants, a school crossing-guard
-    program covering 33 sites, a self-storage launch. All of it people-heavy and hands-on: hiring,
+    That was the largest of the operations work — restaurants, a school crossing-guard
+    program covering 33 sites. All of it people-heavy and hands-on: hiring,
     scheduling, vendor coordination, being the one accountable when something broke at 6am and
     needed to be working by 7.
   - >-
