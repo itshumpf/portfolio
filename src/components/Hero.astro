@@ -19,19 +19,23 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
     <div class="hero__header">
       <div class="hero__brand-row">
         <h1 class="hero__name-title">{name.toUpperCase()}</h1>
-        {status && (
-          <span class="hero__status-badge">
-            <span class="hero__status-dot" aria-hidden="true" />
-            {status}
-          </span>
+        {(status || availability) && (
+          <div class="hero__status-stack">
+            {status && (
+              <span class="hero__status-badge">
+                <span class="hero__status-dot" aria-hidden="true" />
+                {status}
+              </span>
+            )}
+            {availability && (
+              <p class="hero__availability">
+                <span class="hero__availability-dot" aria-hidden="true" />
+                {availability}
+              </p>
+            )}
+          </div>
         )}
       </div>
-      {availability && (
-        <p class="hero__availability">
-          <span class="hero__availability-dot" aria-hidden="true" />
-          {availability}
-        </p>
-      )}
       <p class="hero__tagline">
         Operations & Business Leader <span class="hero__divider">•</span> Self-Taught Software & Systems Builder
       </p>
@@ -124,19 +128,27 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
 
   .hero__brand-row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 16px;
     flex-wrap: wrap;
     margin-bottom: 8px;
   }
 
   h1.hero__name-title {
-    font-size: clamp(2.4rem, 6vw, 3.8rem);
+    font-size: clamp(2.5rem, 6.2vw, 4rem);
     font-weight: 900;
     letter-spacing: -0.03em;
     line-height: 1;
     color: var(--text-primary);
     margin: 0;
+  }
+
+  /* Pill + availability line, stacked so their dots form one column. */
+  .hero__status-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 
   .hero__status-badge {
@@ -168,6 +180,9 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
     font-size: 0.78rem;
     color: var(--text-muted);
     margin: 0;
+    /* 1px badge border + 12px badge padding-left: lines this dot up under
+       the pill's dot instead of the pill's outer edge. */
+    padding-left: 13px;
   }
 
   .hero__availability-dot {
