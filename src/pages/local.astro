@@ -21,7 +21,7 @@ const mailto = `mailto:${email}?subject=${encodeURIComponent(
   "Help with my business"
 )}&body=${encodeURIComponent(mailtoBody)}`;
 
-const title = "Braeden Keena — Websites, payments, Wi-Fi & everything else · Overland Park, KS";
+const title = "Braeden Keena — Small business technology · Overland Park, KS";
 const description =
   "Websites, online ordering, card readers, Wi-Fi, email, cameras, backups. " +
   "One person for the whole technology side of your business. " +
@@ -99,20 +99,15 @@ const groups = [
 <body>
 <div class="sheet">
 
-  <div class="top">
-    <span class="lbl">Braeden Keena</span>
-    <span class="lbl r">Overland Park, KS</span>
-  </div>
-
   <div class="hero">
-    <span class="lbl">Small business technology — all of it</span>
-    <a class="tel" href={`tel:${phone}`} set:html={phoneDisplay.replace(") ", ")&nbsp;")} />
+    <span class="lbl">Small business technology &nbsp;·&nbsp; Overland Park</span>
+    <h1 class="name">Braeden Keena</h1>
     <p class="tagline">Your website, your card reader, your Wi-Fi. <em>One number.</em></p>
     <p class="oneline">One person, not an agency — so you get the same guy every time, and he already knows your setup.</p>
 
     <a class="btn" href={`tel:${phone}`}>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
-      Call now
+      Call {phoneDisplay}
     </a>
     <div class="alts">
       <a class="btn ghost" href={`sms:${phone}`}>Text</a>
@@ -156,16 +151,11 @@ const groups = [
   <footer>
     <b>Braeden Keena</b> · Overland Park, Kansas<br />
     <a href={`mailto:${email}`} style="color:inherit">{email}</a><br />
-    Johnson County &amp; greater Kansas City · {phoneDisplay}
+    Johnson County &amp; greater Kansas City ·
+    <a href={`tel:${phone}`} style="color:inherit;white-space:nowrap">{phoneDisplay}</a>
   </footer>
 </div>
 
-<div class="sticky">
-  <a href={`tel:${phone}`}>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
-    Call {phoneDisplay}
-  </a>
-</div>
 </body>
 </html>
 
@@ -208,12 +198,12 @@ const groups = [
   .top .r{color:var(--dim)}
 
   /* ---------- hero ---------- */
-  .hero{padding:26px 0 24px; border-bottom:2px solid var(--rule)}
+  .hero{padding:30px 0 24px; border-bottom:2px solid var(--rule)}
   .hero .lbl{color:var(--accent); display:block; margin-bottom:13px}
-  .tel{
-    display:block; text-decoration:none; color:var(--white);
-    font-size:clamp(37px,11.2vw,62px); line-height:.94; font-weight:800;
-    letter-spacing:-.045em; font-variant-numeric:tabular-nums;
+  .name{
+    display:block; color:var(--white);
+    font-size:clamp(36px,10.6vw,58px); line-height:.98; font-weight:800;
+    letter-spacing:-.035em;
   }
   .tagline{
     margin-top:19px; font-size:20px; line-height:1.32; font-weight:650;
@@ -285,19 +275,8 @@ const groups = [
   }
   footer b{color:var(--ink)}
 
-  .sticky{
-    position:sticky; bottom:0; z-index:5;
-    padding:11px 20px calc(11px + env(safe-area-inset-bottom));
-    background:linear-gradient(to top,var(--bg) 62%,rgba(21,8,38,0));
-  }
-  .sticky a{
-    display:flex;align-items:center;justify-content:center;gap:10px;
-    min-height:56px;border-radius:13px;background:var(--white);color:#1a0b2e;
-    text-decoration:none;font-size:18.5px;font-weight:800; max-width:620px;margin:0 auto;
-  }
   @media (min-width:660px){
     .hero{padding:44px 0 34px}
-    .sticky{display:none}
     .groups{display:grid; grid-template-columns:1fr 1fr; gap:0 34px}
   }
 </style>
