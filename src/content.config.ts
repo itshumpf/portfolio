@@ -197,7 +197,7 @@ const caseStudies = defineCollection({
     ),
     // Cumulative operational scale (total frames captured to date, ongoing
     // 24/7 run) — deliberately separate from headlineStat/secondaryStats,
-    // which describe one specific validated dataset (11 sessions, 2.8M
+    // which describe one specific validated dataset (11 sessions, 2.36M
     // frames). Never merge these numbers; they answer different questions.
     scaleStat: z.object({
       value: z.string(),

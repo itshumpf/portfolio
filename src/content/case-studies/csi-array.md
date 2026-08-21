@@ -3,19 +3,21 @@ title: "Fingerprinting Devices by Their Crystal Clocks"
 subtitle: "A cameraless home-security system that identifies transmitting devices from hardware clock imperfections in their WiFi signals — running 24/7 on commodity ESP32 hardware."
 order: 1
 headlineStat:
-  value: "99.6%"
-  label: "blind-holdout accuracy at device identification, ~10,000 test windows across 11 sessions"
+  value: "99.7%"
+  label: "blind-holdout accuracy at device identification, 7,497 test windows on a single receiver across 11 sessions"
 secondaryStats:
-  - value: "11–15σ"
-    label: "cross-manufacturer device separation (7/7 holdout, correctly classified)"
-  - value: "2.8M"
-    label: "CSI frames captured — 7+ GB across 11 sessions"
+  - value: "95.7%"
+    label: "same task, 14,234 windows, once a second receiver's captures of those sessions join the population"
+  - value: "12.7σ / 10.4σ"
+    label: "cross-manufacturer device separation from the reference beacon and from the other ambient device (6/6 holdout, correctly classified)"
+  - value: "2.36M"
+    label: "CSI frames in the session set backing these results — 11 sessions"
   - value: "$ few"
     label: "cost per sensor node — commodity ESP32 hardware"
 scaleStat:
   value: "1B+"
   label: "CSI frames captured to date, cumulative across ongoing 24/7 operation"
-  caveat: "This is the running total from continuous deployment, not the accuracy-validation dataset. The 99.6% figure above is measured on a separate, controlled 2.8M-frame / 11-session blind holdout — the two numbers answer different questions and aren't meant to be combined."
+  caveat: "This is the running total from continuous deployment, not the accuracy-validation dataset. The 99.7% figure above is measured on a separate, controlled 2.36M-frame / 11-session blind holdout — the two numbers answer different questions and aren't meant to be combined."
 approach:
   - title: "A dedicated reference beacon, not router traffic"
     description: "A TX beacon broadcasts identical ESP-NOW packets at a fixed 100 Hz on a fixed channel — a clean, steady stream instead of bursty, unpredictable router traffic. RX nodes run custom ESP-IDF firmware that streams compact binary CSI frames over USB serial to a host PC, which does all the science. Dumb, robust capture nodes; a smart host — so the DSP can evolve without ever reflashing hardware."
@@ -26,12 +28,13 @@ approach:
   - title: "Mahalanobis discrimination with real probabilistic meaning"
     description: "Each known device keeps a running 2D Gaussian model of its (CFO, SFO) signature. New observations are scored by Mahalanobis distance, which under the model is χ²-distributed — so the accept/reject thresholds correspond to actual confidence levels, not tuned magic numbers. Anomalous windows never update the model, so a spoofer can't teach the system its own signature by flooding it."
 results:
-  - "Headline: 99.6% blind-holdout accuracy at device ID, measured on a chronological split — the model is tested on windows later in time than it trained on, so the number reflects real thermal drift, not interpolation."
-  - "The security-relevant regime — a stranger's device vs. a known fleet — is the easy case for this method: cross-manufacturer separation lands at 11–15σ with 7/7 holdout windows classified correctly."
-  - "A second pipeline reuses the same captured amplitude data for cameraless occupancy sensing: motion detection and respiration detection (7–12 bpm) from the identical CSI stream, with multi-link consensus required before it alarms."
+  - "Headline: 99.7% blind-holdout accuracy at device ID over 7,497 test windows on a single receiver, measured on a chronological split — the model is tested on windows later in time than it trained on, so the number reflects real thermal drift, not interpolation."
+  - "Adding a second receiver's captures of those same sessions puts it at 95.7% over 14,234 windows. That split is by receiver rather than by time — the replay walks the files in sorted order, so the desk receiver's captures train the model and the second node's are classified blind. It's cross-hardware generalization: train on one radio, test on another."
+  - "The security-relevant regime — a stranger's device vs. a known fleet — is the easy case for this method: cross-manufacturer separation lands at 12.7σ from the reference beacon and 10.4σ from the other ambient device, with 6/6 holdout windows classified correctly."
+  - "A second pipeline reuses the same captured amplitude data for cameraless occupancy sensing: motion detection and respiration detection (7.0–16.0 bpm) from the identical CSI stream, with multi-link consensus required before it alarms."
 limitations:
-  - title: "Same-model discrimination tops out near 77%"
-    description: "Telling one ESP32 apart from an identical ESP32 is the adversarial worst case, not the operational common case — distinct units land 1.8–2.7σ apart. Still well above chance, but the honest ceiling today."
+  - title: "Same-model discrimination is the weak point"
+    description: "Telling one ESP32 apart from an identical ESP32 is the adversarial worst case, not the operational common case — distinct units land 1.8–2.7σ apart. A single session scored around 77%, but that was a best case and the class count behind it was never recorded, so it isn't a general performance figure and isn't quoted as one. Well above chance; the honest ceiling today is unquantified."
   - title: "True clock twins are the current frontier"
     description: "Two of the reference beacons are effectively identical crystals, ~0.3σ apart — a coin flip for two-feature discrimination. Closing this is the top item on the roadmap, not a hidden gap."
   - title: "Thermal drift is real and only partially modeled"
@@ -66,7 +69,8 @@ benchtop experiment.
 
 It's a complete embedded-plus-DSP system built from first principles: custom firmware on
 constrained hardware, a signal-processing pipeline where every stage defeats a specific measured
-failure mode, statistically honest evaluation against a blind chronological holdout, and the
+failure mode, statistically honest evaluation against blind holdouts — chronological on a single
+receiver, cross-receiver when both are pooled — and the
 operational discipline to run it 24/7 and fix the bugs that only autonomy surfaces — like
 discovering that pyserial asserts DTR/RTS on port open, silently power-cycling every node a
 diagnostic tool touched, until every host tool was fixed to open ports with those lines
