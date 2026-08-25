@@ -185,13 +185,17 @@ const statusLabel: Record<string, string> = {
     gap: 0;
   }
 
+  /* Projects are separated by a rule and generous space rather than by size
+     alone. At 28px with a soft border the gap between two projects read as a
+     paragraph break, which made the list scan as one long article instead of
+     as distinct pieces of work. */
   .project {
-    padding-block: 28px;
-    border-top: 1px solid var(--border-soft);
+    padding-block: 48px;
+    border-top: 1px solid var(--border);
   }
 
   .project:last-child {
-    border-bottom: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border);
   }
 
   .project__head {
@@ -200,15 +204,21 @@ const statusLabel: Record<string, string> = {
     justify-content: space-between;
     gap: 16px;
     flex-wrap: wrap;
-    margin-bottom: 8px;
+    margin-bottom: 14px;
   }
 
+  /* The title has to outrank .project__thesis directly beneath it, which sits
+     at 1rem / weight 500. At 1.05rem it did not, so the name of the project
+     read as the first line of its own description. */
   .project__title {
     display: flex;
     align-items: baseline;
-    gap: 10px;
+    gap: 12px;
     flex-wrap: wrap;
-    font-size: 1.05rem;
+    font-size: clamp(1.35rem, 4.5vw, 1.7rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
   }
 
   .project__badge {
