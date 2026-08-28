@@ -4,16 +4,16 @@ subtitle: "I built a system that identified WiFi devices by their crystal imperf
 order: 0
 headlineStat:
   value: "13"
-  label: "of my own working results destroyed by controls I built to destroy them — out of 29 hypotheses carried to a verdict"
+  label: "of my own working results, killed by controls I built to kill them — out of 29 hypotheses carried to a verdict"
 secondaryStats:
-  - value: "16"
-    label: "further questions recorded as unresolved rather than forced into an answer — including one where the positive control itself failed"
   - value: "0.2σ"
-    label: "separation between two physically different boards four feet apart, measured in the same windows — statistically indistinguishable, on two independent receivers"
+    label: "between two different boards, four feet apart"
   - value: "19.6σ"
-    label: "how far one board's 'crystal signature' moved between two rooms — against a documented same-position drift floor of 2.5–4.9σ, so the real margin is 4x to 8x"
+    label: "same board, two rooms"
+  - value: "16"
+    label: "tested past what the instrument can resolve"
   - value: "99.7% → 29.7%"
-    label: "original blind-holdout accuracy, and what it became when tested across sessions — against 33.3% chance"
+    label: "blind holdout, then across sessions"
 scaleStat:
   value: "43.4 GB"
   label: "of raw CSI captures — 97 files across 60 recording sessions"
@@ -31,7 +31,7 @@ approach:
     description: "The headline accuracy was 99.7% on one receiver and 95.7% once a second receiver's captures of the same sessions joined. Same system, same data. Quoting either without naming the receiver configuration is quoting a number that does not exist."
 results:
   - "Twenty-nine hypotheses were carried to a verdict; thirteen of them were my own working results. Each was live when its test began — reference-beacon subtraction, longer averaging windows, tighter gates, looser gates, cross-receiver library transfer, blind clustering of MAC-randomising devices, feature fusion. Every one was retired by a threshold or control set up in advance to permit exactly that outcome."
-  - "Two physically distinct ESP32 boards, placed four feet apart on one surface, are statistically indistinguishable — 0.2σ and 0.7σ on two independent receivers, against a between-unit population spread of 0.00237 rad/subcarrier. The same pair read 7.9σ apart the previous night with one of them in another room."
+  - "Two physically distinct ESP32 boards, placed four feet apart on one surface, are statistically indistinguishable — 0.2σ and 0.7σ on two independent receivers, against a between-unit population spread of 0.00237 rad/subcarrier. The same pair read 7.9σ apart the previous night with one of them in another room. Both boards were measured in the same windows, so clock drift cannot account for it."
   - "The same physical board reads +0.0552 rad/subcarrier on a television in a bedroom and +0.0087 on a kitchen counter — a 19.6σ displacement of the quantity being used as its hardware identity, for a crystal that never changed. This one is a between-night comparison, so it inherits drift: an untouched beacon wanders 2.5-4.9σ across a single night by the project's own measurement, which makes the honest margin 4x to 8x rather than 19.6x. Stated that way because a reader who opens the drift document would find it in a minute."
   - "Two receivers observing the same transmitter at the same instant disagreed by up to 504x more when the transmitters were separated than when they were co-located. With the beacons apart, the two receivers measured one transmitter at +0.0120 and −0.0121 — opposite signs. Co-located, they agreed to one part in ten thousand. A property of a crystal cannot depend on which receiver is listening."
   - "Averaging cannot recover the signal, and a control proves the machinery is fine. Allan deviation falls as τ^-0.47 out to about ten seconds and then rises. Shuffling the same frames in time and re-averaging recovers the ideal 1/√W exactly — 15.7, 19.5 and 17.4 against a predicted 16. In true temporal order the same operation yields 1.10 to 1.70. There is nothing left to average away after the first second."

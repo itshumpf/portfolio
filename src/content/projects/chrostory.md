@@ -5,7 +5,7 @@ thesis: "Built to test a product idea — a digital time capsule people would ac
 period: "2025"
 role: "Founder (launched & sunset)"
 status: "sunset"
-order: 5
+order: 6
 indexLabel: "Digital time-capsule product"
 tech: ["Firebase", "AI/ML image tagging", "Stripe payments", "Full-stack web"]
 links: {}

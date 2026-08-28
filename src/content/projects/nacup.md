@@ -6,7 +6,7 @@ expandedBody: true
 period: "2026"
 role: "Founder / Developer"
 status: "live"
-order: 4
+order: 5
 indexLabel: "World Cup fan hub"
 tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "Cloudflare Workers", "GitHub Actions"]
 links:
