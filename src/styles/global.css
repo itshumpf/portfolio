@@ -69,6 +69,9 @@
 html {
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
+  /* Clears the sticky jump bar so an anchored section lands below it
+     rather than under it. */
+  scroll-padding-top: 64px;
 }
 
 body {

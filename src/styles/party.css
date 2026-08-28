@@ -209,3 +209,17 @@ html.party-mode body {
 .party-exit {
   animation: party-bounce 1.6s ease-in-out infinite;
 }
+
+/* -----------------------------------------------------------------------
+   The sticky jump bar and the marquee both want top: 0, and the marquee
+   wins on z-index (1000 vs 30). Drop the bar to sit directly beneath the
+   marquee while party mode is on, and give anchor jumps the extra 34px
+   of clearance so a section still lands below both.
+   ----------------------------------------------------------------------- */
+html.party-mode .jumpbar {
+  top: 34px;
+}
+
+html.party-mode {
+  scroll-padding-top: 98px;
+}
