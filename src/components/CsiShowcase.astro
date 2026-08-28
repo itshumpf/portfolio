@@ -187,6 +187,47 @@ const {
     font-weight: 600;
   }
 
+  .csi__narrative :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 26px 0 30px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .csi__narrative :global(th) {
+    text-align: left;
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 0 0 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .csi__narrative :global(td) {
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border-soft);
+    vertical-align: top;
+    color: var(--text-secondary);
+  }
+
+  .csi__narrative :global(th:first-child),
+  .csi__narrative :global(td:first-child) {
+    width: 40%;
+    padding-right: 28px;
+  }
+
+  .csi__narrative :global(td:first-child) {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .csi__narrative :global(tr:last-child td) {
+    border-bottom: none;
+  }
+
   .csi__block {
     margin-bottom: 52px;
   }
@@ -268,6 +309,39 @@ const {
     .csi__results {
       grid-template-columns: 1fr;
       gap: 32px;
+    }
+
+    /* Stack the narrative table into labelled rows on small screens. */
+    .csi__narrative :global(thead) {
+      display: none;
+    }
+
+    .csi__narrative :global(table),
+    .csi__narrative :global(tbody),
+    .csi__narrative :global(tr),
+    .csi__narrative :global(td) {
+      display: block;
+      width: 100%;
+    }
+
+    .csi__narrative :global(tr) {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .csi__narrative :global(tr:last-child) {
+      border-bottom: none;
+    }
+
+    .csi__narrative :global(td) {
+      padding: 0;
+      border-bottom: none;
+    }
+
+    .csi__narrative :global(td:first-child) {
+      width: 100%;
+      padding-right: 0;
+      margin-bottom: 5px;
     }
   }
 </style>

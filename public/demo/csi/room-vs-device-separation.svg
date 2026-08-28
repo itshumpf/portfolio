@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 300" role="img" aria-labelledby="t d" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+<title id="t">Measured separation by condition, in standard deviations</title>
+<desc id="d">Two different boards four feet apart in one room separate by 0.2 sigma. One board moved within a single room separates by 0.04 sigma. The same board moved to another room separates by 19.6 sigma, against a same-position drift floor of 2.5 to 4.9 sigma.</desc>
+<style>
+.l{fill:#0b0b0b;font-size:13px}.s{fill:#52514e;font-size:11.5px}.m{fill:#898781;font-size:11px}
+@media(prefers-color-scheme:dark){.l{fill:#f0efec}.s{fill:#c3c2b7}}
+</style>
+
+<text x="0" y="14" class="s">Measured separation, in standard deviations of the between-unit population spread</text>
+
+<rect x="333" y="40" width="43" height="196" fill="#e34948" opacity="0.07"/>
+<text x="354" y="54" text-anchor="middle" class="m">drift</text>
+<text x="354" y="66" text-anchor="middle" class="m">floor</text>
+
+<line x1="286" y1="76" x2="286" y2="236" stroke="#c3c2b7" stroke-width="1"/>
+
+<text x="274" y="96" text-anchor="end" class="l">Two different boards</text>
+<text x="274" y="111" text-anchor="end" class="s">four feet apart, one room</text>
+<rect x="286" y="86" width="4" height="20" rx="2" fill="#898781"/>
+<text x="298" y="101" class="l">0.2σ</text>
+
+<text x="274" y="156" text-anchor="end" class="l">One board, moved</text>
+<text x="274" y="171" text-anchor="end" class="s">within the same room</text>
+<rect x="286" y="146" width="2" height="20" rx="1" fill="#898781"/>
+<text x="298" y="161" class="l">0.04σ</text>
+
+<text x="274" y="216" text-anchor="end" class="l">One board, moved</text>
+<text x="274" y="231" text-anchor="end" class="s">to another room</text>
+<rect x="286" y="206" width="372" height="20" rx="4" fill="#2a78d6"/>
+<text x="646" y="221" text-anchor="end" fill="#E6F1FB" font-size="12.5">19.6σ</text>
+
+<line x1="286" y1="248" x2="658" y2="248" stroke="#e1e0d9" stroke-width="1"/>
+<text x="286" y="264" class="m">0</text>
+<text x="472" y="264" text-anchor="middle" class="m">10σ</text>
+<text x="658" y="264" text-anchor="end" class="m">20σ</text>
+
+<text x="0" y="286" class="m">Top two are same-instant. The bottom bar is between-night and sits above a 2.5–4.9σ drift floor.</text>
+</svg>
