@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import DemoSlot from './DemoSlot.astro';
+import CsiExplorer from './CsiExplorer.astro';
 import Roadmap from './Roadmap.astro';
 
 const [caseStudy] = (await getCollection('case-studies')).sort((a, b) => a.data.order - b.data.order);
@@ -47,6 +48,8 @@ const {
       <span class="csi__scale-value">{scaleStat.value}</span> {scaleStat.label}.
       <span class="csi__scale-caveat">{scaleStat.caveat}</span>
     </p>
+
+    <CsiExplorer />
 
     <div class="csi__narrative">
       <Content />
@@ -230,6 +233,17 @@ const {
 
   .csi__block {
     margin-bottom: 52px;
+  }
+
+  .csi__block--explorer {
+    margin-bottom: 44px;
+  }
+
+  .csi__block-lede {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    max-width: 68ch;
+    margin: 0 0 14px;
   }
 
   .csi__block-title {

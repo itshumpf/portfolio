@@ -144,6 +144,8 @@ a kitchen counter moved **19.6σ**, against a same-position drift floor of
 
 None of it is the behavior of a crystal.
 
+<div id="csi-explorer-slot"></div>
+
 ## Why this is the case study
 
 Nothing here transfers to a data pipeline. Nobody hiring an engineer needs

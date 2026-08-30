@@ -1,0 +1,291 @@
+---
+// Client-side CSI explorer. Reads /demo/csi/csi-explorer.json, which is built by
+// csi-array's pc/export_explorer_json.py from the cached sweep + frame tables.
+//
+// Deliberately dependency-free: hand-drawn SVG, no chart library, ~4 KB of
+// script. The rest of the site is zero-JS and this is the only page that isn't,
+// so it should not drag a bundle in with it.
+//
+// No raw CSI is published — only per-window SFO, fit quality, and the operator's
+// own capture labels. ROOM_OR_RADIO.md §8 refuses to publish the captures
+// themselves because they are a log of when a home was occupied.
+---
+
+<div class="explorer" data-explorer>
+  <div class="explorer__bar">
+    <label class="explorer__field">
+      <span>Capture</span>
+      <select data-session></select>
+    </label>
+    <label class="explorer__field">
+      <span>Receiver</span>
+      <select data-node></select>
+    </label>
+    <label class="explorer__toggle">
+      <input type="checkbox" data-quality />
+      <span>Shade by fit quality</span>
+    </label>
+  </div>
+
+  <p class="explorer__caption" data-caption></p>
+
+  <div class="explorer__plot">
+    <svg viewBox="0 0 760 320" role="img" data-svg aria-label="Sampling-clock offset over time for three beacons">
+      <title data-title>Sampling-clock offset over time</title>
+    </svg>
+  </div>
+
+  <p class="explorer__legend">
+    <span class="key key--b1">B1</span><span class="key key--b2">B2</span><span class="key key--b3">B3</span>
+    <span class="explorer__hint" data-hint></span>
+  </p>
+
+  <noscript>
+    <p class="explorer__caption">
+      This explorer needs JavaScript. The figures it draws are all stated in the
+      results and limitations above.
+    </p>
+  </noscript>
+</div>
+
+<style>
+  .explorer {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 52px;
+  }
+
+  .explorer__bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: end;
+    margin-bottom: 14px;
+  }
+
+  .explorer__field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.74rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .explorer__field select {
+    font: inherit;
+    font-size: 0.86rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--text-primary);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    max-width: 34ch;
+  }
+
+  .explorer__toggle {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+
+  .explorer__caption {
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    margin: 0 0 10px;
+    max-width: 70ch;
+  }
+
+  .explorer__plot {
+    overflow-x: auto;
+  }
+
+  .explorer__plot svg {
+    width: 100%;
+    min-width: 520px;
+    height: auto;
+  }
+
+  .explorer__legend {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin: 10px 0 0;
+    font-size: 0.8rem;
+  }
+
+  .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+  }
+
+  .key::before {
+    content: "";
+    width: 11px;
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  .key--b1::before { background: #2a78d6; }
+  .key--b2::before { background: #eb6834; }
+  .key--b3::before { background: #1baf7a; }
+
+  .explorer__hint {
+    color: var(--text-muted);
+  }
+</style>
+
+<script>
+  const root = document.querySelector('[data-explorer]');
+  if (root) {
+    // The markdown body decides where this lives. If the author dropped a
+    // #csi-explorer-slot into the prose, move there; otherwise stay put.
+    const slot = document.getElementById('csi-explorer-slot');
+    if (slot && slot.parentNode) slot.parentNode.replaceChild(root, slot);
+
+    const svg = root.querySelector('[data-svg]');
+    const selS = root.querySelector('[data-session]');
+    const selN = root.querySelector('[data-node]');
+    const chkQ = root.querySelector('[data-quality]');
+    const cap = root.querySelector('[data-caption]');
+    const hint = root.querySelector('[data-hint]');
+    const titleEl = root.querySelector('[data-title]');
+    const NS = 'http://www.w3.org/2000/svg';
+    const COLOR = { B1: '#2a78d6', B2: '#eb6834', B3: '#1baf7a' };
+    const L = 62, R = 736, T = 18, Bm = 268;
+    let data = null;
+
+    const el = (n, a) => {
+      const e = document.createElementNS(NS, n);
+      for (const k in a) e.setAttribute(k, a[k]);
+      return e;
+    };
+
+    function draw() {
+      if (!data) return;
+      const s = data.sessions.find((x) => x.id === selS.value);
+      const node = selN.value;
+      const series = (s && s.series[node]) || {};
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+      svg.appendChild(titleEl);
+
+      const pts = Object.values(series).flat();
+      if (!pts.length) {
+        svg.appendChild(el('text', { x: 380, y: 150, 'text-anchor': 'middle',
+          fill: 'currentColor', 'font-size': '13', opacity: '0.6' })).textContent =
+          'No windows for this receiver.';
+        return;
+      }
+      const ts = pts.map((p) => p[0]), vs = pts.map((p) => p[1]);
+      const t0 = Math.min(...ts), t1 = Math.max(...ts);
+      let v0 = Math.min(...vs), v1 = Math.max(...vs);
+      const pad = (v1 - v0) * 0.12 || 0.001;
+      v0 -= pad; v1 += pad;
+      const X = (t) => L + ((t - t0) / (t1 - t0 || 1)) * (R - L);
+      const Y = (v) => Bm - ((v - v0) / (v1 - v0 || 1)) * (Bm - T);
+
+      for (let i = 0; i <= 4; i++) {
+        const v = v0 + ((v1 - v0) * i) / 4, y = Y(v);
+        svg.appendChild(el('line', { x1: L, y1: y, x2: R, y2: y,
+          stroke: 'currentColor', 'stroke-width': '1', opacity: '0.12' }));
+        const lab = el('text', { x: L - 8, y: y + 4, 'text-anchor': 'end',
+          fill: 'currentColor', 'font-size': '11', opacity: '0.55' });
+        lab.textContent = v.toFixed(4);
+        svg.appendChild(lab);
+      }
+      for (let i = 0; i <= 4; i++) {
+        const t = t0 + ((t1 - t0) * i) / 4;
+        const lab = el('text', { x: X(t), y: Bm + 18, 'text-anchor': 'middle',
+          fill: 'currentColor', 'font-size': '11', opacity: '0.55' });
+        lab.textContent = Math.round(t / 60) + 'm';
+        svg.appendChild(lab);
+      }
+      const yl = el('text', { x: 12, y: 20, fill: 'currentColor',
+        'font-size': '11', opacity: '0.55' });
+      yl.textContent = 'SFO rad/subcarrier';
+      svg.appendChild(yl);
+
+      (s.events || []).forEach((ev) => {
+        if (ev.t < t0 || ev.t > t1) return;
+        const x = X(ev.t);
+        svg.appendChild(el('line', { x1: x, y1: T, x2: x, y2: Bm,
+          stroke: 'currentColor', 'stroke-width': '1', opacity: '0.3',
+          'stroke-dasharray': '3 3' }));
+        const g = el('g', {});
+        const tx = el('text', { x: x + 4, y: Bm + 34, fill: 'currentColor',
+          'font-size': '10', opacity: '0.7',
+          transform: `rotate(12 ${x + 4} ${Bm + 34})` });
+        tx.textContent = ev.label.length > 26 ? ev.label.slice(0, 26) + '…' : ev.label;
+        g.appendChild(tx);
+        svg.appendChild(g);
+      });
+
+      const shade = chkQ.checked;
+      ['B1', 'B2', 'B3'].forEach((b) => {
+        const arr = series[b];
+        if (!arr || !arr.length) return;
+        if (shade) {
+          for (let i = 1; i < arr.length; i++) {
+            const q = arr[i][2] == null ? 1 : arr[i][2];
+            svg.appendChild(el('line', {
+              x1: X(arr[i - 1][0]), y1: Y(arr[i - 1][1]),
+              x2: X(arr[i][0]), y2: Y(arr[i][1]),
+              stroke: COLOR[b], 'stroke-width': '1.6', 'stroke-linecap': 'round',
+              opacity: String(Math.max(0.12, Math.min(1, (q - 0.55) / 0.42))),
+            }));
+          }
+        } else {
+          svg.appendChild(el('path', {
+            d: arr.map((p, i) => (i ? 'L' : 'M') + X(p[0]).toFixed(1) + ' ' + Y(p[1]).toFixed(1)).join(' '),
+            fill: 'none', stroke: COLOR[b], 'stroke-width': '1.6',
+            'stroke-linejoin': 'round', 'stroke-linecap': 'round',
+          }));
+        }
+      });
+
+      titleEl.textContent = s.title + ' — ' + node;
+      cap.textContent = s.title;
+      const n = Object.values(series).reduce((a, v) => a + v.length, 0);
+      hint.textContent = n + ' points · ' + (s.events || []).length +
+        ' operator labels · ' + (shade
+          ? 'faded segments are low-fit-quality windows'
+          : 'toggle shading to see where the fit is poor');
+    }
+
+    fetch('/demo/csi/csi-explorer.json')
+      .then((r) => r.json())
+      .then((j) => {
+        data = j;
+        j.sessions.forEach((s) => {
+          const o = document.createElement('option');
+          o.value = s.id; o.textContent = s.title;
+          selS.appendChild(o);
+        });
+        const fill = () => {
+          const s = j.sessions.find((x) => x.id === selS.value);
+          selN.innerHTML = '';
+          (s.nodes || []).forEach((n) => {
+            const o = document.createElement('option');
+            o.value = n; o.textContent = n;
+            selN.appendChild(o);
+          });
+        };
+        selS.addEventListener('change', () => { fill(); draw(); });
+        selN.addEventListener('change', draw);
+        chkQ.addEventListener('change', draw);
+        selS.value = '20260828_022627';
+        fill();
+        draw();
+      })
+      .catch(() => { cap.textContent = 'Could not load the capture data.'; });
+  }
+</script>

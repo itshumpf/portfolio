@@ -132,13 +132,25 @@ import '../styles/party.css';
     }
   }
 
-  function enterParty() {
+  function setPartyStored(on: boolean) {
+    try {
+      if (on) localStorage.setItem('party', '1');
+      else localStorage.removeItem('party');
+    } catch {
+      /* private browsing */
+    }
+  }
+
+  // `silent` restores party mode on a fresh page without replaying the
+  // fanfare — a chiptune on every navigation stops being a joke fast.
+  function enterParty(silent = false) {
     root.classList.add('party-mode');
     if (exitBtn) exitBtn.hidden = false;
     if (marquee) marquee.hidden = false;
     closeModal();
     startCursorTrail();
-    play8BitSynthFanfare();
+    if (!silent) play8BitSynthFanfare();
+    setPartyStored(true);
   }
 
   function exitParty() {
@@ -146,10 +158,19 @@ import '../styles/party.css';
     if (exitBtn) exitBtn.hidden = true;
     if (marquee) marquee.hidden = true;
     stopCursorTrail();
+    setPartyStored(false);
   }
 
-  enterBtn?.addEventListener('click', enterParty);
+  enterBtn?.addEventListener('click', () => enterParty());
   exitBtn?.addEventListener('click', exitParty);
+
+  // Party mode survives navigation. The cursor trail binds a pointermove
+  // listener, so this waits for the DOM rather than running at parse time.
+  try {
+    if (localStorage.getItem('party') === '1') enterParty(true);
+  } catch {
+    /* private browsing */
+  }
 </script>
 
 <style>
