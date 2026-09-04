@@ -11,7 +11,6 @@ indexLabel: "Self-storage pricing directory"
 tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "GitHub Actions", "Cloudflare Pages"]
 links:
   live: "https://findstorage.pages.dev"
-  repo: "https://github.com/itshumpf/storage-directory"
 stats:
   - value: "48 days"
     label: "consecutive daily snapshots, zero gaps, 4,664 stores in 43 states"
