@@ -131,55 +131,119 @@ def build(path):
 
     p = para(doc, space_before=_e("SP_SUB",2.0), align=WD_ALIGN_PARAGRAPH.CENTER)
     setfont(p.add_run(
-        "Self-Taught Builder · Production Scrapers · "
-        "Data Pipelines & Automation"), SZ_SUB, bold=True)
+        "Data Engineer · Recurring Pipelines · "
+        "Data Integrity & Failure Detection"), SZ_SUB, bold=True)
 
     p = para(doc, space_before=_e("SP_CON",1.5), align=WD_ALIGN_PARAGRAPH.CENTER)
     setfont(p.add_run(
-        "Overland Park, KS 66213  ·  Braeden@thekeenas.com  ·  "
-        "(303) 507-8626  ·  nacup.us  ·  findstorage.pages.dev"),
+        "Overland Park, KS 66213  ·  Braeden@thekeenas.com  ·  (303) 507-8626\n"
+        "braedenkeena.pages.dev  ·  github.com/itshumpf  ·  gascout.pages.dev  ·  nacup.us"),
         SZ_CONTACT)
 
     # ---------- summary ----------
     p = para(doc, space_before=_e("SP_SUM",6.0))
     setfont(p.add_run(
-        "Self-taught technical builder — I ship production scrapers, "
-        "data pipelines, and automation. Three deployed, live web "
-        "applications in the past 14 months, built end to end: API "
+        "I build data collection that keeps working, and I specialize in "
+        "the failure that looks like success — a pipeline reporting a clean "
+        "run while returning nothing. Every figure I publish is emitted by a "
+        "committed script that refuses to write a null, because I once "
+        "shipped a hand-typed number that was wrong by 5.6× for an unknown "
+        "period. Live deployed web applications built end to end: API "
         "reverse-engineering, data pipelines, front-end, SEO, and daily "
-        "automation. Backed by a decade of hands-on operations leadership "
-        "managing teams of up to 100 people. I learn whatever a problem "
-        "requires, then build the thing."), SZ_BODY)
+        "automation. Backed by front-line operations leadership — including "
+        "founding and running my own business — managing teams of up to 100 "
+        "people. I learn whatever a problem requires, then build the thing."),
+        SZ_BODY)
 
     # ---------- shipped products ----------
     section(doc, "SHIPPED PRODUCTS (SOLO-BUILT, END TO END)")
 
     job(doc, "WiFi CSI RF-Fingerprinting Sensor Array — ESP32 + Python DSP",
-        "2026 · Deployed / Live · Firmware / DSP", space_before=_e("SP_J1",9.7))
+        "2026 · Firmware / DSP", space_before=_e("SP_J1",9.7))
     bullet(doc,
-        "Deployed and running 24/7 as the live, in-production home-security "
-        "system for my own apartment — not a benchtop experiment. Built by "
-        "applying the scientific method to a hard RF problem: hypothesized "
-        "that a radio’s crystal-oscillator imperfections form a hardware "
-        "fingerprint that survives MAC-address randomization, then proved "
-        "through controlled experiments that device identity can be recovered "
-        "from clock behavior rather than spoofable network identifiers.",
+        "Built a WiFi device-fingerprinting system end to end \u2014 ESP32 "
+        "firmware in C / ESP-IDF, a Python DSP chain that pulls sampling-clock "
+        "error out of raw subcarrier phase (RANSAC phase-slope fits, 1D Kalman "
+        "drift tracking, Mahalanobis discrimination against per-source "
+        "Gaussian models), and a classifier reaching 99.7% blind-holdout "
+        "accuracy separating three transmitters on a chronological split. "
+        "43.4 GB of captures across 97 files and 60 recording sessions.",
         space_before=_e("SP_B1",1.4))
-    # ---- THE ONLY CORRECTED BULLET ----
     bullet(doc,
-        "Built the full stack solo — ESP32 firmware (C / ESP-IDF) plus a "
-        "Python DSP pipeline (RANSAC phase-slope fits → 1D Kalman drift "
-        "tracking → Mahalanobis discrimination against per-source Gaussian "
-        "models) — reaching 12.7σ and 10.4σ cross-manufacturer device "
-        "separation on a 6/6 holdout, and 99.7% holdout accuracy across "
-        "7,497 windows on a single receiver (95.7% across 14,234 windows "
-        "spanning two receivers), over a 2.36-million-frame dataset.")
+        "Then spent two months trying to break it, and succeeded. "
+        "Twenty-nine hypotheses carried to a verdict, thirteen of them my own "
+        "working results, each retired by a control built to permit exactly "
+        "that outcome \u2014 reference-beacon correction, longer averaging "
+        "windows, tighter gates, blind clustering, feature fusion. Sixteen "
+        "more written down as unresolved rather than quietly re-run.")
     bullet(doc,
-        "Diagnosed thermal oscillator drift as the accuracy-limiting problem "
-        "and engineered a novel reference-beacon drift-correction technique "
-        "that cancels receiver-side drift and more than doubled device "
-        "separation — turning an unstable measurement into a reliable "
-        "fingerprint.")
+        "The system was separating rooms, not radios. Two different boards "
+        "placed four feet apart became statistically indistinguishable at "
+        "0.2\u03c3; one board carried between rooms moved 19.6\u03c3. "
+        "Propagation path had never been varied, so \u201cwhich device is "
+        "this\u201d and \u201cwhich room is this\u201d had been the same "
+        "question since July \u2014 a design flaw, not a bug, and nothing in "
+        "43 GB of captures recorded where any hardware sat.")
+    bullet(doc,
+        "Feature fusion appeared to add +26 percentage points, winning 12 of "
+        "12 comparisons with a confidence interval excluding zero; a random "
+        "number of identical variance reproduced the gain exactly at +0.00 pp. "
+        "Thresholds and controls written to disk and dated before any analysis "
+        "ran, chronological train/test splits never random, and six nights "
+        "into a seven-night pre-registered replication whose primary "
+        "prediction has failed every night it was tested.")
+
+    job(doc, "findstorage.pages.dev — Self-Storage Price Tracker",
+        "2025 – 2026 · Founder / Developer · Sunset by choice")
+    bullet(doc,
+        "Daily national advertised-price tracker: 4,664 stores across 43 "
+        "states, 48 consecutive daily snapshots with zero gaps, 396,402 price "
+        "changes and 148,870 promotion changes logged. 7-pass discovery "
+        "scraper with safety rails that abort a publish if the store count "
+        "drops below a floor or swings >10% run-over-run — an operator merger "
+        "added ~1,100 stores overnight and the pipeline absorbed it with no "
+        "manual intervention.", space_before=_e("SP_B1",1.4))
+    bullet(doc,
+        "Shut the project down on 25 August 2026 after re-reading the "
+        "source’s terms of use, and published why rather than stopping "
+        "quietly — killing a six-week analysis that a lawyer had already "
+        "cleared, because the data underneath it was collected under terms I "
+        "had not re-checked.")
+    bullet(doc,
+        "Found and fixed four separate errors in my own published analysis "
+        "before shutting down, including a coverage figure wrong by 5.6× that "
+        "no script had ever recomputed. Every published number now traces to "
+        "a named command.")
+    bullet(doc,
+        "Nationwide ZIP3 market analysis with matched-pairs attribute pricing "
+        "(isolated a ~18–22% climate-control premium via "
+        "same-store/same-size comparison), a “renter leverage” score, and "
+        "per-store price-history drill-down.")
+
+    job(doc, "Public-Records Extraction — GAScout · easyIce · KcPermits",
+        "2025 – 2026 · Solo-built")
+    bullet(doc,
+        "Turn government systems never designed to be read programmatically "
+        "into structured, deduplicated, ranked datasets. GAScout "
+        "(gascout.pages.dev): $152.34M in delinquent taxes and 451,798 "
+        "records across four live Georgia counties in four source formats — a "
+        "9,915-page mainframe PDF, a weekly XLSX roll, a monthly PDF, and a "
+        "scanned PDF read by OCR — normalized to one schema.",
+        space_before=_e("SP_B1",1.4))
+    bullet(doc,
+        "100% line accounting on the mainframe parse: 409,142 rows, zero "
+        "dropped, 32 column-overflow swaps auto-corrected by a deterministic "
+        "5-column checksum, byte-identical output hash across machines, 90 "
+        "automated tests. The remaining 155 counties render “ADAPTER PLANNED” "
+        "with no synthetic figures anywhere on the site.")
+    bullet(doc,
+        "easyIce converts county health-inspection records into a "
+        "recency-scored call list across five jurisdiction adapters and three "
+        "source shapes (Socrata JSON API, server-rendered HTML with "
+        "sequential IDs, Tyler portals); 279 tests, none touching the "
+        "network. Every run publishes a coverage report that declares its own "
+        "degradation first — a partial run cannot be mistaken for a complete "
+        "one.")
 
     job(doc, "nacup.us — Live World Cup 2026 Fan Hub",
         "2026 · Founder / Developer")
@@ -196,59 +260,25 @@ def build(path):
         "Programmatically generated 80+ static SEO pages with JSON-LD "
         "structured data, sitemap, and Search Console integration; live-score "
         "polling with caching and fallback states.")
-    bullet(doc,
-        "Stack: Python, vanilla JavaScript, Leaflet.js, Cloudflare Pages, "
-        "GitHub CI/CD.")
-
-    job(doc, "findstorage.pages.dev — Nationwide Self-Storage Directory",
-        "2025 · Founder / Developer")
-    bullet(doc,
-        "Daily self-scraping national self-storage pricing directory and "
-        "market-research tool tracking ~4,600 stores / ~43,900 units — a "
-        "7-pass discovery scraper with safety rails that aborts a publish if "
-        "the store count drops below a floor or swings >10% run-over-run.",
-        space_before=_e("SP_B1",1.4))
-    bullet(doc,
-        "Nationwide ZIP3 market analysis with matched-pairs attribute pricing "
-        "(isolated a ~18–22% climate-control premium via "
-        "same-store/same-size comparison), a “renter leverage” score, and "
-        "per-store price-history drill-down.")
-    bullet(doc,
-        "Survived a real operator merger that added ~1,100 stores overnight "
-        "without breaking; now on Cloudflare Pages, auto-refreshed daily via "
-        "GitHub Actions.")
-
-    job(doc, "Chrostory — Full-Stack Web App",
-        "2025 · Founder (launched & sunset)")
-    bullet(doc,
-        "Took an original product from concept to public beta solo and "
-        "validated it with 40+ real users; made the call to sunset it and "
-        "applied the lessons — faster shipping, SEO-first architecture, "
-        "automated data — directly to the two larger launches that followed.",
-        space_before=_e("SP_B1",1.4))
-
-    job(doc, "Discord Community Platform & Bots", "2019 – Present")
-    bullet(doc,
-        "Grew a community from zero to 3,500+ active members; built custom "
-        "Python bots with NLP features to automate moderation and support "
-        "e-commerce operations.", space_before=_e("SP_B1",1.4))
-    bullet(doc,
-        "Active in the KC Meshtastic (LoRa mesh networking) community — help "
-        "plan node placement and RF coverage, troubleshoot member setups, and "
-        "exchange design approaches with others building custom mesh networks.")
 
     # ---------- technical skills ----------
     section(doc, "TECHNICAL SKILLS")
     bullet(doc,
-        "Python (scraping, data pipelines, automation), JavaScript, SQL, "
-        "HTML/CSS", bold_lead="Languages: ", space_before=_e("SP_A3",6.7))
+        "Python (scraping, data pipelines, automation), SQL, JavaScript, "
+        "C, HTML/CSS", bold_lead="Languages: ", space_before=_e("SP_A3",6.7))
     bullet(doc,
-        "REST APIs, API reverse-engineering, static site generation, "
-        "technical SEO, Leaflet.js mapping, JSON data architecture",
-        bold_lead="Web & Data: ")
+        "ETL pipelines, entity resolution, deduplication, pandas, SQLite, "
+        "Parquet, REST APIs, API reverse-engineering, Playwright, PDF and "
+        "OCR extraction (Tesseract, pdfplumber), JSON data architecture",
+        bold_lead="Data: ")
     bullet(doc,
-        "Git/GitHub, CI/CD (Cloudflare Pages, Netlify), Windows task "
-        "automation, scheduled data refresh systems", bold_lead="DevOps: ")
+        "pytest, fixture-based contract tests, negative controls, coverage "
+        "reporting, pre-registered thresholds, failure detection and alerting",
+        bold_lead="Testing & Reliability: ")
+    bullet(doc,
+        "Git/GitHub, CI/CD (GitHub Actions, Cloudflare Pages, Netlify), "
+        "scheduled jobs, robots.txt and rate-limit compliance",
+        bold_lead="DevOps: ")
     bullet(doc,
         "ESP32 firmware (C / ESP-IDF), ESP-NOW & BLE, I2C peripherals, "
         "sensor networks, 3D printing & CAD (OpenSCAD)",
@@ -258,7 +288,7 @@ def build(path):
     section(doc, "OPERATIONS & LEADERSHIP EXPERIENCE")
     p = para(doc, space_before=_e("SP_A3",6.7))
     setfont(p.add_run(
-        "10+ years of front-line operations and team leadership — including "
+        "Front-line operations and team leadership — including "
         "founding and operating my own business — managing teams of up to "
         "100 people across high-volume service environments, staffing, and "
         "vendor coordination."), SZ_BODY)
@@ -269,6 +299,10 @@ def build(path):
         "— turning messy public and web data sources into clean, scheduled, "
         "queryable datasets and dashboards (see shipped projects above).",
         space_before=_e("SP_B1",1.4))
+    bullet(doc,
+        "Contract work delivered across records consolidation and data "
+        "visualization; 100% Job Success Score and Rising Talent status on "
+        "Upwork as of September 2026.")
 
     job(doc, "Crossing Guard Operations Supervisor — All City Management "
              "Services (ACMS)", "2023 – 2025")
@@ -282,12 +316,6 @@ def build(path):
         "same-day coverage through a deep bench of on-call relationships — "
         "every student returned home safely, zero students injured across my "
         "full tenure.")
-
-    job(doc, "Bartender — Tabard's Kitchen", "2019 – 2020")
-    bullet(doc,
-        "Ran the full lunch service solo as the only front-of-house staff — "
-        "bartending, serving, taking and firing orders, running payments, and "
-        "holding food-safety standards through the rush.", space_before=_e("SP_B1",1.4))
 
     job(doc, "Founder / Sole Operating Partner — Honey Lake Motocross Park, "
              "Milford, CA", "2016 – 2018")
