@@ -18,9 +18,8 @@ const pathFor = (values: number[]) => values.map((value, i) => `${i ? 'L' : 'M'}
   <div class="link-viz__head">
     <div>
       <p class="eyebrow">Eight-night replay · channel features · five-minute bins</p>
-      <h3>Watch the held-out night change the answer.</h3>
+      <h3>Drag through the held-out nights.</h3>
     </div>
-    <button type="button" class="link-viz__play" data-play aria-pressed="false">▶ Play eight nights</button>
   </div>
 
   <div class="link-viz__legend" aria-label="Chart legend">
@@ -82,9 +81,6 @@ const pathFor = (values: number[]) => values.map((value, i) => `${i ? 'L' : 'M'}
     const label = visual.querySelector('[data-night-label]');
     const readout = visual.querySelector('[data-readout]');
     const guide = visual.querySelector('[data-guide]');
-    const play = visual.querySelector('[data-play]');
-    let timer: number | undefined;
-
     function selectNight(night: number) {
       const index = night - 1;
       if (range instanceof HTMLInputElement) range.value = String(night);
@@ -101,29 +97,8 @@ const pathFor = (values: number[]) => values.map((value, i) => `${i ? 'L' : 'M'}
         <span>Fusion <strong>${(values.fused[index] * 100).toFixed(1)}%</strong></span>`;
     }
 
-    function stop() {
-      if (timer) window.clearInterval(timer);
-      timer = undefined;
-      if (play) {
-        play.textContent = '▶ Play eight nights';
-        play.setAttribute('aria-pressed', 'false');
-      }
-    }
-
     range?.addEventListener('input', () => {
-      stop();
       if (range instanceof HTMLInputElement) selectNight(Number(range.value));
-    });
-
-    play?.addEventListener('click', () => {
-      if (timer) return stop();
-      play.textContent = '■ Pause';
-      play.setAttribute('aria-pressed', 'true');
-      let night = range instanceof HTMLInputElement ? Number(range.value) : 1;
-      timer = window.setInterval(() => {
-        night = night >= 8 ? 1 : night + 1;
-        selectNight(night);
-      }, 850);
     });
 
     selectNight(1);
@@ -134,8 +109,6 @@ const pathFor = (values: number[]) => values.map((value, i) => `${i ? 'L' : 'M'}
   .link-viz { --d0wd: #6bb0a8; --s3: #d98b5f; --fused: #a58bd9; padding: clamp(22px, 4vw, 34px); border: 1px solid var(--border); background: color-mix(in srgb, var(--accent) 3%, var(--bg)); }
   .link-viz__head { display: flex; align-items: end; justify-content: space-between; gap: 20px; }
   .link-viz__head h3 { max-width: 24ch; font-size: clamp(1.35rem, 3vw, 2rem); }
-  .link-viz__play { flex: 0 0 auto; padding: 8px 13px; border: 1px solid var(--border); border-radius: 5px; background: transparent; color: var(--text-primary); cursor: pointer; font-family: var(--font-mono); font-size: .72rem; }
-  .link-viz__play:hover { border-color: var(--accent); color: var(--accent); }
   .link-viz__legend { display: flex; flex-wrap: wrap; gap: 8px 19px; margin: 24px 0 8px; color: var(--text-muted); font-family: var(--font-mono); font-size: .68rem; }
   .link-viz__legend span { display: inline-flex; align-items: center; gap: 6px; }
   .link-viz__legend i { width: 16px; height: 3px; background: currentColor; }

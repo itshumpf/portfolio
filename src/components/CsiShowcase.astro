@@ -89,16 +89,18 @@ const lastIndex = caseStudies.length - 1;
           </div>
         )}
 
-        <div class="csi__block">
-          <h3 class="csi__block-title">Demo</h3>
-          <DemoSlot
-            status={data.demoSlot.status}
-            label={data.demoSlot.label}
-            note={data.demoSlot.note}
-            mediaUrl={data.demoSlot.mediaUrl}
-            mediaUrl2={data.demoSlot.mediaUrl2}
-          />
-        </div>
+        {data.demoSlot && (
+          <div class="csi__block">
+            <h3 class="csi__block-title">Demo</h3>
+            <DemoSlot
+              status={data.demoSlot.status}
+              label={data.demoSlot.label}
+              note={data.demoSlot.note}
+              mediaUrl={data.demoSlot.mediaUrl}
+              mediaUrl2={data.demoSlot.mediaUrl2}
+            />
+          </div>
+        )}
 
         <div class="csi__block">
           <h3 class="csi__block-title">

@@ -57,11 +57,6 @@ techStack:
     items: ["whole-night holdouts", "preregistered thresholds", "receiver double differences", "change-point tests", "block-shuffled periodicity", "night bootstrap"]
   - category: "Scale and validation"
     items: ["69.5M-frame memory-mapped cache", "exact frame conservation", "structural validators", "deterministic reruns"]
-demoSlot:
-  status: "gif"
-  label: "Eight-night link-signature feasibility"
-  mediaUrl: "/demo/csi/link-signature-results.svg"
-  note: "The contrast is the result: the same simple features are highly discriminative later in one session, but unreliable when the entire test night is held out."
 links: {}
 ---
 

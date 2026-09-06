@@ -223,13 +223,19 @@ const caseStudies = defineCollection({
         items: z.array(z.string()),
       }),
     ),
-    demoSlot: z.object({
-      status: z.enum(['coming-soon', 'gif', 'video', 'live-embed']),
-      label: z.string(),
-      note: z.string(),
-      mediaUrl: z.string().optional(),
-      mediaUrl2: z.string().optional(),
-    }),
+    // Optional: a case study that has no demo worth showing renders no Demo
+    // block at all, rather than an empty one. Room or Radio dropped its slot
+    // when the figure in it turned out to duplicate the interactive chart
+    // directly above.
+    demoSlot: z
+      .object({
+        status: z.enum(['coming-soon', 'gif', 'video', 'live-embed']),
+        label: z.string(),
+        note: z.string(),
+        mediaUrl: z.string().optional(),
+        mediaUrl2: z.string().optional(),
+      })
+      .optional(),
     links: z.object({
       repo: z.string().optional(),
     }),
