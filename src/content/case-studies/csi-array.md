@@ -1,10 +1,10 @@
 ---
-title: "Fingerprinting Devices by Their Crystal Clocks"
-subtitle: "A cameraless home-security system that identifies transmitting devices from hardware clock imperfections in their WiFi signals — running 24/7 on commodity ESP32 hardware."
+title: "Building the Instrument — Crystal-Clock Fingerprinting, V1"
+subtitle: "How the sensor array was designed and what it measured before the physical controls ran. Every number here is real and reproducible; what they turned out to be measuring is the subject of Room or Radio, which supersedes the identity claim below."
 order: 1
 headlineStat:
   value: "99.7%"
-  label: "blind-holdout accuracy at device identification, 7,497 test windows on a single receiver across 11 sessions"
+  label: "blind-holdout accuracy over 7,497 test windows on a single receiver across 11 sessions — as measured in July, before co-location and cross-receiver controls established that the separation belongs to the link rather than the device"
 secondaryStats:
   - value: "95.7%"
     label: "same task, 14,234 windows, once a second receiver's captures of those sessions join the population"
@@ -15,9 +15,9 @@ secondaryStats:
   - value: "$ few"
     label: "cost per sensor node — commodity ESP32 hardware"
 scaleStat:
-  value: "1B+"
-  label: "CSI frames captured to date, cumulative across ongoing 24/7 operation"
-  caveat: "This is the running total from continuous deployment, not the accuracy-validation dataset. The 99.7% figure above is measured on a separate, controlled 2.36M-frame / 11-session blind holdout — the two numbers answer different questions and aren't meant to be combined."
+  value: "99.5 GiB"
+  label: "raw CSI captured across 118 session files"
+  caveat: "Counted from disk. The sixteen canonical eight-night files account for 54.92 GiB and exactly 69,688,145 rows, which puts the full corpus in the region of 126 million rows by the same bytes-per-row — an extrapolation, not a count, and quoted as such. The 99.7% figure above rests on a separate 2.36M-frame, 11-session blind holdout; the two numbers answer different questions and must not be combined."
 approach:
   - title: "A dedicated reference beacon, not router traffic"
     description: "A TX beacon broadcasts identical ESP-NOW packets at a fixed 100 Hz on a fixed channel — a clean, steady stream instead of bursty, unpredictable router traffic. RX nodes run custom ESP-IDF firmware that streams compact binary CSI frames over USB serial to a host PC, which does all the science. Dumb, robust capture nodes; a smart host — so the DSP can evolve without ever reflashing hardware."

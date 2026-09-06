@@ -2,129 +2,163 @@
 import { getCollection, render } from 'astro:content';
 import DemoSlot from './DemoSlot.astro';
 import CsiExplorer from './CsiExplorer.astro';
+import LinkSignatureExplorer from './LinkSignatureExplorer.astro';
 import Roadmap from './Roadmap.astro';
 
-const [caseStudy] = (await getCollection('case-studies')).sort((a, b) => a.data.order - b.data.order);
-const { Content } = await render(caseStudy);
-const {
-  title,
-  subtitle,
-  headlineStat,
-  secondaryStats,
-  scaleStat,
-  approach,
-  results,
-  limitations,
-  techStack,
-  demoSlot,
-} = caseStudy.data;
+// Every case study in the collection is rendered, in `order`, stacked on this
+// one page: the result and the controls that broke it first, then the
+// instrument that produced it. Rendering only `[0]` silently orphans any
+// later study — the file stays on disk and gets no route.
+const entries = (await getCollection('case-studies')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const caseStudies = await Promise.all(
+  entries.map(async (entry) => {
+    const { Content } = await render(entry);
+    return { data: entry.data, Content };
+  }),
+);
+
+// The capture explorer and the link-signature figure belong to the lead study's
+// argument specifically, not to every study on the page.
+const LEAD = 0;
+const lastIndex = caseStudies.length - 1;
 ---
 
-<section id="csi-project" class="csi">
-  <div class="wrap wrap--wide">
-    <div class="section-head">
-      <p class="eyebrow">Case study</p>
-      <h2 class="section-title csi__title">{title}</h2>
-      <p class="section-sub">{subtitle}</p>
-    </div>
+{
+  caseStudies.map(({ data, Content }, i) => (
+    <section
+      id={i === LEAD ? 'csi-project' : 'csi-instrument'}
+      class:list={['csi', i > LEAD && 'csi--stacked']}
+    >
+      <div class="wrap wrap--wide">
+        <div class="section-head">
+          <p class="eyebrow">{i === LEAD ? 'Case study' : 'Case study — the instrument'}</p>
+          <h2 class="section-title csi__title">{data.title}</h2>
+          <p class="section-sub">{data.subtitle}</p>
+        </div>
 
-    <p class="csi__headline">
-      <span class="csi__headline-value">{headlineStat.value}</span>
-      <span class="csi__headline-label">{headlineStat.label}</span>
-    </p>
+        <p class="csi__headline">
+          <span class="csi__headline-value">{data.headlineStat.value}</span>
+          <span class="csi__headline-label">{data.headlineStat.label}</span>
+        </p>
 
-    <div class="stat-row">
-      {
-        secondaryStats.map((stat) => (
-          <div class="stat">
-            <span class="stat-value">{stat.value}</span>
-            <span class="stat-label">{stat.label}</span>
+        <div class="stat-row">
+          {data.secondaryStats.map((stat) => (
+            <div class="stat">
+              <span class="stat-value">{stat.value}</span>
+              <span class="stat-label">{stat.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <p class="csi__scale">
+          <span class="csi__scale-value">{data.scaleStat.value}</span> {data.scaleStat.label}.
+          <span class="csi__scale-caveat">{data.scaleStat.caveat}</span>
+        </p>
+
+        {i === LEAD && (
+          <div class="csi__block csi__block--explorer">
+            <h3 class="csi__block-title">Watch the original captures</h3>
+            <p class="csi__block-lede">
+              Choose a capture, switch receivers, and watch the three beacon traces move through
+              the room. This is the measurement that first looked like device identity—and then
+              moved when the floor plan changed.
+            </p>
+            <CsiExplorer />
           </div>
-        ))
-      }
-    </div>
+        )}
 
-    <p class="csi__scale">
-      <span class="csi__scale-value">{scaleStat.value}</span> {scaleStat.label}.
-      <span class="csi__scale-caveat">{scaleStat.caveat}</span>
-    </p>
+        <div class="csi__narrative">
+          <Content />
+        </div>
 
-    <CsiExplorer />
+        {i === LEAD && (
+          <div class="csi__block csi__block--link-viz">
+            <LinkSignatureExplorer />
+          </div>
+        )}
 
-    <div class="csi__narrative">
-      <Content />
-    </div>
+        <div class="csi__block">
+          <h3 class="csi__block-title">Demo</h3>
+          <DemoSlot
+            status={data.demoSlot.status}
+            label={data.demoSlot.label}
+            note={data.demoSlot.note}
+            mediaUrl={data.demoSlot.mediaUrl}
+            mediaUrl2={data.demoSlot.mediaUrl2}
+          />
+        </div>
 
-    <div class="csi__block">
-      <h3 class="csi__block-title">Demo</h3>
-      <DemoSlot
-        status={demoSlot.status}
-        label={demoSlot.label}
-        note={demoSlot.note}
-        mediaUrl={demoSlot.mediaUrl}
-        mediaUrl2={demoSlot.mediaUrl2}
-      />
-    </div>
+        <div class="csi__block">
+          <h3 class="csi__block-title">
+            {i === LEAD ? 'Experimental method' : 'How the instrument was built'}
+          </h3>
+          <div class="approach-list">
+            {data.approach.map((step) => (
+              <div class="approach-item">
+                <h4>{step.title}</h4>
+                <p>{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
 
-    <div class="csi__block">
-      <h3 class="csi__block-title">How it works</h3>
-      <div class="approach-list">
-        {
-          approach.map((step) => (
-            <div class="approach-item">
-              <h4>{step.title}</h4>
-              <p>{step.description}</p>
-            </div>
-          ))
-        }
+        <div class="csi__block csi__results">
+          <div>
+            <h3 class="csi__block-title">Results</h3>
+            <ul class="results-list">
+              {data.results.map((r) => (
+                <li>{r}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 class="csi__block-title">Honest limitations</h3>
+            <ul class="limitations-list">
+              {data.limitations.map((l) => (
+                <li>
+                  <h4>{l.title}</h4>
+                  <p>{l.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div class="csi__block">
+          <h3 class="csi__block-title">Implementation stack</h3>
+          <div class="stack-grid">
+            {data.techStack.map((group) => (
+              <div>
+                <p class="stack-group__label">{group.category}</p>
+                <p class="tag-list">{group.items.join(' · ')}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {i === lastIndex && (
+          <div class="csi__block">
+            <Roadmap />
+          </div>
+        )}
       </div>
-    </div>
-
-    <div class="csi__block csi__results">
-      <div>
-        <h3 class="csi__block-title">Results</h3>
-        <ul class="results-list">
-          {results.map((r) => <li>{r}</li>)}
-        </ul>
-      </div>
-      <div>
-        <h3 class="csi__block-title">Honest limitations</h3>
-        <ul class="limitations-list">
-          {
-            limitations.map((l) => (
-              <li>
-                <h4>{l.title}</h4>
-                <p>{l.description}</p>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </div>
-
-    <div class="csi__block">
-      <h3 class="csi__block-title">Tech stack</h3>
-      <div class="stack-grid">
-        {
-          techStack.map((group) => (
-            <div>
-              <p class="stack-group__label">{group.category}</p>
-              <p class="tag-list">{group.items.join(' · ')}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-
-    <div class="csi__block">
-      <Roadmap />
-    </div>
-  </div>
-</section>
+    </section>
+  ))
+}
 
 <style>
   .csi {
     border-top: 1px solid var(--border-soft);
+  }
+
+  /* Second and later studies get a heavier rule and extra air so the page
+     reads as two documents rather than one that lost its place. */
+  .csi--stacked {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
   }
 
   .csi__title {
@@ -236,7 +270,11 @@ const {
   }
 
   .csi__block--explorer {
-    margin-bottom: 44px;
+    margin-bottom: 64px;
+  }
+
+  .csi__block--link-viz {
+    margin-bottom: 68px;
   }
 
   .csi__block-lede {

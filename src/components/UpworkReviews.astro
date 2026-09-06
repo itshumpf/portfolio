@@ -1,0 +1,82 @@
+---
+const upworkUrl = 'https://www.upwork.com/freelancers/braedenkeena';
+---
+
+<section class="verified" aria-labelledby="verified-title">
+  <div class="wrap wrap--wide">
+    <div class="verified__summary">
+      <div>
+        <p class="eyebrow">Verified Upwork history</p>
+        <h2 id="verified-title">The clients get the first word.</h2>
+      </div>
+      <dl>
+        <div><dt>Job Success</dt><dd>100%</dd></div>
+        <div><dt>Completed</dt><dd>2</dd></div>
+        <div><dt>5.0 ratings</dt><dd>2</dd></div>
+        <div><dt>Total jobs</dt><dd>3</dd></div>
+      </dl>
+    </div>
+
+    <article class="verified__item">
+      <div class="verified__meta">
+        <span class="verified__stars" aria-label="5.0 out of 5 stars">★★★★★</span>
+        <strong>Excel Data to HTML Chart</strong>
+        <span>Aug 25–Sep 2, 2026</span>
+      </div>
+      <blockquote>“Project done quickly and on time.”</blockquote>
+      <span class="verified__endorsement">Client endorsement · Reliable</span>
+    </article>
+
+    <article class="verified__item verified__item--long">
+      <div class="verified__meta">
+        <span class="verified__stars" aria-label="5.0 out of 5 stars">★★★★★</span>
+        <strong>Gmail Conversation Reconstruction – He/Me Message Extraction</strong>
+        <span>Jul 28–Aug 1, 2026</span>
+      </div>
+      <p class="verified__lead">“I had a large, extremely complex project involving several years of communication data spread across multiple platforms — WhatsApp, Facebook Messenger, text messages, emails, and thousands of individual files.”</p>
+      <details>
+        <summary>Read the complete client review</summary>
+        <blockquote class="verified__full">
+          <p>I had a large, extremely complex project involving several years of communication data spread across multiple platforms — WhatsApp, Facebook Messenger, text messages, emails, and thousands of individual files. What I needed wasn’t simple data cleanup; I needed everything extracted, cleaned, compiled, cross‑referenced, and then organized into a streamlined, easy‑to‑navigate interface that allowed both me and a third‑party reviewer to analyze the information blind.</p>
+          <p>I originally searched for someone who could handle basic Python scripting, but Braeden delivered far beyond that. He anticipated needs I didn’t even know how to articulate. He made smart structural suggestions, improved workflow efficiency, and built a system that made an overwhelming amount of information understandable and accessible.</p>
+          <p>This was a sensitive, personally significant project. Braeden handled that aspect with professionalism, patience, and respect. When I didn’t know the right direction, he guided me without ever being dismissive. When I added new files or changed requirements, he adapted immediately and kept the project moving without delays. His turnaround time was consistently fast, and his communication was clear and reliable throughout the entire process.</p>
+          <p>The final product exceeded my expectations. The organization, clarity, and usability of the compiled data reflect a level of skill and attention to detail that is genuinely hard to find. Because of the quality of his work, I already plan to hire him again for the next phase of this project.</p>
+          <p>I highly recommend Braeden. His technical ability, problem‑solving skills, professionalism, and adaptability make him an exceptional choice for any project involving forensic data handling, large‑scale organization, or complex multi‑platform compilation.</p>
+        </blockquote>
+      </details>
+      <div class="verified__endorsements" aria-label="Client endorsements">
+        <span>Collaborative</span><span>Committed to Quality</span><span>Solution Oriented</span><span>Clear Communicator</span>
+      </div>
+    </article>
+
+    <a class="btn" href={upworkUrl} target="_blank" rel="noopener noreferrer">Verify on Upwork ↗</a>
+  </div>
+</section>
+
+<style>
+  .verified { padding-top: 24px; }
+  .verified__summary { display: grid; grid-template-columns: 1fr 1.35fr; gap: 32px; align-items: end; margin-bottom: 28px; }
+  .verified__summary h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+  .verified__summary dl { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; border-block: 1px solid var(--border); }
+  .verified__summary dl div { padding: 14px 10px; }
+  .verified__summary dt { color: var(--text-muted); font-family: var(--font-mono); font-size: 0.68rem; }
+  .verified__summary dd { margin: 2px 0 0; font-family: var(--font-mono); font-size: 1.12rem; font-weight: 700; }
+  .verified__item { display: grid; grid-template-columns: minmax(180px, 0.7fr) minmax(300px, 1.6fr); gap: clamp(24px, 5vw, 54px); padding-block: clamp(28px, 5vw, 46px); border-top: 1px solid var(--border); }
+  .verified__meta { display: flex; flex-direction: column; gap: 5px; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.74rem; }
+  .verified__meta strong { color: var(--text-primary); font-family: var(--font-sans); font-size: 0.92rem; }
+  .verified__stars { color: var(--accent); letter-spacing: 0.12em; }
+  .verified__item > blockquote, .verified__lead { margin: 0; font-size: clamp(1.15rem, 2.4vw, 1.55rem); line-height: 1.5; }
+  .verified__endorsement { grid-column: 2; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.72rem; }
+  .verified__item--long details, .verified__endorsements { grid-column: 2; }
+  .verified__item--long details { border-block: 1px solid var(--border); }
+  .verified__item--long summary { padding: 14px 0; cursor: pointer; color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.78rem; }
+  .verified__full { margin: 0; padding: 6px 0 22px; color: var(--text-secondary); }
+  .verified__full p + p { margin-top: 16px; }
+  .verified__endorsements { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.7rem; }
+  .verified .btn { margin-top: 8px; }
+  @media (max-width: 760px) {
+    .verified__summary, .verified__item { grid-template-columns: 1fr; }
+    .verified__summary dl { grid-template-columns: repeat(2, 1fr); }
+    .verified__endorsement, .verified__item--long details, .verified__endorsements { grid-column: 1; }
+  }
+</style>

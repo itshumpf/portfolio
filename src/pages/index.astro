@@ -2,8 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import HeaderPhoto from '../components/HeaderPhoto.astro';
-import CsiShowcase from '../components/CsiShowcase.astro';
+import CsiFeature from '../components/CsiFeature.astro';
 import About from '../components/About.astro';
 import Leadership from '../components/Leadership.astro';
 import Projects from '../components/Projects.astro';
@@ -14,13 +13,12 @@ const [profile] = await getCollection('profile');
 
 <BaseLayout
   title="Braeden Keena"
-  description="I build data pipelines that know when they're lying to you. 10+ years of operations leadership paired with validation-first data engineering, scrapers, and embedded RF systems."
+  description="I build data pipelines that know when they're lying to you. Self-taught data engineer: recurring pipelines, data integrity, and failure detection, backed by operations leadership."
 >
   <Hero profile={profile} />
-  <HeaderPhoto profile={profile} />
-  <CsiShowcase />
+  <CsiFeature />
+  <Projects />
   <Leadership />
   <About profile={profile} />
-  <Projects />
   <Footer profile={profile} />
 </BaseLayout>

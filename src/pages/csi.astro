@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import CsiShowcase from '../components/CsiShowcase.astro';
+import Footer from '../components/Footer.astro';
+
+const [profile] = await getCollection('profile');
+---
+
+<BaseLayout
+  title="Room or Radio? — Braeden Keena"
+  description="A 99.7%-accurate Wi-Fi device classifier, the controls that broke it, and the physical-link security hypothesis that followed."
+>
+  <Nav name={profile.data.name} />
+  <CsiShowcase />
+  <Footer profile={profile} />
+</BaseLayout>

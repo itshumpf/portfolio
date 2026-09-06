@@ -1,0 +1,163 @@
+---
+const nights = [1, 2, 3, 4, 5, 6, 7, 8];
+const series = [
+  { id: 'd0wd', label: 'D0WD receiver', values: [0.4892473118, 0.9305555556, 0.7142857143, 0.3972602740, 0.0555555556, 0.6519607843, 0.6666666667, 0.3515981735] },
+  { id: 's3', label: 'S3 receiver', values: [0.6505376344, 0.5370370370, 0.8888888889, 0.5799086758, 0.6666666667, 0.8872549020, 0.6075268817, 0.3287671233] },
+  { id: 'fused', label: 'Two-receiver fusion', values: [0.6344086022, 0.6342592593, 0.7222222222, 0.6529680365, 0.3787878788, 0.6813725490, 0.9731182796, 0.4200913242] },
+];
+const left = 62;
+const right = 728;
+const top = 24;
+const bottom = 306;
+const x = (i: number) => left + (i * (right - left)) / 7;
+const y = (value: number) => bottom - value * (bottom - top);
+const pathFor = (values: number[]) => values.map((value, i) => `${i ? 'L' : 'M'} ${x(i).toFixed(1)} ${y(value).toFixed(1)}`).join(' ');
+---
+
+<div class="link-viz" data-link-viz>
+  <div class="link-viz__head">
+    <div>
+      <p class="eyebrow">Eight-night replay · channel features · five-minute bins</p>
+      <h3>Watch the held-out night change the answer.</h3>
+    </div>
+    <button type="button" class="link-viz__play" data-play aria-pressed="false">▶ Play eight nights</button>
+  </div>
+
+  <div class="link-viz__legend" aria-label="Chart legend">
+    {series.map((item) => <span class={`link-viz__key link-viz__key--${item.id}`}><i></i>{item.label}</span>)}
+    <span class="link-viz__chance"><i></i>33.3% chance</span>
+  </div>
+
+  <div class="link-viz__chart">
+    <svg viewBox="0 0 760 350" role="img" aria-labelledby="link-viz-title link-viz-desc">
+      <title id="link-viz-title">Held-out-night link identification accuracy</title>
+      <desc id="link-viz-desc">Balanced accuracy for D0WD, S3, and fused receivers across eight entirely held-out nights. Results vary sharply between nights.</desc>
+      {[0, .25, .5, .75, 1].map((tick) => (
+        <g>
+          <line class="link-viz__grid" x1={left} x2={right} y1={y(tick)} y2={y(tick)} />
+          <text class="link-viz__tick" x={left - 10} y={y(tick) + 4} text-anchor="end">{Math.round(tick * 100)}%</text>
+        </g>
+      ))}
+      <line class="link-viz__chance-line" x1={left} x2={right} y1={y(1 / 3)} y2={y(1 / 3)} />
+      <line class="link-viz__target-line" x1={left} x2={right} y1={y(.7)} y2={y(.7)} />
+      <text class="link-viz__annotation" x={right - 4} y={y(.7) - 7} text-anchor="end">frozen 70% target</text>
+      {nights.map((night, i) => <text class="link-viz__tick" x={x(i)} y="330" text-anchor="middle">N{night}</text>)}
+      <line class="link-viz__guide" data-guide x1={x(0)} x2={x(0)} y1={top} y2={bottom} />
+      {series.map((item) => (
+        <g class={`link-viz__series link-viz__series--${item.id}`}>
+          <path d={pathFor(item.values)} />
+          {item.values.map((value, i) => (
+            <circle data-point data-night={i + 1} cx={x(i)} cy={y(value)} r="5">
+              <title>{item.label}, night {i + 1}: {(value * 100).toFixed(1)}%</title>
+            </circle>
+          ))}
+        </g>
+      ))}
+      <text class="link-viz__axis" transform="translate(16 166) rotate(-90)" text-anchor="middle">balanced accuracy</text>
+    </svg>
+  </div>
+
+  <label class="link-viz__scrub">
+    <span>Held-out night <strong data-night-label>1</strong></span>
+    <input type="range" min="1" max="8" step="1" value="1" data-night />
+  </label>
+
+  <p class="link-viz__readout" aria-live="polite" data-readout>
+    <span>D0WD <strong>48.9%</strong></span>
+    <span>S3 <strong>65.1%</strong></span>
+    <span>Fusion <strong>63.4%</strong></span>
+  </p>
+  <p class="link-viz__note">The model is sometimes excellent and sometimes confidently poor. Averaging the nights hides the instability that disqualified the credential.</p>
+</div>
+
+<script>
+  const visual = document.querySelector('[data-link-viz]');
+  if (visual) {
+    const values = {
+      d0wd: [0.4892473118, 0.9305555556, 0.7142857143, 0.3972602740, 0.0555555556, 0.6519607843, 0.6666666667, 0.3515981735],
+      s3: [0.6505376344, 0.5370370370, 0.8888888889, 0.5799086758, 0.6666666667, 0.8872549020, 0.6075268817, 0.3287671233],
+      fused: [0.6344086022, 0.6342592593, 0.7222222222, 0.6529680365, 0.3787878788, 0.6813725490, 0.9731182796, 0.4200913242],
+    };
+    const range = visual.querySelector('[data-night]');
+    const label = visual.querySelector('[data-night-label]');
+    const readout = visual.querySelector('[data-readout]');
+    const guide = visual.querySelector('[data-guide]');
+    const play = visual.querySelector('[data-play]');
+    let timer: number | undefined;
+
+    function selectNight(night: number) {
+      const index = night - 1;
+      if (range instanceof HTMLInputElement) range.value = String(night);
+      if (label) label.textContent = String(night);
+      const guideX = 62 + (index * (728 - 62)) / 7;
+      guide?.setAttribute('x1', String(guideX));
+      guide?.setAttribute('x2', String(guideX));
+      visual.querySelectorAll('[data-point]').forEach((point) => {
+        point.classList.toggle('is-active', point.getAttribute('data-night') === String(night));
+      });
+      if (readout) readout.innerHTML = `
+        <span>D0WD <strong>${(values.d0wd[index] * 100).toFixed(1)}%</strong></span>
+        <span>S3 <strong>${(values.s3[index] * 100).toFixed(1)}%</strong></span>
+        <span>Fusion <strong>${(values.fused[index] * 100).toFixed(1)}%</strong></span>`;
+    }
+
+    function stop() {
+      if (timer) window.clearInterval(timer);
+      timer = undefined;
+      if (play) {
+        play.textContent = '▶ Play eight nights';
+        play.setAttribute('aria-pressed', 'false');
+      }
+    }
+
+    range?.addEventListener('input', () => {
+      stop();
+      if (range instanceof HTMLInputElement) selectNight(Number(range.value));
+    });
+
+    play?.addEventListener('click', () => {
+      if (timer) return stop();
+      play.textContent = '■ Pause';
+      play.setAttribute('aria-pressed', 'true');
+      let night = range instanceof HTMLInputElement ? Number(range.value) : 1;
+      timer = window.setInterval(() => {
+        night = night >= 8 ? 1 : night + 1;
+        selectNight(night);
+      }, 850);
+    });
+
+    selectNight(1);
+  }
+</script>
+
+<style>
+  .link-viz { --d0wd: #6bb0a8; --s3: #d98b5f; --fused: #a58bd9; padding: clamp(22px, 4vw, 34px); border: 1px solid var(--border); background: color-mix(in srgb, var(--accent) 3%, var(--bg)); }
+  .link-viz__head { display: flex; align-items: end; justify-content: space-between; gap: 20px; }
+  .link-viz__head h3 { max-width: 24ch; font-size: clamp(1.35rem, 3vw, 2rem); }
+  .link-viz__play { flex: 0 0 auto; padding: 8px 13px; border: 1px solid var(--border); border-radius: 5px; background: transparent; color: var(--text-primary); cursor: pointer; font-family: var(--font-mono); font-size: .72rem; }
+  .link-viz__play:hover { border-color: var(--accent); color: var(--accent); }
+  .link-viz__legend { display: flex; flex-wrap: wrap; gap: 8px 19px; margin: 24px 0 8px; color: var(--text-muted); font-family: var(--font-mono); font-size: .68rem; }
+  .link-viz__legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .link-viz__legend i { width: 16px; height: 3px; background: currentColor; }
+  .link-viz__key--d0wd { color: var(--d0wd) !important; } .link-viz__key--s3 { color: var(--s3) !important; } .link-viz__key--fused { color: var(--fused) !important; }
+  .link-viz__chance i { height: 1px; background: repeating-linear-gradient(90deg, var(--text-muted) 0 4px, transparent 4px 7px); }
+  .link-viz__chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .link-viz__grid { stroke: var(--border-soft); stroke-width: 1; }
+  .link-viz__tick, .link-viz__axis, .link-viz__annotation { fill: var(--text-muted); font-family: var(--font-mono); font-size: 11px; }
+  .link-viz__chance-line { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 5 6; }
+  .link-viz__target-line { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 2 5; opacity: .7; }
+  .link-viz__guide { stroke: var(--text-primary); stroke-width: 1; opacity: .34; transition: x1 .25s ease, x2 .25s ease; }
+  .link-viz__series path { fill: none; stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+  .link-viz__series circle { stroke: var(--bg); stroke-width: 2; transition: r .2s ease, opacity .2s ease; }
+  .link-viz__series circle.is-active { r: 8; }
+  .link-viz__series--d0wd path, .link-viz__series--d0wd circle { stroke: var(--d0wd); fill: var(--d0wd); }
+  .link-viz__series--s3 path, .link-viz__series--s3 circle { stroke: var(--s3); fill: var(--s3); }
+  .link-viz__series--fused path, .link-viz__series--fused circle { stroke: var(--fused); fill: var(--fused); }
+  .link-viz__scrub { display: grid; gap: 7px; color: var(--text-muted); font-family: var(--font-mono); font-size: .72rem; }
+  .link-viz__scrub strong { color: var(--text-primary); }
+  .link-viz__scrub input { width: 100%; accent-color: var(--accent); }
+  .link-viz__readout { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 13px; font-family: var(--font-mono); font-size: .76rem; color: var(--text-muted); }
+  .link-viz__readout strong { color: var(--text-primary); }
+  .link-viz__note { max-width: 72ch; margin-top: 14px; color: var(--text-secondary); font-size: .82rem; }
+  @media (max-width: 600px) { .link-viz { padding: 18px 12px; } .link-viz__head { align-items: flex-start; flex-direction: column; } .link-viz__chart { margin-left: -5px; } }
+</style>

@@ -1,0 +1,105 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import CaseImage from '../../components/CaseImage.astro';
+import Testimonial from '../../components/Testimonial.astro';
+import { clientProof } from '../../lib/clientProof';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+interface Props { project: CollectionEntry<'projects'>; }
+const { project } = Astro.props;
+const { Content } = await render(project);
+const [profile] = await getCollection('profile');
+const d = project.data;
+const presentationProof = clientProof[project.id];
+---
+
+<BaseLayout title={`${d.title} — Braeden Keena`} description={d.tagline}>
+  <Nav name={profile.data.name} />
+  <main class="case">
+    <header class="case__hero wrap wrap--wide">
+      <p class="eyebrow">Case study · {d.kind === 'client' ? 'Client engagement' : d.role}</p>
+      <h1>{d.title}</h1>
+      <p class="case__thesis">{d.thesis ?? d.tagline}</p>
+      <div class="case__meta">
+        <span>{d.period}</span>
+        <span>{d.status}</span>
+        <span>{d.tech.join(' · ')}</span>
+      </div>
+    </header>
+
+    {d.stats && (
+      <section class="case__stats wrap wrap--wide">
+        {d.stats.map((stat) => (
+          <div><strong>{stat.value}</strong><span>{stat.label}</span></div>
+        ))}
+      </section>
+    )}
+
+    <div class="case__content wrap">
+      {d.testimonial && (
+        <Testimonial
+          quote={d.testimonial.quote}
+          attribution={d.testimonial.attribution}
+          rating={d.testimonial.rating}
+          sourceUrl={d.testimonial.sourceUrl}
+          sourceLabel={d.testimonial.sourceLabel}
+          note={d.testimonial.note}
+        />
+      )}
+      {!d.testimonial && presentationProof && (
+        <Testimonial
+          quote={presentationProof.quote}
+          attribution="Client, Upwork"
+          rating={presentationProof.rating}
+          sourceUrl="https://www.upwork.com/freelancers/braedenkeena"
+          sourceLabel="View the public Upwork profile"
+        />
+      )}
+      <Content />
+      {d.screenshots?.map((shot) => <CaseImage image={shot} />)}
+      {d.impact && (
+        <aside><span>Why it matters</span><p>{d.impact}</p></aside>
+      )}
+      <nav class="case__links" aria-label="Project links">
+        {d.links.live && <a href={d.links.live} target="_blank" rel="noopener noreferrer">Visit live project ↗</a>}
+        {d.links.repo && <a href={d.links.repo} target="_blank" rel="noopener noreferrer">View source ↗</a>}
+        {d.links.noLinkNote && <span>{d.links.noLinkNote}</span>}
+      </nav>
+    </div>
+  </main>
+  <Footer profile={profile} />
+</BaseLayout>
+
+<style>
+  .case__hero { padding-block: clamp(70px, 11vw, 132px) 62px; }
+  .case__hero h1 { max-width: 16ch; margin-top: 15px; font-size: clamp(3rem, 8vw, 6.6rem); line-height: .97; letter-spacing: -.065em; }
+  .case__thesis { max-width: 66ch; margin-top: 30px; color: var(--text-secondary); font-size: clamp(1.05rem, 2.2vw, 1.3rem); }
+  .case__meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 28px; color: var(--text-muted); font-family: var(--font-mono); font-size: .7rem; }
+  .case__meta span + span::before { content: '·'; margin-right: 16px; }
+  .case__stats { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); }
+  .case__stats div { display: grid; padding: 28px; }
+  .case__stats div + div { border-left: 1px solid var(--border); }
+  .case__stats strong { color: var(--accent); font-family: var(--font-mono); font-size: clamp(1.4rem, 3vw, 2.2rem); }
+  .case__stats span { margin-top: 5px; color: var(--text-muted); font-size: .78rem; line-height: 1.45; }
+  .case__content { padding-block: clamp(68px, 10vw, 112px); color: var(--text-secondary); }
+  .case__content :global(h2) { margin: 68px 0 18px; color: var(--text-primary); font-size: clamp(1.75rem, 4vw, 2.5rem); letter-spacing: -.035em; }
+  .case__content :global(h3) { margin: 42px 0 14px; color: var(--text-primary); font-size: 1.25rem; }
+  .case__content :global(p), .case__content :global(ul) { margin-bottom: 18px; }
+  .case__content :global(ul) { padding-left: 20px; list-style: disc; }
+  .case__content :global(strong) { color: var(--text-primary); }
+  .case__content :global(figure) { margin-block: 42px; }
+  aside { margin-block: 64px; padding: 26px; border: 1px solid var(--border); }
+  aside span { color: var(--accent); font-family: var(--font-mono); font-size: .7rem; text-transform: uppercase; }
+  aside p { margin: 8px 0 0 !important; color: var(--text-primary); font-size: 1.1rem; }
+  .case__links { display: flex; gap: 22px; flex-wrap: wrap; padding-top: 26px; border-top: 1px solid var(--border); }
+  .case__links a { color: var(--accent); }
+  .case__links span { color: var(--text-muted); font-size: .86rem; }
+  @media (max-width: 650px) { .case__stats { grid-template-columns: 1fr; } .case__stats div + div { border-left: 0; border-top: 1px solid var(--border); } }
+</style>

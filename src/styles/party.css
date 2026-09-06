@@ -69,12 +69,60 @@
   }
 }
 
+@keyframes party-scan {
+  from {
+    transform: translateY(-8px);
+  }
+  to {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes party-glow {
+  0%, 100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
 html.party-mode,
 html.party-mode body {
   cursor:
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><text y='22' font-size='22'>✨</text></svg>")
       14 14,
     auto;
+}
+
+/* A soft CRT layer and neon edge-lighting sit above the page without
+   changing layout or intercepting a single click. */
+html.party-mode body::before,
+html.party-mode body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+html.party-mode body::before {
+  z-index: 997;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0,
+    transparent 3px,
+    rgba(255, 255, 255, 0.035) 3px,
+    rgba(255, 255, 255, 0.035) 4px
+  );
+  animation: party-scan 1.2s linear infinite;
+}
+
+html.party-mode body::after {
+  z-index: 996;
+  box-shadow:
+    inset 0 0 90px rgba(0, 230, 255, 0.34),
+    inset 0 0 180px rgba(255, 0, 170, 0.26);
+  animation: party-glow 2s ease-in-out infinite;
 }
 
 html.party-mode body {
@@ -124,7 +172,6 @@ html.party-mode h3 {
 
 html.party-mode section,
 html.party-mode .pathway-card,
-html.party-mode .party-modal__box,
 html.party-mode footer {
   background: linear-gradient(135deg, rgba(255, 0, 128, 0.2), rgba(0, 200, 255, 0.2), rgba(255, 230, 0, 0.2)), rgba(10, 0, 30, 0.75) !important;
   border: 3px dashed #ffee00 !important;
@@ -135,6 +182,16 @@ html.party-mode footer {
 
 html.party-mode .pathway-card:hover {
   transform: scale(1.03) rotate(1deg) !important;
+}
+
+html.party-mode article:nth-of-type(odd),
+html.party-mode .project-card:nth-child(odd) {
+  transform: rotate(-0.4deg);
+}
+
+html.party-mode article:nth-of-type(even),
+html.party-mode .project-card:nth-child(even) {
+  transform: rotate(0.4deg);
 }
 
 html.party-mode a {
@@ -222,4 +279,43 @@ html.party-mode .jumpbar {
 
 html.party-mode {
   scroll-padding-top: 98px;
+}
+
+/* -----------------------------------------------------------------------
+   The pathway tints. These were the amber and green on the hero buttons in
+   the default site; the default now runs monochrome on the site palette and
+   the colour lives here, where colour is the point.
+   ----------------------------------------------------------------------- */
+
+html.party-mode .pathway-icon {
+  filter: none;
+  opacity: 1;
+}
+
+html.party-mode .pathway-btn--leadership {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+html.party-mode .pathway-btn--leadership:hover {
+  background: rgba(245, 158, 11, 0.25);
+  color: #ffffff;
+}
+
+html.party-mode .pathway-btn--engineering {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+html.party-mode .pathway-btn--engineering:hover {
+  background: rgba(16, 185, 129, 0.25);
+  color: #ffffff;
+}
+
+html.party-mode .hero__status-dot,
+html.party-mode .hero__availability-dot {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
 }

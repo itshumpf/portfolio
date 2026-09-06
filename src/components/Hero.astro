@@ -179,8 +179,10 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #10b981;
-    box-shadow: 0 0 8px #10b981;
+    /* On-palette. It still reads as "live" without introducing a second
+       accent colour; party.css puts the emerald back. */
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
   }
 
   .hero__availability {
@@ -201,7 +203,7 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
     height: 7px;
     flex-shrink: 0;
     border-radius: 50%;
-    background: #10b981;
+    background: var(--accent);
   }
 
   .hero__tagline {
@@ -279,6 +281,11 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
 
   .pathway-icon {
     font-size: 1.25rem;
+    /* Emoji render in full colour and were the loudest thing on the card.
+       Desaturated here rather than removed — one line to undo. Party mode
+       puts the colour back. */
+    filter: grayscale(1);
+    opacity: 0.65;
   }
 
   .pathway-title {
@@ -306,26 +313,21 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
     transition: all 0.2s ease;
   }
 
-  .pathway-btn--leadership {
-    background: rgba(245, 158, 11, 0.12);
-    color: #fbbf24;
-    border: 1px solid rgba(245, 158, 11, 0.3);
-  }
+  /* Both lanes use the site palette: border, text, and one accent on hover.
+     The amber and green these used to carry now live in party.css, scoped
+     under html.party-mode, which is where the colour belongs. */
 
-  .pathway-btn--leadership:hover {
-    background: rgba(245, 158, 11, 0.25);
-    color: #ffffff;
-  }
-
+  .pathway-btn--leadership,
   .pathway-btn--engineering {
-    background: rgba(16, 185, 129, 0.12);
-    color: #34d399;
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
   }
 
+  .pathway-btn--leadership:hover,
   .pathway-btn--engineering:hover {
-    background: rgba(16, 185, 129, 0.25);
-    color: #ffffff;
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   .hero__footer-row {
