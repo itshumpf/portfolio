@@ -139,3 +139,13 @@ tests used a threshold or decision rule frozen before the run.
 Thirteen earlier working results were retired by controls designed to let them fail.
 The eight-night link-security prerequisite failed too. The project became more useful
 each time the answer got narrower.
+
+## On AI assistance
+
+I use AI heavily for coding and writing. The experiment design, hardware, captures,
+controls, decisions about which claims survived, and responsibility for every result
+are mine. AI wrote much of the analysis code that produced these numbers; that is
+exactly why every figure is re-derived from a named command and checked rather than
+trusted. AI drafted much of this page; I chose the hook, rewrote and edited it heavily,
+and I don't consider generated output evidence, which is why there's so much validation
+here.
