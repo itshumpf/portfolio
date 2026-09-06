@@ -144,54 +144,43 @@ def build(path):
     p = para(doc, space_before=_e("SP_SUM",6.0))
     setfont(p.add_run(
         "I build data collection that keeps working, and I specialize in "
-        "the failure that looks like success — a pipeline reporting a clean "
-        "run while returning nothing. Every figure I publish is emitted by a "
-        "committed script that refuses to write a null, because I once "
-        "shipped a hand-typed number that was wrong by 5.6× for an unknown "
-        "period. Live deployed web applications built end to end: API "
-        "reverse-engineering, data pipelines, front-end, SEO, and daily "
-        "automation. Backed by front-line operations leadership — including "
-        "founding and running my own business — managing teams of up to 100 "
-        "people. I learn whatever a problem requires, then build the thing."),
+        "the failure that looks like success \u2014 a pipeline reporting a "
+        "clean run while returning nothing. Every figure I publish is emitted "
+        "by a script that refuses to write a null. Backed by front-line "
+        "operations leadership, including founding and running my own "
+        "business, managing teams of up to 100 people."),
         SZ_BODY)
 
     # ---------- shipped products ----------
     section(doc, "SHIPPED PRODUCTS (SOLO-BUILT, END TO END)")
 
     job(doc, "WiFi CSI RF-Fingerprinting Sensor Array — ESP32 + Python DSP",
-        "2026 · Firmware / DSP", space_before=_e("SP_J1",9.7))
+        "54 days, from zero · Firmware / DSP", space_before=_e("SP_J1",9.7))
     bullet(doc,
-        "Built a WiFi device-fingerprinting system end to end \u2014 ESP32 "
-        "firmware in C / ESP-IDF, a Python DSP chain that pulls sampling-clock "
-        "error out of raw subcarrier phase (RANSAC phase-slope fits, 1D Kalman "
-        "drift tracking, Mahalanobis discrimination against per-source "
-        "Gaussian models), and a classifier reaching 99.7% blind-holdout "
-        "accuracy separating three transmitters on a chronological split. "
-        "43.4 GB of captures across 97 files and 60 recording sessions.",
+        "Fifty-four days from not knowing what an ESP32 was to a closed "
+        "scientific loop \u2014 instrument, method, answer, next hypothesis. "
+        "Built on a repurposed Meshtastic node and a beginner kit off Amazon: "
+        "five boards, C / ESP-IDF firmware, and a Python DSP chain (RANSAC "
+        "phase-slope fits, Kalman drift tracking, Mahalanobis discrimination).",
         space_before=_e("SP_B1",1.4))
     bullet(doc,
-        "Then spent two months trying to break it, and succeeded. "
-        "Twenty-nine hypotheses carried to a verdict, thirteen of them my own "
-        "working results, each retired by a control built to permit exactly "
-        "that outcome \u2014 reference-beacon correction, longer averaging "
-        "windows, tighter gates, blind clustering, feature fusion. Sixteen "
-        "more written down as unresolved rather than quietly re-run.")
+        "Restarted the project in July specifically to test it rather than "
+        "defend it. Two months and twenty-nine hypotheses carried to a "
+        "verdict, thirteen of them my own working results, each retired by a "
+        "control I built to permit that outcome.")
     bullet(doc,
-        "The system was separating rooms, not radios. Two different boards "
-        "placed four feet apart became statistically indistinguishable at "
-        "0.2\u03c3; one board carried between rooms moved 19.6\u03c3. "
-        "Propagation path had never been varied, so \u201cwhich device is "
-        "this\u201d and \u201cwhich room is this\u201d had been the same "
-        "question since July \u2014 a design flaw, not a bug, and nothing in "
-        "43 GB of captures recorded where any hardware sat.")
+        "The separation was real. What it was separating wasn\u2019t. Two "
+        "boards four feet apart read 0.2\u03c3; one moved between rooms read "
+        "19.6\u03c3 \u2014 rooms, not radios. Then 69.5 million frames across "
+        "eight pre-registered nights showed it was neither: the transmitter, "
+        "the receiver, and the path between them, measured as one object.")
     bullet(doc,
-        "Feature fusion appeared to add +26 percentage points, winning 12 of "
-        "12 comparisons with a confidence interval excluding zero; a random "
-        "number of identical variance reproduced the gain exactly at +0.00 pp. "
-        "Thresholds and controls written to disk and dated before any analysis "
-        "ran, chronological train/test splits never random, and six nights "
-        "into a seven-night pre-registered replication whose primary "
-        "prediction has failed every night it was tested.")
+        "It still identifies three co-located transmitters at 95.8% blind "
+        "accuracy \u2014 it just isn\u2019t a property of the radio alone. Every "
+        "threshold written to disk and dated before the test that used it, "
+        "results that went against me published beside the ones that didn\u2019t. "
+        "V2: find the link, measure it, find out whether it can be tracked. "
+        "braedenkeena.pages.dev")
 
     job(doc, "findstorage.pages.dev — Self-Storage Price Tracker",
         "2025 – 2026 · Founder / Developer · Sunset by choice")
@@ -214,11 +203,6 @@ def build(path):
         "before shutting down, including a coverage figure wrong by 5.6× that "
         "no script had ever recomputed. Every published number now traces to "
         "a named command.")
-    bullet(doc,
-        "Nationwide ZIP3 market analysis with matched-pairs attribute pricing "
-        "(isolated a ~18–22% climate-control premium via "
-        "same-store/same-size comparison), a “renter leverage” score, and "
-        "per-store price-history drill-down.")
 
     job(doc, "Public-Records Extraction — GAScout · easyIce · KcPermits",
         "2025 – 2026 · Solo-built")
@@ -230,12 +214,6 @@ def build(path):
         "9,915-page mainframe PDF, a weekly XLSX roll, a monthly PDF, and a "
         "scanned PDF read by OCR — normalized to one schema.",
         space_before=_e("SP_B1",1.4))
-    bullet(doc,
-        "100% line accounting on the mainframe parse: 409,142 rows, zero "
-        "dropped, 32 column-overflow swaps auto-corrected by a deterministic "
-        "5-column checksum, byte-identical output hash across machines, 90 "
-        "automated tests. The remaining 155 counties render “ADAPTER PLANNED” "
-        "with no synthetic figures anywhere on the site.")
     bullet(doc,
         "easyIce converts county health-inspection records into a "
         "recency-scored call list across five jurisdiction adapters and three "
