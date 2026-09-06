@@ -131,6 +131,14 @@
       "reason": "reads as a claim of statistical independence. The ledger's convention is 'separately run and separately decided'. Use 'rejection tests' and state the convention"
     },
     {
+      "pattern": "independent rejection",
+      "reason": "same problem, different phrasing. Missed on 2026-09-06 because the retired pattern was the literal string 'independent tests' and this reads 'independent rejection tests' — the substring never matched. Retire the concept, not the sentence you happened to see"
+    },
+    {
+      "pattern": "35 independent",
+      "reason": "belt and braces on the same claim — catches any wording that puts 'independent' immediately after the test count"
+    },
+    {
       "pattern": "actual security system",
       "reason": "V1 claim, contradicted by the CSI page's 'that is not an authentication system'. Retired 2026-09-06"
     },
