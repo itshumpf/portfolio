@@ -83,12 +83,15 @@
 
     <a class="case-door" href="/csi">
       <span>
-        <small>Room or Radio?</small>
-        Read the build, the controls that broke it, the 69.5-million-frame replay,
-        and the 35 rejection tests that retired 29 distinct hypotheses—then see
-        the physical-link authentication question that followed.
+        <span class="case-door__hook">54 days earlier, I didn't know what an ESP32 was.</span>
+        <span class="case-door__body">
+          I started with a Meshtastic radio I pulled apart, skipped the canned learner-kit
+          exercises, and learned against a question I didn't know how to answer. What followed
+          was a 69.5-million-frame investigation and 35 rejection tests that retired 29 distinct
+          hypotheses—including 13 of my own working results.
+        </span>
       </span>
-      <strong aria-hidden="true">Enter case study →</strong>
+      <strong aria-hidden="true">Read Room or Radio? →</strong>
     </a>
   </div>
 </section>
@@ -186,12 +189,19 @@
   .evidence-card figcaption { display: grid; gap: 4px; }
   .evidence-card figcaption span,
   .verdict span,
-  .case-door small {
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-    font-size: 0.67rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+  /* The hook carries the whole door — it is the only line most people read
+     before deciding whether the case study is worth their time. */
+  .case-door__hook {
+    font-size: clamp(1.05rem, 2.2vw, 1.32rem);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .case-door__body {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
 
   .evidence-card figcaption strong { font-size: 1.02rem; }

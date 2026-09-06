@@ -12,8 +12,8 @@ tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "GitHub Actions", "Cloudfla
 links:
   live: "https://findstorage.pages.dev"
 stats:
-  - value: "48 days"
-    label: "consecutive daily snapshots, zero gaps, 4,664 stores in 43 states"
+  - value: "46 days"
+    label: "consecutive daily snapshots, zero gaps, 4,664 stores across 41 states plus DC and Puerto Rico"
   - value: "396,402"
     label: "advertised price changes logged, every figure reproducible from a named script"
   - value: "88.7%"
@@ -36,11 +36,11 @@ published anywhere, so I built the thing that found them — and the market data
 It grew into a national directory of advertised self-storage prices and the research that falls out
 of tracking them over time.
 
-A seven-pass discovery scraper collected publicly published rates for 55,332 advertised price points
-across 4,664 stores in 43 states, running itself daily through GitHub Actions with commits landing
-unattended. The pipeline had safety rails: a run aborted rather than publishing if store count
-dropped below a floor or fell more than 10% against the previous run. It took **48 consecutive daily
-snapshots with no missed days**, and the rate-change log holds 396,402 advertised price changes and
+A seven-pass discovery scraper collected publicly published rates for 55,328 advertised listings
+across 4,664 stores in 41 states plus DC and Puerto Rico, running itself daily through GitHub
+Actions with commits landing unattended. The pipeline had safety rails: a run aborted rather than
+publishing if store count dropped below a floor or fell more than 10% against the previous run. It
+took **46 consecutive daily snapshots with no missed days**, and the rate-change log holds 396,402 advertised price changes and
 148,870 promotion changes. When a large operator merger added roughly 1,100 stores overnight — a
 ~30% jump — the pipeline absorbed it cleanly and surfaced the shift in the trend data instead of
 choking on it.
@@ -51,7 +51,7 @@ operator's. Theirs prohibits automated collection. I stopped the same night, dis
 job, and the site now stands as a dated archive rather than a live directory. The engineering below
 is what the project was; none of it depends on the collection continuing.
 
-## What 48 days of daily snapshots turned up
+## What 46 days of daily snapshots turned up
 
 Advertised rates do not drift. They sit completely still for days and then move in coordinated
 waves. On **18 of 46 days not a single tracked rate changed**; on thirteen days, tens of thousands

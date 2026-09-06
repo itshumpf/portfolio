@@ -80,14 +80,20 @@
       "derivation": ".astory/2026-08-25-findstorage-exit-report.md line 211. FROZEN at shutdown; this number does not move again",
       "mustAppearOn": ["work/findstorage/index.html"]
     },
-    "findstorage.states": {
-      "value": "43 states",
-      "derivation": ".astory/2026-08-25-findstorage-exit-report.md line 211",
+    "findstorage.coverage": {
+      "value": "41 states plus DC and Puerto Rico",
+      "derivation": "distinct `state` values in history/sizes-2026-08.csv on 2026-08-25 = 43, of which DC and PR are not states. Re-derived 2026-09-06. The earlier '43 states' counted two non-states",
       "mustAppearOn": ["work/findstorage/index.html"]
     },
     "findstorage.snapshot_days": {
-      "value": "48 days",
-      "derivation": ".astory/2026-08-25-findstorage-exit-report.md line 213: 2026-04-29 to 2026-08-25, zero gaps",
+      "value": "46 days",
+      "alsoAccept": ["46 consecutive"],
+      "derivation": "longest consecutive run of snapshot dates in history/2026-0{4,7,8}.csv filtered to <= 2026-08-25: 2026-07-11 to 2026-08-25 = 46 days, zero gaps. There are 48 snapshot days in total across a 119-day span, but 2026-04-29 and 2026-07-09 are isolated probes — 48 was never a consecutive run. Re-derived 2026-09-06",
+      "mustAppearOn": ["work/findstorage/index.html"]
+    },
+    "findstorage.listings": {
+      "value": "55,328",
+      "derivation": "sum of the `listings` column in history/2026-08.csv on 2026-08-25. The exit report's 55,332 'advertised price points' does not reproduce and is retired",
       "mustAppearOn": ["work/findstorage/index.html"]
     },
     "findstorage.price_changes": {
@@ -151,6 +157,18 @@
     {
       "pattern": "279 tests",
       "reason": "that is the count of `def test_` functions. pytest --collect-only reports 387 once parametrize expands. Quote what the runner prints"
+    },
+    {
+      "pattern": "48 consecutive daily",
+      "reason": "48 is the total count of snapshot days across a 119-day span; the consecutive run is 46 (2026-07-11 to 2026-08-25). Two isolated probe days, 2026-04-29 and 2026-07-09, sit outside it. Retired 2026-09-06"
+    },
+    {
+      "pattern": "4,664 stores in 43 states",
+      "reason": "the 43 distinct jurisdictions include DC and Puerto Rico. Use '41 states plus DC and Puerto Rico'. Retired 2026-09-06"
+    },
+    {
+      "pattern": "55,332",
+      "reason": "'advertised price points' from the exit report; does not reproduce. The listings count on 2026-08-25 is 55,328. Retired 2026-09-06"
     }
   ],
 

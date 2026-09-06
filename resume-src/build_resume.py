@@ -186,8 +186,9 @@ def build(path):
     job(doc, "findstorage.pages.dev — Self-Storage Price Tracker",
         "2025 – 2026 · Founder / Developer · Sunset by choice")
     bullet(doc,
-        "Daily national advertised-price tracker: 4,664 stores across 43 "
-        "states, 48 consecutive daily snapshots with zero gaps, 396,402 price "
+        "Daily national advertised-price tracker: 4,664 stores across 41 "
+        "states plus DC and Puerto Rico, 46 consecutive daily snapshots with "
+        "zero gaps, 396,402 price "
         "changes and 148,870 promotion changes logged. 7-pass discovery "
         "scraper with safety rails that abort a publish if the store count "
         "drops below a floor or swings >10% run-over-run — an operator merger "
@@ -219,7 +220,7 @@ def build(path):
         "easyIce converts county health-inspection records into a "
         "recency-scored call list across five jurisdiction adapters and three "
         "source shapes (Socrata JSON API, server-rendered HTML with "
-        "sequential IDs, Tyler portals); 279 tests, none touching the "
+        "sequential IDs, Tyler portals); 387 tests, none touching the "
         "network. Every run publishes a coverage report that declares its own "
         "degradation first — a partial run cannot be mistaken for a complete "
         "one.")
@@ -247,8 +248,9 @@ def build(path):
         "C, HTML/CSS", bold_lead="Languages: ", space_before=_e("SP_A3",6.7))
     bullet(doc,
         "ETL pipelines, entity resolution, deduplication, pandas, SQLite, "
-        "Parquet, REST APIs, API reverse-engineering, Playwright, PDF and "
-        "OCR extraction (Tesseract, pdfplumber), JSON data architecture",
+        "DuckDB, Parquet, REST APIs, API reverse-engineering, Playwright, "
+        "PDF and OCR extraction (Tesseract, pdfplumber), JSON data "
+        "architecture",
         bold_lead="Data: ")
     bullet(doc,
         "pytest, fixture-based contract tests, negative controls, coverage "
