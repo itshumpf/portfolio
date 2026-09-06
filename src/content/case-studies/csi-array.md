@@ -68,8 +68,10 @@ This project measures that signature end to end on hardware that costs a few dol
 ESP32-based WiFi Channel State Information (CSI) sensing array that extracts **Carrier Frequency
 Offset (CFO)** and **Sampling Frequency Offset (SFO)** from raw subcarrier phase, models each
 device's clock signature statistically, and classifies live traffic as a known device or a
-stranger. It has been running continuously as my own apartment's home-security system, not a
-benchtop experiment.
+stranger. It ran continuously in my own apartment rather than on a bench — which is how the
+thermal drift, the ambient-device problem and the overnight failures got found at all. **It was
+never an authentication system**, and the controls above are what established that; the
+round-the-clock running is a statement about how it was tested, not about what it could defend.
 
 It's a complete embedded-plus-DSP system built from first principles: custom firmware on
 constrained hardware, a signal-processing pipeline where every stage defeats a specific measured
