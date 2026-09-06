@@ -1,0 +1,178 @@
+{
+  "_meta": {
+    "purpose": "Single source of truth for every hard number this site publishes. The resume claims 'every figure I publish is emitted by a script that refuses to write a null.' This file plus scripts/check-facts.mjs is what makes that true rather than aspirational.",
+    "rule": "A number does not go on the site until it has an entry here with a derivation you could paste into a terminal. If you cannot name the command, the number is a guess and does not ship.",
+    "lastVerified": "2026-09-06",
+    "verifiedBy": "read out of the named source file on 2026-09-06; see each fact's derivation"
+  },
+
+  "facts": {
+    "gascout.total_liability": {
+      "value": "$152.34M",
+      "derivation": "sum of per-county tracked totals rendered by georgia/gascrape-site/dist/index.html: 62.75 + 80.29 + 9.30 = 152.34 (Fulton is a sheriff sale list and carries no dollar total)",
+      "mustAppearOn": ["work/gascout/index.html"]
+    },
+    "gascout.records": {
+      "value": "451,798",
+      "derivation": "sum of per-county record counts in georgia/gascrape-site/dist/index.html: 409,142 + 37,297 + 5,211 + 148 = 451,798",
+      "mustAppearOn": ["work/gascout/index.html"]
+    },
+    "gascout.counties_live": {
+      "value": "4 / 159",
+      "derivation": "county cards with a LIVE badge in georgia/gascrape-site/dist/index.html, against Georgia's 159 counties",
+      "mustAppearOn": ["work/gascout/index.html"]
+    },
+    "gascout.dekalb_records": {
+      "value": "409,142",
+      "derivation": "DeKalb county card, georgia/gascrape-site/dist/index.html. DeKalb's share only — never the site total",
+      "mustAppearOn": ["work/gascout/index.html"]
+    },
+    "gascout.dekalb_liability": {
+      "value": "$62.75M",
+      "derivation": "DeKalb county card, georgia/gascrape-site/dist/index.html. DeKalb's share only — never the site total",
+      "mustAppearOn": ["work/gascout/index.html"]
+    },
+    "gascout.dekalb_pdf_pages": {
+      "value": "9,915",
+      "derivation": "page count of the DQ205GADEK mainframe dump; pipeline node 01 in georgia/gascrape-site/dist/index.html",
+      "mustAppearOn": ["work/gascout/index.html"]
+    },
+
+    "csi.raw_rows": {
+      "value": "69,688,145",
+      "derivation": "csi-array/docs/V1_EXIT_REPORT.md line 151-152: raw rows across the 16 canonical eight-night files",
+      "mustAppearOn": ["csi/index.html"]
+    },
+    "csi.clean_frames": {
+      "value": "69,510,186",
+      "alsoAccept": ["69.5M", "69.5-million", "69.5 million"],
+      "derivation": "clean beacon frames, csi-array/docs/V1_EXIT_REPORT.md line 151. Rounded forms are allowed in prose; the exact figure must appear in the case study body",
+      "mustAppearOn": ["csi/index.html", "index.html"]
+    },
+    "csi.rejection_tests": {
+      "value": "35",
+      "derivation": "csi-array/docs/HYPOTHESIS_LEDGER.md line 40, Total destroyed. NOT statistically independent — the ledger's counting convention must be quoted with the number (line 30)",
+      "mustAppearOn": ["csi/index.html"]
+    },
+    "csi.distinct_ideas": {
+      "value": "29",
+      "derivation": "csi-array/docs/HYPOTHESIS_LEDGER.md line 40, after collapsing six families of repeated kill",
+      "mustAppearOn": ["csi/index.html"]
+    },
+    "csi.blind_accuracy": {
+      "value": "95.8%",
+      "derivation": "median blind identification of three co-located transmitters, held-out 30-minute window, 14 receiver-nights, chance 33.3%",
+      "mustAppearOn": ["csi/index.html"]
+    },
+    "csi.double_difference": {
+      "value": "6.79",
+      "derivation": "cross-receiver double difference in between-unit SD, median across 10s/1min/5min bins",
+      "mustAppearOn": ["csi/index.html"]
+    },
+    "csi.corpus_bytes": {
+      "value": "99.5 GiB",
+      "derivation": "du over csi-array/data/raw, 118 session files. The eight-night canonical subset is 54.92 GiB. Row count for the full corpus is an extrapolation and is labelled as one",
+      "mustAppearOn": ["csi/index.html"]
+    },
+
+    "findstorage.stores": {
+      "value": "4,664",
+      "derivation": ".astory/2026-08-25-findstorage-exit-report.md line 211. FROZEN at shutdown; this number does not move again",
+      "mustAppearOn": ["work/findstorage/index.html"]
+    },
+    "findstorage.states": {
+      "value": "43 states",
+      "derivation": ".astory/2026-08-25-findstorage-exit-report.md line 211",
+      "mustAppearOn": ["work/findstorage/index.html"]
+    },
+    "findstorage.snapshot_days": {
+      "value": "48 days",
+      "derivation": ".astory/2026-08-25-findstorage-exit-report.md line 213: 2026-04-29 to 2026-08-25, zero gaps",
+      "mustAppearOn": ["work/findstorage/index.html"]
+    },
+    "findstorage.price_changes": {
+      "value": "396,402",
+      "derivation": ".astory/2026-08-25-findstorage-exit-report.md line 215",
+      "mustAppearOn": ["work/findstorage/index.html"]
+    },
+
+    "easyice.tests": {
+      "value": "387",
+      "derivation": "cd C:\\dev\\easyIce && python -m pytest --collect-only -q | tail -1 → '387 tests collected'. The previous figure of 279 was `grep -c 'def test_'`, which misses everything parametrize expands",
+      "mustAppearOn": ["work/easyice/index.html"]
+    }
+  },
+
+  "retired": [
+    {
+      "pattern": "409,142 line items",
+      "reason": "DeKalb-only figure presented as the GAScout total. Superseded 2026-09-06 by 451,798 across four counties"
+    },
+    {
+      "pattern": "uncollected delinquent tax liability tracked across 8 tax cycles",
+      "reason": "DeKalb-only framing of $62.75M as the site total. Superseded 2026-09-06"
+    },
+    {
+      "pattern": "gascrape-site",
+      "reason": "repo was renamed to itshumpf/GAScout; the old URL 404s"
+    },
+    {
+      "pattern": "pre-registered nights",
+      "reason": "the analysis protocol was frozen before scoring; the capture schedule was not pre-registered for nights 1-7. Use 'paired overnight captures, scored against decision rules frozen before the run'"
+    },
+    {
+      "pattern": "independent tests",
+      "reason": "reads as a claim of statistical independence. The ledger's convention is 'separately run and separately decided'. Use 'rejection tests' and state the convention"
+    },
+    {
+      "pattern": "actual security system",
+      "reason": "V1 claim, contradicted by the CSI page's 'that is not an authentication system'. Retired 2026-09-06"
+    },
+    {
+      "pattern": "97 match pages",
+      "reason": "contradicted 99 match pages on the same rendered page"
+    },
+    {
+      "pattern": "185-URL sitemap",
+      "reason": "contradicted 187-URL sitemap on the same rendered page"
+    },
+    {
+      "pattern": "1B+",
+      "reason": "CSI frame count overstated roughly 8x. Measured corpus is 99.5 GiB across 118 files"
+    },
+    {
+      "pattern": "seven-night",
+      "reason": "the series is eight nights"
+    },
+    {
+      "pattern": "10+ years of operations leadership",
+      "reason": "removed from positioning 2026-09-05"
+    },
+    {
+      "pattern": "279 tests",
+      "reason": "that is the count of `def test_` functions. pytest --collect-only reports 387 once parametrize expands. Quote what the runner prints"
+    }
+  ],
+
+  "_mutuallyExclusive_note": "Pairs that cannot both be true on one rendered page. Note what is NOT here: $62.75M and $152.34M coexist legitimately on the GAScout page, because one is DeKalb's share and one is the four-county total. A conflict rule that fired on those would be wrong, and a checker that cries wolf gets switched off.",
+  "mutuallyExclusive": [
+    ["97 match pages", "99 match pages"],
+    ["185-URL", "187-URL"]
+  ],
+
+  "unverified": {
+    "_note": "Numbers currently on the site that could NOT be re-derived from a file on 2026-09-06. They are not enforced by the checker because there is nothing to check them against. Resolve or remove them.",
+    "nacup.match_pages": {
+      "value": "99",
+      "problem": "hardcoded in prose, not emitted by the generator. The site previously carried 97 and 99 simultaneously. Settle against nacup.us/sitemap.xml"
+    },
+    "nacup.sitemap_urls": {
+      "value": "187",
+      "problem": "same. 48 + 99 + 38 = 185, +2 = 187 is internally consistent, and so was 48 + 97 + 38 = 183, +2 = 185 — the two versions are the same site two matches apart"
+    },
+    "nacup.seo_pages": {
+      "value": "80+",
+      "problem": "true under either version and therefore uninformative; the real figure is roughly 185"
+    }
+  }
+}

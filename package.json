@@ -9,6 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "verify": "node scripts/check-facts.mjs",
+    "check": "astro build && node scripts/check-facts.mjs",
     "astro": "astro"
   },
   "dependencies": {

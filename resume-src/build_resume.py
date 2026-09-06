@@ -172,8 +172,9 @@ def build(path):
         "The separation was real. What it was separating wasn\u2019t. Two "
         "boards four feet apart read 0.2\u03c3; one moved between rooms read "
         "19.6\u03c3 \u2014 rooms, not radios. Then 69.5 million frames across "
-        "eight pre-registered nights showed it was neither: the transmitter, "
-        "the receiver, and the path between them, measured as one object.")
+        "eight paired overnight captures, scored against decision rules frozen "
+        "before the run, showed it was neither: the transmitter, the receiver, "
+        "and the path between them, measured as one object.")
     bullet(doc,
         "It still identifies three co-located transmitters at 95.8% blind "
         "accuracy \u2014 it just isn\u2019t a property of the radio alone. Every "

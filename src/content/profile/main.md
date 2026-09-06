@@ -38,8 +38,10 @@ leadershipIntro:
     reverse-engineering undocumented APIs, writing data pipelines and scrapers, shipping web products
     end to end. Three of them are live. Then that same troubleshooting instinct pointed at a much
     harder problem: whether a radio's crystal-oscillator imperfections could be measured precisely
-    enough to identify a device from its hardware alone. Getting that right took months of signal-
-    processing work, and it now runs as my apartment's actual security system — not a demo.
+    enough to identify a device from its hardware alone. It could separate radios in my apartment at
+    99.7%. Then the controls I built to attack that number showed it wasn't measuring the radios at
+    all. I retired the claim, replayed 69.5 million frames across eight nights, and came out with a
+    smaller result I can actually defend — and a harder question worth asking next.
 ---
 The operations years and the engineering years aren't as separate as they look on paper. Both come
 down to the same habit: don't trust an unverified result, find where the system actually breaks,

@@ -25,7 +25,7 @@ screenshots:
     height: 1865
     size: "small"
     caption: "Host-city panel on mobile — the tournament schedule and nearby watch parties for one city."
-impact: "Built in 48 hours, the site still reached first-page organic search within 24 hours and pulled 700+ visitors on day one — proof the programmatic SEO scaffolding (48 team pages, 97 match pages, 38 city pages, a 185-URL sitemap) did its job before the tournament had even started."
+impact: "Built in 48 hours, the site still reached first-page organic search within 24 hours and pulled 700+ visitors on day one — proof the programmatic SEO scaffolding did its job before the tournament had even started. The page counts are stated once, in the body, and come from the generator rather than from memory."
 ---
 Built because I wanted one place for everything World Cup 2026 — every morsel of news, plus which
 bars and fan events were happening near me. It became my own daily driver during the tournament,

@@ -134,10 +134,12 @@ discovering that its best number answers the wrong question, replaying every fra
 with a corrected estimator, and keeping the new claim smaller than the available
 evidence.
 
-The rejection ledger records **35 independent tests collapsing to 29 distinct
-ideas**. Thirteen of those ideas were my own working results, retired when their
-controls contradicted them. Fifteen of the 35 tests used a threshold or decision
-rule frozen before the run.
+The rejection ledger records **35 rejection tests, collapsing to 29 distinct ideas**
+once six families of repeated kill are merged — the tests are separately run and
+separately decided, not statistically independent, and the ledger states that
+convention rather than leaving it to be inferred. Thirteen of the 29 were my own
+working results, retired when their controls contradicted them. Fifteen of the 35
+tests used a threshold or decision rule frozen before the run.
 
 Thirteen earlier working results were retired by controls designed to let them fail.
 The eight-night link-security prerequisite failed too. The project became more useful

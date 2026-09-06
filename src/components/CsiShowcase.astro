@@ -33,6 +33,15 @@ const lastIndex = caseStudies.length - 1;
       class:list={['csi', i > LEAD && 'csi--stacked']}
     >
       <div class="wrap wrap--wide">
+        {i > LEAD && (
+          <p class="csi__archived" role="note">
+            <strong>Archived — V1.</strong> Every number below is real and reproducible. The
+            interpretation attached to them — that this identifies a <em>device</em> — was
+            superseded by the controls in <a href="#csi-project">Room or Radio</a> above. Read
+            this section as the instrument that produced the result, not as the result.
+          </p>
+        )}
+
         <div class="section-head">
           <p class="eyebrow">{i === LEAD ? 'Case study' : 'Case study — the instrument'}</p>
           <h2 class="section-title csi__title">{data.title}</h2>
@@ -159,6 +168,32 @@ const lastIndex = caseStudies.length - 1;
   .csi--stacked {
     border-top: 1px solid var(--border);
     padding-top: 24px;
+  }
+
+  /* Superseded material has to announce itself before it is read, not after —
+     a paragraph screenshotted out of context should still carry its status. */
+  .csi__archived {
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--text-secondary);
+    background: var(--surface, transparent);
+    padding: 14px 18px;
+    margin-bottom: 28px;
+    max-width: 68ch;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .csi__archived strong {
+    color: var(--text-primary);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+  }
+
+  .csi__archived a {
+    color: var(--text-primary);
   }
 
   .csi__title {
