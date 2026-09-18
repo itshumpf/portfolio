@@ -103,6 +103,47 @@
       "derivation": "storageDir/analysis/september14_offer_value.py over 59,045 exact matched modelable Public Storage offers, 2026-09-13 to 2026-09-14",
       "mustAppearOn": ["work/findstorage/index.html"]
     },
+    "findstorage.q3_observed_days": {
+      "value": "77 of 92",
+      "derivation": "2026-09-15-q3-prediction-and-ledger-gap.md §2 and Appendix D.1: 77 observed days of Q3 (21 July + 26 August + 30 September), reflecting the 26-30 August terms review pause",
+      "mustAppearOn": ["storage/index.html"]
+    },
+    "findstorage.sept18_index": {
+      "value": "0.9800",
+      "derivation": "2026-09-15-q3-prediction-and-ledger-gap.md Appendix D.3 and matched panel net on 18 September",
+      "mustAppearOn": ["storage/index.html"]
+    },
+
+    "kcpermits.observations": {
+      "value": "57,032",
+      "derivation": "SELECT count(*) FROM observations in upWork/permits/kc_observations.db",
+      "mustAppearOn": ["permits/index.html"]
+    },
+    "kcpermits.locations": {
+      "value": "30,587",
+      "derivation": "SELECT count(*) FROM locations in upWork/permits/kc_observations.db",
+      "mustAppearOn": ["permits/index.html"]
+    },
+    "kcpermits.sources": {
+      "value": "21",
+      "derivation": "SELECT count(*) FROM sources in upWork/permits/kc_observations.db",
+      "mustAppearOn": ["permits/index.html"]
+    },
+    "kcpermits.reconciliation_source_records": {
+      "value": "37",
+      "derivation": "Source Records In, deliverable_public.html line 270",
+      "mustAppearOn": ["permits/index.html"]
+    },
+    "kcpermits.reconciliation_distinct_projects": {
+      "value": "10",
+      "derivation": "Distinct Projects, deliverable_public.html line 274",
+      "mustAppearOn": ["permits/index.html"]
+    },
+    "kcpermits.reconciliation_prospects": {
+      "value": "4",
+      "derivation": "Prospect projects, deliverable_public.html line 278",
+      "mustAppearOn": ["permits/index.html"]
+    },
 
     "easyice.tests": {
       "value": "387",
@@ -112,6 +153,14 @@
   },
 
   "retired": [
+    {
+      "pattern": "CALL ASAP",
+      "reason": "urgency not supported by permit data; prospects carry unverified demand and purchasing authority"
+    },
+    {
+      "pattern": "82 of 92",
+      "reason": "overstated Q3 coverage by 5 days (assumed unbroken August); corrected to 77 of 92"
+    },
     {
       "pattern": "409,142 line items",
       "reason": "DeKalb-only figure presented as the GAScout total. Superseded 2026-09-06 by 451,798 across four counties"

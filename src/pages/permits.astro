@@ -1,0 +1,1110 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const [profile] = await getCollection('profile');
+---
+
+<BaseLayout
+  title="KC Municipal Permits & Facility Intelligence — Braeden Keena"
+  description="Multi-city municipal building permit & licensing pipeline across the Kansas City metro. Reverse-engineering Tyler EnerGov APIs and filtering noise into verified commercial opportunities."
+>
+  <Nav name={profile.data.name} />
+
+  <article class="permits-page">
+    <div class="wrap wrap--wide">
+      <header class="permits-header">
+        <p class="eyebrow">Technical Investigation · Civic Data Integrity</p>
+        <h1 class="permits-title">The Verification Filter.</h1>
+        <p class="permits-subtitle">
+          Anyone can scrape 50,000 rows of garbage. Filtering it down to four prospects that each carry their own documented gaps is where the real engineering happens.
+        </p>
+      </header>
+
+      <!-- Metrics Bar -->
+      <div class="metrics-bar">
+        <div class="metric-item">
+          <span class="metric-item__num">57,032</span>
+          <span class="metric-item__lbl">observations in database</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-item__num">30,587</span>
+          <span class="metric-item__lbl">locations resolved</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-item__num">21</span>
+          <span class="metric-item__lbl">municipal & county feeds in the database</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-item__num">37 → 10 → 4</span>
+          <span class="metric-item__lbl">reconciliation pipeline: 4 prospect, 4 review, 2 excluded</span>
+        </div>
+      </div>
+
+      <!-- Visual Stepper: engine and audit, kept as two separate measurements -->
+      <section class="funnel-section">
+        <div class="funnel-header">
+          <span class="funnel-eyebrow">Pipeline Architecture</span>
+          <h2>Two Numbers, Not One Funnel</h2>
+          <p class="funnel-desc">
+            The engine and the audit are different measurements and collapsing them misrepresents both.
+            <strong>The engine</strong> ingests and resolves everything the feeds publish. <strong>The audit</strong> takes one batch
+            of that output and refuses most of it. The second number is small on purpose.
+          </p>
+        </div>
+
+        <div class="pipeline-stepper">
+          <div class="pipe-step">
+            <span class="pipe-step__badge">Ingestion</span>
+            <div class="pipe-step__num">57,032</div>
+            <div class="pipe-step__label">Raw Observations</div>
+            <div class="pipe-step__sub">21 municipal & county feeds across the KC metro</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">
+            <span class="pipe-step__badge">Deduplication</span>
+            <div class="pipe-step__num">30,587</div>
+            <div class="pipe-step__label">Resolved Locations</div>
+            <div class="pipe-step__sub">Parcels deduplicated by GIS bounds & clean addresses</div>
+          </div>
+          <div class="pipe-arrow">│</div>
+          <div class="pipe-step">
+            <span class="pipe-step__badge">Audit batch</span>
+            <div class="pipe-step__num">37</div>
+            <div class="pipe-step__label">Source Records Reviewed</div>
+            <div class="pipe-step__sub">One sampled batch, joined against state food inspections, licences and NPI. Not a filter applied to the 30,587.</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">
+            <span class="pipe-step__badge">Consolidation</span>
+            <div class="pipe-step__num">10</div>
+            <div class="pipe-step__label">Distinct Projects</div>
+            <div class="pipe-step__sub">Multi-suite & multi-building parcels unified</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step pipe-step--winner">
+            <span class="pipe-step__badge pipe-step__badge--winner">Cleared</span>
+            <div class="pipe-step__num text-accent">4</div>
+            <div class="pipe-step__label">Prospects</div>
+            <div class="pipe-step__sub">4 prospect · 4 review · 2 excluded. Each carries its documented limitation.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 1: The Naive Myth vs Reality -->
+      <section class="permits-section">
+        <h2>1. The Naive Myth vs. The Engineering Reality</h2>
+        <p>
+          A common premise in sales intelligence sounds seductive: <em>"Just write a python script to scrape building permits for Certificates of Occupancy and call them before competitors know they exist."</em>
+        </p>
+
+        <!-- Side by Side Contrast -->
+        <div class="contrast-grid">
+          <div class="contrast-card contrast-card--myth">
+            <div class="contrast-tag contrast-tag--myth">The Naive Scraper Pitch</div>
+            <h4>"1,200 New Commercial Leads Every Month!"</h4>
+            <p>
+              Scrapes every row with the word "Commercial", grabs the phone number off the PDF, and floods the sales team with 500 dial targets a week.
+            </p>
+            <ul class="contrast-list">
+              <li>Calls electrical subcontractors who installed lighting</li>
+              <li>Pitches dry cleaners when the permit was for the dental office next door</li>
+              <li>Wastes hundreds of calls on speculative landlord "white-boxes" with no tenant</li>
+            </ul>
+          </div>
+
+          <div class="contrast-card contrast-card--truth">
+            <div class="contrast-tag contrast-tag--truth">The Empirical Ground Truth</div>
+            <h4>"4 Prospects, Each With Its Documented Gaps"</h4>
+            <p>
+              Separates property owners from tenant operators, isolates multi-suite strip mall addresses, and refuses to declare a commercial buyer without license corroboration.
+            </p>
+            <ul class="contrast-list">
+              <li>Generates Secretary of State lookup URLs so entity identity is resolved by hand rather than guessed</li>
+              <li>Disambiguates individual retail suites sharing a single street parcel</li>
+              <li>Hands sales reps actionable leads with explicit mandatory limitations</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Tyler EnerGov Reverse-Engineering -->
+      <section class="permits-section">
+        <h2>2. Tyler EnerGov: Reverse-Engineering Multi-Tenant Municipalities</h2>
+        <p>
+          Across the Kansas City metropolitan area, municipal data infrastructure ranges from open civic transparency to hostile vendor firewalls. 
+          Even when neighboring cities buy the exact same off-the-shelf software suite—<strong>Tyler Technologies EnerGov Self-Service</strong>—the operational realities vary drastically. 
+          Some deployments served automated queries without friction; a vendor-cloud instance served one full collection and then blocked every refresh after it.
+        </p>
+        <p>
+          While Tyler EnerGov portals share an underlying JSON search endpoint, the API refuses all connections without four mandatory, undocumented request headers:
+        </p>
+        <div class="code-block">
+          <code>tenantid, tenantname, tyler-tenanturl, tyler-tenant-culture</code>
+        </div>
+        <p>
+          These values cannot be derived mathematically; they must be verified via actual network inspection per deployment. 
+          Across the verified live deployments feeding our pipeline, the API enforced completely distinct naming conventions and divergent module architectures:
+        </p>
+
+        <!-- EnerGov Architecture Table -->
+        <div class="table-wrap">
+          <table class="energov-table">
+            <thead>
+              <tr>
+                <th>Municipality</th>
+                <th>Tenant ID</th>
+                <th>Tenant Name Header</th>
+                <th>Target Module</th>
+                <th>Architectural Discovery</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Olathe, KS</strong></td>
+                <td><code>1</code></td>
+                <td><code>Olathe, KS</code></td>
+                <td><span class="mod-pill mod-pill--permits">Permits</span></td>
+                <td>Display name with punctuation. Commercial activity resided in Permits (Plans held lot splits).</td>
+              </tr>
+              <tr>
+                <td><strong>Overland Park, KS</strong></td>
+                <td><code>1</code></td>
+                <td><code>OverlandParkKSProd</code></td>
+                <td><span class="mod-pill mod-pill--plans">Plans</span></td>
+                <td>CamelCase slug. Permits was 92% Right-of-Way with zero COs across 5,000 records; commercial COs lived in Plans.</td>
+              </tr>
+              <tr>
+                <td><strong>Kansas City, MO (CompassKC)</strong></td>
+                <td><code>7</code></td>
+                <td><code>KansasCityMOProd</code></td>
+                <td><span class="mod-pill mod-pill--plans">Plans</span></td>
+                <td>Tenant ID 7 (not 1). Breaks assumption of uniform IDs across identical vendor installs.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- The Ingestion Spectrum Box -->
+        <div class="spectrum-box">
+          <div class="spectrum-title">The Ingestion Spectrum: Three Portal Behaviours, One Vendor</div>
+          <div class="spectrum-grid">
+            <div class="spectrum-card">
+              <span class="spectrum-tag spectrum-tag--live">Self-Hosted / Unrestricted</span>
+              <h5>Olathe, OP, KCMO</h5>
+              <p>
+                Deployed on municipal infrastructure. Once the undocumented headers were mapped, these servers accepted an identifying User-Agent (<code>KCPermitFeed/1.0</code>) and returned thousands of records without rate limiting or blocking. Not being blocked is a server behaviour, not a grant of permission — terms were read separately.
+              </p>
+            </div>
+            <div class="spectrum-card">
+              <span class="spectrum-tag spectrum-tag--banned">Cloud WAF / Blocked After First Pull</span>
+              <h5>Leawood, KS</h5>
+              <p>
+                Vendor-hosted on Tyler's central cloud (<code>tylerhost.net</code>), so the path is <code>/apps/selfservice</code> rather than the city-hosted <code>/energov_prod/selfservice</code>. One complete collection succeeded on 26 August — 3,086 permits and 1,618 licences. Every refresh since has been blocked, so that evidence is now stale and the city sits outside the live set.
+              </p>
+            </div>
+            <div class="spectrum-card">
+              <span class="spectrum-tag spectrum-tag--open">Open Civic REST API</span>
+              <h5>Independence, MO</h5>
+              <p>
+                No vendor portal to reverse-engineer. Independence publishes a direct, unauthenticated Open Data REST API (<code>apps.independencemo.gov</code>) that ingested cleanly — no undocumented headers, no blocking.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: The Failure Ledger -->
+      <section class="permits-section">
+        <h2>3. Where the Work Actually Went: The Forensic Failure Ledger</h2>
+        <p>
+          The most dangerous failures in civic data pipelines do not throw HTTP 500 crashes; they succeed politely while silently corrupting downstream business decisions. 
+          Here are four critical failure modes caught and engineered around in this pipeline:
+        </p>
+        <div class="failure-grid">
+          <div class="failure-card">
+            <span class="failure-num">01</span>
+            <h4>The Silent 10,000-Record Cap</h4>
+            <p>
+              The Elasticsearch behind these portals refuses past 10,000 results — <code>from + size</code> must stay under <code>index.max_result_window</code>.
+              A query matching more than that returns HTTP 200 with 10,000 rows and <em>zero warning flag</em>.
+              The overflow is not reported, not flagged, and not distinguishable from a complete answer.
+            </p>
+            <div class="failure-fix">
+              <strong>The Fix:</strong> The collector computes its own ceiling — <code>10000 / page_size</code> — and refuses to request past it, reporting the cap instead of returning a truncated page set that looks complete.
+            </div>
+          </div>
+
+          <div class="failure-card">
+            <span class="failure-num">02</span>
+            <h4>The Date Filter That Does Nothing</h4>
+            <p>
+              A portal accepted date-range criteria in its JSON search payload and ignored them server-side. Measured, not assumed: a 90-day window returned <strong>the same 124,214 rows</strong> as no window at all — the filter is decorative, and a caller who trusts it believes they pulled a quarter when they pulled the lifetime database.
+            </p>
+            <div class="failure-fix">
+              <strong>The Fix:</strong> Filter client-side, and sort by issue date descending so paging can stop the moment records fall out of the window. A 30-day pull becomes a handful of pages instead of twelve hundred. Each module sorts only on its own fields — plans carry no issue date at all, since a plan is reviewed rather than issued, so sorting one that way fails on the whole population.
+            </div>
+          </div>
+
+          <div class="failure-card">
+            <span class="failure-num">03</span>
+            <h4>Strip Mall Multi-Suite Collisions</h4>
+            <p>
+              In suburban retail corridors, a single parcel address can carry many separately tenanted suites.
+              Naive scrapers merge all permits into one master entity, claiming an existing tenant just signed a new lease.
+            </p>
+            <div class="failure-fix">
+              <strong>The Fix:</strong> Suite-level tokenization and unit disambiguation graphs to prevent entity cross-contamination.
+            </div>
+          </div>
+
+          <div class="failure-card">
+            <span class="failure-num">04</span>
+            <h4>Speculative Landlord "Ghost Shells"</h4>
+            <p>
+              Property owners routinely pull commercial alteration permits for "white-box" shell renovations with no signed tenant. 
+              Treating a commercial remodel as an active business leads sales teams to pitch empty buildings.
+            </p>
+            <div class="failure-fix">
+              <strong>The Fix:</strong> Dual corroboration requiring an active business license or state inspection before declaring a prospect.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: The Deliverable & Reconciliation Panel -->
+      <section class="permits-section">
+        <h2>4. The Reconciliation Audit: 37 → 10 → 4</h2>
+        <p>
+          In a production deliverable, trust requires accounting for every input record. 
+          Below is the exact reconciliation panel and status classification from our public pilot evaluation:
+        </p>
+
+        <div class="recon-panel">
+          <div class="recon-header">
+            <span class="recon-title">Source Pipeline Reconciliation Audit</span>
+            <span class="recon-badge">RECONCILIATION VERIFIED</span>
+          </div>
+          <div class="recon-metrics">
+            <div class="recon-card">
+              <span class="recon-card__num">37</span>
+              <span class="recon-card__lbl">Source Records In</span>
+            </div>
+            <div class="recon-card">
+              <span class="recon-card__num">10</span>
+              <span class="recon-card__lbl">Distinct Projects</span>
+            </div>
+            <div class="recon-card recon-card--prospect">
+              <span class="recon-card__num">4</span>
+              <span class="recon-card__lbl">Prospect</span>
+            </div>
+            <div class="recon-card recon-card--review">
+              <span class="recon-card__num">4</span>
+              <span class="recon-card__lbl">Review</span>
+            </div>
+            <div class="recon-card recon-card--excluded">
+              <span class="recon-card__num">2</span>
+              <span class="recon-card__lbl">Excluded</span>
+            </div>
+          </div>
+          <p class="recon-assertion">
+            <strong>Accounting Assertion:</strong> 4 (prospect) + 4 (review) + 2 (excluded) = 10 distinct projects (10 = 10).
+            <br>
+            Multi-structure parcels (e.g. apartment subdivisions) and multi-phase commercial finishes consolidate into unified facility identities.
+          </p>
+        </div>
+
+        <h3>The Four Evaluated Prospects & Mandatory Limitations</h3>
+        <p>
+          Notice what our pipeline asserts: these are designated as <strong>prospects</strong>, never hyped as guaranteed buyers. 
+          Each opportunity documents the dated civic event alongside its explicit verification limitations:
+        </p>
+
+        <div class="prospect-list">
+          <!-- Prospect 1 -->
+          <article class="prospect-card">
+            <div class="prospect-card__top">
+              <span class="status-pill status-pill--prospect">Prospect</span>
+              <span class="prospect-date">Evaluated September 2026</span>
+            </div>
+            <h4>Caravel Autism Health</h4>
+            <p class="prospect-addr">11140 Locust St, Kansas City, MO 64131</p>
+            <div class="prospect-detail">
+              <strong>Source-confirmed civic event:</strong> KCMO Certificate of Occupancy CICO-2026-00913 issued 3 September 2026; active business license 0310858368 issued 17 September 2026.
+              <br>
+              <span class="limitation-text"><strong>Mandatory Limitation:</strong> Facility grand opening confirmed; cleaning demand and vendor procurement authority unverified.</span>
+            </div>
+          </article>
+
+          <!-- Prospect 2 -->
+          <article class="prospect-card">
+            <div class="prospect-card__top">
+              <span class="status-pill status-pill--prospect">Prospect</span>
+              <span class="prospect-date">Evaluated September 2026</span>
+            </div>
+            <h4>Midwest Surgery Center of Kansas City LLC</h4>
+            <p class="prospect-addr">6750 W 93rd St, Ste 120, Overland Park, KS 66212</p>
+            <div class="prospect-detail">
+              <strong>Source-confirmed civic event:</strong> Federal CMS NPI registry record 1699619395 cross-referenced with Overland Park commercial medical alteration permit.
+              <br>
+              <span class="limitation-text"><strong>Mandatory Limitation:</strong> Role is recorded in a public federal source; personal purchasing authority is unverified, as is the date of patient reception.</span>
+            </div>
+          </article>
+
+          <!-- Prospect 3 -->
+          <article class="prospect-card">
+            <div class="prospect-card__top">
+              <span class="status-pill status-pill--prospect">Prospect</span>
+              <span class="prospect-date">Evaluated September 2026</span>
+            </div>
+            <h4>Scovell Office Addition &amp; Renovation</h4>
+            <p class="prospect-addr">8035 Ward Parkway Plaza, Kansas City, MO 64114</p>
+            <div class="prospect-detail">
+              <strong>Source-confirmed civic event:</strong> KCMO Certificate of Occupancy (Commercial) CICO-2026-00870 issued 27 August 2026, following temporary CO CITO-2026-00236.
+              <br>
+              <span class="limitation-text"><strong>Mandatory Limitation:</strong> Certificate supplies a dated reason to investigate; does not establish an unfilled cleaning contract.</span>
+            </div>
+          </article>
+
+          <!-- Prospect 4 -->
+          <article class="prospect-card">
+            <div class="prospect-card__top">
+              <span class="status-pill status-pill--prospect">Prospect</span>
+              <span class="prospect-date">Evaluated September 2026</span>
+            </div>
+            <h4>Pho &amp; Boil</h4>
+            <p class="prospect-addr">7702 Shawnee Mission Pkwy, Overland Park, KS</p>
+            <div class="prospect-detail">
+              <strong>Source-confirmed civic event:</strong> Kansas KDA Licensing-Preoperational inspection (License 160080) marked In Compliance on 8 September 2026 following July Office Plan Review.
+              <br>
+              <span class="limitation-text"><strong>Mandatory Limitation:</strong> Planned opening and owner reported in local news; verified doors-open date, reachability, and commercial vendor authority remain unconfirmed.</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Section 5: Why It Matters -->
+      <section class="permits-section">
+        <h2>5. The Discipline: Keeping the Claim Smaller than the Evidence</h2>
+        <p>
+          In public record extraction, the temptation is always to inflate confidence: promote "probably" to "verified", call unconfirmed phone numbers "direct contacts", and turn preliminary building permits into "guaranteed sales leads".
+        </p>
+        <p>
+          This pipeline refuses that shortcut. 
+          Records that lack business names stay joined to licenses. 
+          Ambiguous strip mall addresses stay flagged for manual review. 
+          And the prospects that survive the verification filter are handed over with their gaps explicitly documented—so when a client makes a call, they are acting on defensible facts rather than pipeline hallucinations.
+        </p>
+      </section>
+
+      <!-- Section 6: Live Deliverable Artifact Launcher -->
+      <section class="deliverable-launcher">
+        <div class="deliverable-launcher__inner">
+          <span class="deliverable-launcher__eyebrow">Deliverable Artifact</span>
+          <h3>Inspect the Full 10-Project Evaluation</h3>
+          <p>
+            The production report includes full SHA-256 source reconciliation hashes, source file names and row ordinals, Tyler EnerGov and KCMO record IDs, and explicit mandatory limitations for every candidate.
+          </p>
+          <a href="/permits/deliverable.html" target="_blank" rel="noopener noreferrer" class="btn-giant">
+            Open Complete Deliverable Report (HTML) ↗
+          </a>
+        </div>
+      </section>
+    </div>
+  </article>
+
+  <Footer profile={profile} />
+</BaseLayout>
+
+<style>
+  .permits-page {
+    padding-block: clamp(48px, 8vw, 96px);
+  }
+
+  .permits-header {
+    max-width: 860px;
+    margin-bottom: 40px;
+  }
+
+  .permits-title {
+    margin-top: 12px;
+    font-size: clamp(2.3rem, 5vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+  }
+
+  .permits-subtitle {
+    margin-top: 18px;
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  .metrics-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding-block: 20px;
+    margin-bottom: 56px;
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .metric-item__num {
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+  }
+
+  .metric-item__lbl {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .permits-section {
+    max-width: 820px;
+    margin-bottom: 60px;
+  }
+
+  .permits-section h2 {
+    font-size: 1.8rem;
+    letter-spacing: -0.025em;
+    margin-bottom: 18px;
+    color: var(--text-primary);
+  }
+
+  .permits-section h3 {
+    font-size: 1.3rem;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+  }
+
+  .permits-section p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .trap-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .trap-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 22px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .trap-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+  }
+
+  .code-block {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    margin-block: 16px;
+    color: var(--accent);
+  }
+
+  .findings-list {
+    list-style: square;
+    padding-left: 24px;
+    margin-bottom: 24px;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .spectrum-box {
+    margin-top: 24px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+
+  .spectrum-title {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .spectrum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .spectrum-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+
+  .spectrum-card h5 {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .spectrum-card p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .spectrum-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .spectrum-tag--live {
+    background: rgba(107, 176, 168, 0.15);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .spectrum-tag--banned {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+  }
+
+  .spectrum-tag--open {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+  }
+
+  .failure-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .failure-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 22px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .failure-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+
+  .recon-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin-block: 28px;
+  }
+
+  .recon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .recon-title {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+  }
+
+  .recon-badge {
+    background: rgba(107, 176, 168, 0.15);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .recon-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .recon-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+    background: var(--bg);
+  }
+
+  .recon-card--prospect { border-top: 3px solid var(--accent); }
+  .recon-card--review { border-top: 3px solid #d97706; }
+  .recon-card--excluded { border-top: 3px solid var(--text-muted); }
+
+  .recon-card__num {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+  }
+
+  .recon-card__lbl {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .recon-assertion {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    border-top: 1px dashed var(--border);
+    padding-top: 12px;
+  }
+
+  .prospect-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 24px;
+  }
+
+  .prospect-card {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 20px 24px;
+    background: var(--bg);
+  }
+
+  .prospect-card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .status-pill {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .status-pill--prospect {
+    background: rgba(107, 176, 168, 0.15);
+    color: var(--accent);
+  }
+
+  .prospect-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .prospect-card h4 {
+    font-size: 1.25rem;
+    margin-bottom: 4px;
+  }
+
+  .prospect-addr {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .prospect-detail {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .limitation-text {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #e5a752;
+  }
+
+  /* Funnel & Stepper Styles */
+  .funnel-section {
+    margin-bottom: 56px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: clamp(24px, 4vw, 36px);
+  }
+
+  .funnel-header {
+    max-width: 800px;
+    margin-bottom: 24px;
+  }
+
+  .funnel-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .funnel-header h2 {
+    font-size: clamp(1.4rem, 2.8vw, 1.9rem);
+    letter-spacing: -0.025em;
+    margin-top: 6px;
+    margin-bottom: 8px;
+  }
+
+  .funnel-desc {
+    font-size: 0.98rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .pipeline-stepper {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .pipe-step {
+    flex: 1;
+    min-width: 130px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+
+  .pipe-step--winner {
+    border-color: var(--accent);
+    background: rgba(107, 176, 168, 0.05);
+  }
+
+  .pipe-step__badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  .pipe-step__badge--winner {
+    color: var(--accent);
+  }
+
+  .pipe-step__num {
+    font-size: 1.4rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    margin-bottom: 2px;
+  }
+
+  .pipe-step__label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+
+  .pipe-step__sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+
+  .pipe-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    user-select: none;
+  }
+
+  @media (max-width: 820px) {
+    .pipe-arrow { display: none; }
+    .pipe-step { min-width: 45%; margin-bottom: 8px; }
+  }
+
+  /* Contrast Grid */
+  .contrast-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .contrast-grid { grid-template-columns: 1fr; }
+  }
+
+  .contrast-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px;
+  }
+
+  .contrast-card--myth {
+    border-color: rgba(224, 82, 82, 0.4);
+    background: rgba(224, 82, 82, 0.03);
+  }
+
+  .contrast-card--truth {
+    border-color: rgba(107, 176, 168, 0.4);
+    background: rgba(107, 176, 168, 0.04);
+  }
+
+  .contrast-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  .contrast-tag--myth {
+    background: rgba(224, 82, 82, 0.15);
+    color: #f87171;
+  }
+
+  .contrast-tag--truth {
+    background: rgba(107, 176, 168, 0.15);
+    color: var(--accent);
+  }
+
+  .contrast-card h4 {
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+  }
+
+  .contrast-card p {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+
+  .contrast-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .contrast-list li {
+    position: relative;
+    padding-left: 14px;
+    line-height: 1.4;
+  }
+
+  .contrast-card--myth .contrast-list li::before {
+    content: "✕";
+    position: absolute;
+    left: 0;
+    color: #f87171;
+  }
+
+  .contrast-card--truth .contrast-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* Table Styles */
+  .table-wrap {
+    overflow-x: auto;
+    margin-block: 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .energov-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+  }
+
+  .energov-table th, .energov-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .energov-table th {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .mod-pill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .mod-pill--plans { background: rgba(57, 135, 229, 0.15); color: #60a5fa; }
+  .mod-pill--permits { background: rgba(107, 176, 168, 0.15); color: var(--accent); }
+  .mod-pill--split { background: rgba(217, 119, 6, 0.15); color: #fbbf24; }
+  .mod-pill--unverified { background: rgba(255, 255, 255, 0.1); color: var(--text-muted); }
+
+  .source-quote {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.55;
+    margin-top: 10px;
+    border-left: 2px solid var(--border);
+    padding-left: 12px;
+  }
+
+  /* Failure Card Additions */
+  .failure-num {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .failure-fix {
+    margin-top: 10px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 6px 10px;
+    border-radius: 4px;
+    border-left: 2px solid var(--accent);
+    color: var(--text-secondary);
+  }
+
+  .failure-fix strong {
+    color: var(--text-primary);
+  }
+
+  /* Deliverable Launcher */
+  .deliverable-launcher {
+    background: rgba(107, 176, 168, 0.06);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: clamp(28px, 5vw, 44px);
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .deliverable-launcher__inner {
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  .deliverable-launcher__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .deliverable-launcher h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+
+  .deliverable-launcher p {
+    font-size: 1.02rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .btn-giant {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 1.02rem;
+    font-weight: 700;
+    padding: 13px 26px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .btn-giant:hover {
+    opacity: 0.9;
+  }
+
+  .text-accent { color: var(--accent); }
+</style>

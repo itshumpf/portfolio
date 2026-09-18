@@ -5,7 +5,7 @@ thesis: "What began as a store-ID finder is now a seven-source longitudinal pipe
 expandedBody: true
 period: "2025–present"
 role: "Founder / Data Engineer"
-status: "live"
+status: "sunset"
 order: 4
 indexLabel: "Storage pricing observatory"
 tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "Chart.js", "GitHub Actions", "Cloudflare Pages"]
@@ -36,8 +36,12 @@ find in one place. The tool that discovered those IDs grew into a national direc
 grew into a daily history; and the history became useful when it started answering questions that a
 single scrape could not.
 
-[Open the live dashboard](https://findstorage.pages.dev/dashboard.html#overview) or go directly to
-the [July–September pricing study](https://findstorage.pages.dev/dashboard.html#study).
+**The directory is retired.** The published site is an archive: its last snapshot is 25 August 2026
+and nothing has been added since. It stays up as a record of what the product was —
+[open the archived dashboard](https://findstorage.pages.dev/dashboard.html#overview).
+
+The measurement did not stop with the product. Collection continued unnamed, and the September
+work — including the figures below — is written up at [the storage investigation](/storage).
 
 ## What the system is now
 

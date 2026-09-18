@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KC Commercial Occupancy & Facilities Deliverable (Public)</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #cbd5e1;
+      --teal: #0d9488;
+      --amber: #d97706;
+      --slate: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 32px 16px;
+    }
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    header {
+      background: #0f2333;
+      color: #ffffff;
+      padding: 28px 36px;
+      border-bottom: 3px solid var(--teal);
+    }
+    .header-tag {
+      display: inline-block;
+      background: rgba(13, 148, 136, 0.2);
+      border: 1px solid var(--teal);
+      color: #2dd4bf;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+    h1 { font-size: 24px; font-weight: 750; margin-bottom: 6px; letter-spacing: -0.3px; }
+    .subtitle { color: #cbd5e1; font-size: 13.5px; max-width: 820px; }
+
+    /* Reconciliation Block (Rule 4) */
+    .reconciliation-panel {
+      background: #f1f5f9;
+      border-bottom: 1px solid var(--border);
+      padding: 20px 36px;
+    }
+    .reconciliation-title {
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .recon-badge {
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      color: #166534;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 10.5px;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .metric-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .metric-card.prospect { border-top: 3px solid var(--teal); }
+    .metric-card.review { border-top: 3px solid var(--amber); }
+    .metric-card.excluded { border-top: 3px solid var(--slate); }
+    .metric-num { font-size: 22px; font-weight: 800; color: #0f172a; line-height: 1.1; }
+    .metric-label { font-size: 11px; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-top: 4px; }
+    .consolidation-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 10px;
+    }
+
+    /* Main Content */
+    .content-body { padding: 28px 36px; }
+    .project-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .project-card.outcome-prospect { border-left: 5px solid var(--teal); }
+    .project-card.outcome-review { border-left: 5px solid var(--amber); }
+    .project-card.outcome-excluded { border-left: 5px solid var(--slate); }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      gap: 16px;
+    }
+    .card-eyebrow { font-size: 10.5px; text-transform: uppercase; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px; }
+    .card-title { font-size: 18px; font-weight: 750; color: #0f172a; line-height: 1.25; }
+    .card-address { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    .card-status-badge { text-align: right; flex-shrink: 0; }
+    .eval-date { font-size: 10.5px; color: var(--text-muted); margin-top: 4px; }
+
+    .badge-prospect { background: #0f766e; color: #ffffff; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 750; letter-spacing: 0.6px; text-transform: uppercase; }
+    .badge-review { background: #d97706; color: #ffffff; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 750; letter-spacing: 0.6px; text-transform: uppercase; }
+    .badge-excluded { background: #64748b; color: #ffffff; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 750; letter-spacing: 0.6px; text-transform: uppercase; }
+
+    .disposition-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 12.5px;
+    }
+    .disposition-box .next-action { margin-top: 4px; color: #0f172a; font-weight: 500; }
+
+    .card-body-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 768px) {
+      .card-body-grid { grid-template-columns: 1fr; }
+      header, .reconciliation-panel, .content-body { padding-left: 18px; padding-right: 18px; }
+    }
+    .grid-section {
+      background: #fcfdfe;
+      border: 1px solid #edf2f7;
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .grid-section h3 { font-size: 11px; text-transform: uppercase; font-weight: 700; color: #334155; margin-bottom: 8px; letter-spacing: 0.5px; }
+
+    .phone-row, .person-row { font-size: 12.5px; margin-bottom: 8px; }
+    .phone-row:last-child, .person-row:last-child { margin-bottom: 0; }
+    .phone-status { color: #0f766e; font-size: 11.5px; }
+    .person-role { font-weight: 600; color: #0f172a; }
+    .person-source { color: var(--text-muted); font-size: 11px; }
+    .status-note { font-size: 11px; color: #64748b; margin-top: 1px; font-style: italic; }
+    .empty-field { font-size: 11.5px; color: #94a3b8; font-style: italic; }
+
+    .research-section {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+    .research-section h3 { font-size: 11px; text-transform: uppercase; font-weight: 700; color: #334155; margin-bottom: 8px; letter-spacing: 0.5px; }
+    .findings-list { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 12px; }
+    .finding-item { border-left: 3px solid #0d9488; padding-left: 10px; }
+    .finding-limit { color: #b45309; font-size: 11px; margin-top: 2px; font-style: italic; }
+    .next-gap { font-size: 11.5px; color: #334155; margin-top: 8px; border-top: 1px dashed #cbd5e1; padding-top: 6px; }
+
+    .join-basis-box {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      background: #f1f5f9;
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+
+    .evidence-details {
+      font-size: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .evidence-details summary {
+      padding: 8px 12px;
+      background: #f8fafc;
+      font-weight: 600;
+      cursor: pointer;
+      color: #334155;
+    }
+    .evidence-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      text-align: left;
+    }
+    .evidence-table th, .evidence-table td {
+      padding: 8px 12px;
+      border-top: 1px solid #edf2f7;
+    }
+    .evidence-table th { background: #f1f5f9; color: #475569; font-weight: 700; font-size: 10.5px; text-transform: uppercase; }
+    .ev-status { color: #0d9488; font-weight: 600; font-size: 10.5px; }
+    .ev-desc { color: #64748b; font-size: 10.5px; margin-top: 2px; }
+    .ev-hash { font-size: 10px; color: #94a3b8; }
+
+    /* Withheld Section (Rule 5) */
+    .withheld-section {
+      margin-top: 24px;
+      padding: 16px 20px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+    .withheld-section h3 { font-size: 12px; text-transform: uppercase; font-weight: 700; color: #92400e; margin-bottom: 8px; }
+    .withheld-list { list-style-position: inside; color: #78350f; }
+
+    /* Rule 6 Limitation Block */
+    .limitation-block {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 24px 36px;
+      border-top: 1px solid #1e293b;
+      font-size: 11.5px;
+      line-height: 1.6;
+    }
+    .limitation-block p { margin-bottom: 8px; }
+    .limitation-block p:last-child { margin-bottom: 0; }
+    .source-audit-trail { color: #cbd5e1; font-size: 11px; }
+    .limitation-block code { color: #5eead4; background: rgba(255,255,255,0.05); padding: 1px 4px; border-radius: 3px; }
+    a { color: #0284c7; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-tag">PUBLIC PORTFOLIO DELIVERABLE (REDACTED)</div>
+      <h1>Kansas City Commercial Occupancy & Facilities Deliverable</h1>
+      <p class="subtitle">
+        Municipal and licensing event qualification feed. Rendered strictly per DELIVERABLE_SPEC.md from public civic records and verified business research.
+      </p>
+    </header>
+
+    <!-- Rule 4 Count Reconciliation Block -->
+    <section class="reconciliation-panel">
+      <div class="reconciliation-title">
+        <span>Source Pipeline Reconciliation Audit</span>
+        <span class="recon-badge">RECONCILIATION VERIFIED</span>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-num">37</div>
+          <div class="metric-label">Source Records In</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">10</div>
+          <div class="metric-label">Distinct Projects</div>
+        </div>
+        <div class="metric-card prospect">
+          <div class="metric-num">4</div>
+          <div class="metric-label">Prospect</div>
+        </div>
+        <div class="metric-card review">
+          <div class="metric-num">4</div>
+          <div class="metric-label">Review</div>
+        </div>
+        <div class="metric-card excluded">
+          <div class="metric-num">2</div>
+          <div class="metric-label">Excluded</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">0</div>
+          <div class="metric-label">Projects Withheld</div>
+        </div>
+      </div>
+      <div class="consolidation-note">
+        <strong>Multi-Record Consolidation Basis:</strong> Multi-building sites (e.g. apartment subdivisions) file municipal permits per individual structure, and commercial tenant finishes file multiple phased building and trade permits. Records sharing identical parcels and facility identities are consolidated into distinct projects.
+        <br>
+        <strong>Accounting Assertion:</strong> 4 (prospect) + 4 (review) + 2 (excluded) = 10 distinct projects (10 = 10).
+      </div>
+    </section>
+
+    <!-- Project Cards -->
+    <main class="content-body">
+      
+        <article class="project-card outcome-prospect">
+          <div class="card-header">
+            <div>
+              <div class="card-eyebrow">Project Location</div>
+              <h2 class="card-title">Caravel Autism Health Center</h2>
+              <div class="card-address">11140 LOCUST ST, KANSAS CITY MO</div>
+            </div>
+            <div class="card-status-badge">
+              <span class="badge-prospect">PROSPECT</span>
+              <div class="eval-date">Evaluated 2026-09-18</div>
+            </div>
+          </div>
+
+          <div class="disposition-box">
+            <div><strong>Evaluation rationale:</strong> Grand opening ribbon-cutting September 10, 2026 confirms new Kansas City South clinic at 11140 Locust St with serving as Clinic Director.</div>
+            <div class="next-action"><strong>Next resolution step:</strong> Direct outreach to regarding ongoing facility disinfection and sensory-safe janitorial.</div>
+          </div>
+
+          <div class="card-body-grid">
+            <div class="grid-section">
+              <h3>Telephone Contacts (with mandatory status)</h3>
+              <div class="phones-list">
+                <div class="phone-row"><strong>(816) 549-XXXX</strong> — <span class="phone-status">Direct South KC Clinic inquiries phone; Verified on official clinic site</span></div>
+              </div>
+            </div>
+
+            <div class="grid-section">
+              <h3>Recorded Roles & Authorities</h3>
+              <div class="people-list">
+                <div class="person-row"><span class="person-role">Clinic Director</span> <span class="person-source">Source: Caravel Autism Health Official South KC Launch &amp; Martin City Telegraph (confidence: 95%)</span> <div class="status-note">Role recorded in public source; personal purchasing authority unverified.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class='research-section'><h3>Research Findings & Mandatory Limitations</h3><ul class='findings-list'><li class="finding-item"><div class="finding-claim"><strong>source-confirmed · published 2026-09-10 · <a href="https://caravelautism.com/kansas-city-south/" target="_blank" rel="noopener noreferrer">source</a>:</strong> Official grand opening and ribbon-cutting held September 10, 2026 at 11140 Locust Street (former Red Bridge Library building)., M.Ed., BCBA, LBA, leads the clinic as Clinic Director.</div><div class="finding-limit"><strong>Limitation:</strong> Facility is officially open and operational as of September 2026.</div></li><li class="finding-item"><div class="finding-claim"><strong>source-confirmed · published 2026-09-17 · <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">source</a>:</strong> KCMO issued Certificate of Occupancy CICO-2026-00913 on September 3, 2026 and active business license 0310858368 on September 17, 2026.</div><div class="finding-limit"><strong>Limitation:</strong> Confirms civic compliance and operational zoning classification.</div></li></ul><div class="next-gap"><strong>Remaining verification gap:</strong> Ready for direct executive outreach regarding specialized medical sanitation and daily day-porter cleaning.</div></div>
+
+          <div class="join-basis-box">
+            <strong>Entity & record linkage basis:</strong> Contacts use existing entity/location links. Website enrichment uses the accepted place match. A shared phone alone does not establish identity. Exact address 11140 Locust St and business name match KCMO Certificate of Occupancy CICO-2026-00913 and Active Business License 0310858368.
+          </div>
+
+          <details class="evidence-details">
+            <summary>Municipal Evidence Records (12 source filings)</summary>
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Classification & Status</th>
+                  <th>Identifiers</th>
+                  <th>Source Provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-09-17</td><td><strong>Business License</strong><div class="ev-status">Active</div><div class=ev-desc>621340 - Offices of Physical, Occupational and Speech Therapists, and Audiologists</div></td><td>Record: 0310858368<br>Row ordinal: 12</td><td><code>kcmo-applications_licenses_20260917_192547.csv</code><br><span class="ev-hash">SHA-256: 7fa34b3239e7...</span> </td></tr><tr><td>2026-09-03</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>Caravel Autism Health Center</div></td><td>Record: CICO-2026-00913<br>Row ordinal: 1338</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr><tr><td>2026-08-24</td><td><strong>Electrical Fire Alarm Commercial</strong><div class="ev-status">Issued</div><div class=ev-desc>Caravel Autism Health Center</div></td><td>Record: CPEC-2026-01326<br>Row ordinal: 2796</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr><tr><td>2026-08-24</td><td><strong>Temporary Certificate of Occupancy (Commercial)</strong><div class="ev-status">Closed</div><div class=ev-desc>Caravel Autism Health Center</div></td><td>Record: CITO-2026-00400<br>Row ordinal: 2795</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr><tr><td>2026-08-10</td><td><strong>Miscellaneous Trade Work Only (MEP)</strong><div class="ev-status">Ready for Permit</div><div class=ev-desc>Install new fire alarm per plan reviewed for code compliance</div></td><td>Record: CRBG-2026-30699<br>Row ordinal: 711</td><td><code>kcmo_plans_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 902d61a7195f...</span> </td></tr><tr><td>2026-06-29</td><td><strong>Plumbing General</strong><div class="ev-status">Closed</div><div class=ev-desc>Caravel Autism Health Center</div></td><td>Record: CPPC-2026-00351<br>Row ordinal: 9412</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr><tr><td>2026-06-22</td><td><strong>Electrical General</strong><div class="ev-status">Closed</div><div class=ev-desc>Caravel Autism Health Center</div></td><td>Record: CPEC-2026-00938<br>Row ordinal: 10390</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr><tr><td>2026-06-15</td><td><strong>Mechanical General</strong><div class="ev-status">Closed</div><div class=ev-desc>Caravel Autism Health Center</div></td><td>Record: CPMC-2026-00336<br>Row ordinal: 11036</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr><tr><td>2026-06-04</td><td><strong>Plumbing General</strong><div class="ev-status">Cancelled</div><div class=ev-desc>Caravel Autism Health Center</div></td><td>Record: CPPC-2026-00298<br>Row ordinal: 12258</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr><tr><td>2026-06-02</td><td><strong>Change of Occupancy</strong><div class="ev-status">Closed</div><div class=ev-desc>Caravel Autism Health Center</div></td><td>Record: CPBC-2026-00538<br>Row ordinal: 12672</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr><tr><td>2026-06-01</td><td><strong>Miscellaneous Trade Work Only (MEP)</strong><div class="ev-status">Voided</div><div class=ev-desc> HVAC Demo
+ Install Three Carrier Split Systems
+ Install Three ERV’s
+ Install Standalone HVAC Controls
+ Install All Insulated Ducting and Piping
+ Install One Exhaust Fan
+ Install All Registers, Grilles &amp; Diffusers</div></td><td>Record: CRBG-2026-30494<br>Row ordinal: 1796</td><td><code>kcmo_plans_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 902d61a7195f...</span> </td></tr><tr><td>2026-04-13</td><td><strong>Change of Occupancy</strong><div class="ev-status">Ready for Permit</div><div class=ev-desc>Construct renovation/change of occupancy per plans reviewed for code compliance</div></td><td>Record: CRBF-2026-50181<br>Row ordinal: 2678</td><td><code>kcmo_plans_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 902d61a7195f...</span> </td></tr>
+              </tbody>
+            </table>
+          </details>
+        </article>
+        
+        <article class="project-card outcome-prospect">
+          <div class="card-header">
+            <div>
+              <div class="card-eyebrow">Project Location</div>
+              <h2 class="card-title">Midwest Surgery Center of Kansas City</h2>
+              <div class="card-address">6750 W 93RD ST, OVERLAND PARK KS</div>
+            </div>
+            <div class="card-status-badge">
+              <span class="badge-prospect">PROSPECT</span>
+              <div class="eval-date">Evaluated 2026-09-18</div>
+            </div>
+          </div>
+
+          <div class="disposition-box">
+            <div><strong>Evaluation rationale:</strong> Federal CMS/HHS NPI registry confirms as Owner/Authorized Official for Midwest Surgery Center of Kansas City LLC at 6750 W 93rd St, Ste 120, Overland Park, KS.</div>
+            <div class="next-action"><strong>Next resolution step:</strong> Outreach to for medical facility sanitation and terminal cleaning.</div>
+          </div>
+
+          <div class="card-body-grid">
+            <div class="grid-section">
+              <h3>Telephone Contacts (with mandatory status)</h3>
+              <div class="phones-list">
+                <div class="phone-row"><strong>(913) 276-XXXX</strong> — <span class="phone-status">Direct authorized official phone from CMS NPI registry; Verified in federal CMS database</span></div>
+              </div>
+            </div>
+
+            <div class="grid-section">
+              <h3>Recorded Roles & Authorities</h3>
+              <div class="people-list">
+                <div class="person-row"><span class="person-role">Owner</span> <span class="person-source">Source: CMS / HHS National Provider Identifier (NPI) Registry #1699619395 (confidence: 95%)</span> <div class="status-note">Role recorded in public source; personal purchasing authority unverified.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class='research-section'><h3>Research Findings & Mandatory Limitations</h3><ul class='findings-list'><li class="finding-item"><div class="finding-claim"><strong>source-confirmed · published 2026-09-18 · <a href="https://npiregistry.cms.hhs.gov/api/?number=1699619395&amp;version=2.1" target="_blank" rel="noopener noreferrer">source</a>:</strong> Federal CMS NPI record 1699619395 lists MIDWEST SURGERY CENTER OF KANSAS CITY LLC at 6750 W 93rd St, Ste 120, Overland Park, KS 66212 with as Authorized Official / Owner and phone (913) 276-XXXX.</div><div class="finding-limit"><strong>Limitation:</strong> Confirms ownership and executive contact; does not confirm date of patient reception.</div></li></ul><div class="next-gap"><strong>Remaining verification gap:</strong> Ready for direct executive outreach regarding commercial medical facility cleaning and post-construction turnover.</div></div>
+
+          <div class="join-basis-box">
+            <strong>Entity & record linkage basis:</strong> Contacts use existing entity/location links. Website enrichment uses the accepted place match. A shared phone alone does not establish identity. Exact legal name Midwest Surgery Center of Kansas City LLC and exact street address in federal CMS NPI record #1699619395 match Overland Park commercial permit BLD-C-2026-00035.
+          </div>
+
+          <details class="evidence-details">
+            <summary>Municipal Evidence Records (3 source filings)</summary>
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Classification & Status</th>
+                  <th>Identifiers</th>
+                  <th>Source Provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-08-06</td><td><strong>Site Development</strong><div class="ev-status">Issued</div><div class=ev-desc>Midwest Surgery Center of Kansas City - Mechanical Pad and Fire Line</div></td><td>Record: SDP2026-00016<br>Row ordinal: 1219</td><td><code>overland-park_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 3f777675be62...</span> </td></tr><tr><td>2026-06-10</td><td><strong>Tenant Finish/Remodel</strong><div class="ev-status">Issued</div><div class=ev-desc>Midwest Surgery Center TF</div></td><td>Record: BLD-C-2026-00035<br>Row ordinal: 3075</td><td><code>overland-park_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 3f777675be62...</span> </td></tr><tr><td>2026-04-10</td><td><strong>Addition + Remodel</strong><div class="ev-status">Issued</div><div class=ev-desc>Lobby Addition</div></td><td>Record: BLD-C-2025-00408<br>Row ordinal: 5042</td><td><code>overland-park_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 3f777675be62...</span> </td></tr>
+              </tbody>
+            </table>
+          </details>
+        </article>
+        
+        <article class="project-card outcome-prospect">
+          <div class="card-header">
+            <div>
+              <div class="card-eyebrow">Project Location</div>
+              <h2 class="card-title">Pho &amp; Boil</h2>
+              <div class="card-address">7702 SHAWNEE MISSION PKWY, OVERLAND PARK KS</div>
+            </div>
+            <div class="card-status-badge">
+              <span class="badge-prospect">PROSPECT</span>
+              <div class="eval-date">Evaluated 2026-09-11</div>
+            </div>
+          </div>
+
+          <div class="disposition-box">
+            <div><strong>Evaluation rationale:</strong> Owner and planned new restaurant independently reported at the exact event address. Actual opening and cleaning need remain unverified.</div>
+            <div class="next-action"><strong>Next resolution step:</strong> Confirm current opening status and whether the KDA-listed number reaches Ken or the person arranging cleaning. No independently verified website or email found in this pass. The reporting links a Facebook page, but its content could not be retrieved.</div>
+          </div>
+
+          <div class="card-body-grid">
+            <div class="grid-section">
+              <h3>Telephone Contacts (with mandatory status)</h3>
+              <div class="phones-list">
+                <div class="phone-row"><strong>(214) 669-XXXX</strong> — <span class="phone-status">organization/record contact; not called; recipient role unknown</span></div>
+              </div>
+            </div>
+
+            <div class="grid-section">
+              <h3>Recorded Roles & Authorities</h3>
+              <div class="people-list">
+                <div class="person-row"><span class="person-role">Owner</span> <span class="person-source">Source: Johnson County Post, Lucie Krisman (confidence: 95%)</span> <div class="status-note">Role recorded in public source; personal purchasing authority unverified.</div></div><div class="person-row"><span class="person-role">Owner (reported)</span> <span class="person-source">Source: <a href="https://johnsoncountypost.com/2026/08/24/pho-and-boil-overland-park-294703/" target="_blank" rel="noopener noreferrer">Johnson County Post, Lucie Krisman</a> (confidence: 90%)</span> <div class="status-note">Role recorded in public source; personal purchasing authority unverified.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class='research-section'><h3>Research Findings & Mandatory Limitations</h3><ul class='findings-list'><li class="finding-item"><div class="finding-claim"><strong>reported fact · published 2026-08-24 · <a href="https://johnsoncountypost.com/2026/08/24/pho-and-boil-overland-park-294703/" target="_blank" rel="noopener noreferrer">source</a>:</strong> Local reporting identifies as owner of Pho &amp; Boil at 7702 Shawnee Mission Parkway and describes plans for a September opening in the former Smoke Town BBQ space.</div><div class="finding-limit"><strong>Limitation:</strong> A planned opening is not confirmation that the doors are now open.</div></li><li class="finding-item"><div class="finding-claim"><strong>corroborating report · published 2026-08-14 · <a href="https://www.aol.com/articles/restaurant-serving-pho-seafood-boils-103000000.html" target="_blank" rel="noopener noreferrer">source</a>:</strong> An August 14 owner interview also names and the same address, with a September opening planned.</div><div class="finding-limit"><strong>Limitation:</strong> No direct email or personal phone is established by this article.</div></li></ul><div class="next-gap"><strong>Remaining verification gap:</strong> Confirm current opening status and whether the KDA-listed number reaches Ken or the person arranging cleaning. No independently verified website or email found in this pass. The reporting links a Facebook page, but its content could not be retrieved.</div></div>
+
+          <div class="join-basis-box">
+            <strong>Entity & record linkage basis:</strong> Contacts use existing entity/location links. Website enrichment uses the accepted place match. A shared phone alone does not establish identity. Exact business name and street address in local reporting match the KDA event location; no personal phone ownership inferred.
+          </div>
+
+          <details class="evidence-details">
+            <summary>Municipal Evidence Records (2 source filings)</summary>
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Classification & Status</th>
+                  <th>Identifiers</th>
+                  <th>Source Provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-09-08</td><td><strong>Licensing-Preoperational</strong><div class="ev-status">In Compliance</div><div class=ev-desc>KDA Licensing-Preoperational food inspection</div></td><td>Record: 160080<br>Row ordinal: 3</td><td><code>overland-park_food_20260910_000000.csv</code><br><span class="ev-hash">SHA-256: b5b609d2b662...</span> <a href="https://portal.kda.ks.gov/Food/FoodInspectionSearch" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-07-15</td><td><strong>Office Plan Review</strong><div class="ev-status">In Compliance</div><div class=ev-desc>KDA Office Plan Review food inspection</div></td><td>Record: 160080<br>Row ordinal: 190</td><td><code>overland-park_food_20260910_000000.csv</code><br><span class="ev-hash">SHA-256: b5b609d2b662...</span> <a href="https://portal.kda.ks.gov/Food/FoodInspectionSearch" target="_blank" rel="noopener noreferrer">official portal</a></td></tr>
+              </tbody>
+            </table>
+          </details>
+        </article>
+        
+        <article class="project-card outcome-prospect">
+          <div class="card-header">
+            <div>
+              <div class="card-eyebrow">Project Location</div>
+              <h2 class="card-title">Scovell Office Addition &amp; Renovation</h2>
+              <div class="card-address">8035 WARD PKWY PLZ, KANSAS CITY MO</div>
+            </div>
+            <div class="card-status-badge">
+              <span class="badge-prospect">PROSPECT</span>
+              <div class="eval-date">Evaluated 2026-09-11</div>
+            </div>
+          </div>
+
+          <div class="disposition-box">
+            <div><strong>Evaluation rationale:</strong> Office renovation event connects to an official business website, named owner and office manager, and a published office phone.</div>
+            <div class="next-action"><strong>Next resolution step:</strong> Ask the office who handles cleaning at 8035 Ward Parkway Plaza.</div>
+          </div>
+
+          <div class="card-body-grid">
+            <div class="grid-section">
+              <h3>Telephone Contacts (with mandatory status)</h3>
+              <div class="phones-list">
+                <div class="phone-row"><strong>(816) 361-XXXX</strong> — <span class="phone-status">Business office; not a direct personal number; Published by official site; not called or delivery-tested</span></div>
+              </div>
+            </div>
+
+            <div class="grid-section">
+              <h3>Recorded Roles & Authorities</h3>
+              <div class="people-list">
+                <div class="person-row"><span class="person-role">Manager</span> <span class="person-source">Source: Scovell official team page (confidence: 95%)</span> <div class="status-note">Role recorded in public source; personal purchasing authority unverified.</div></div><div class="person-row"><span class="person-role">Owner</span> <span class="person-source">Source: Scovell official team page (confidence: 95%)</span> <div class="status-note">Role recorded in public source; personal purchasing authority unverified.</div></div><div class="person-row"><span class="person-role">Office Manager</span> <span class="person-source">Source: <a href="https://scovellremodeling.com/about/" target="_blank" rel="noopener noreferrer">Scovell official team page</a> (confidence: 90%)</span> <div class="status-note">Role recorded in public source; personal purchasing authority unverified.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class='research-section'><h3>Research Findings & Mandatory Limitations</h3><ul class='findings-list'><li class="finding-item"><div class="finding-claim"><strong>source-confirmed · published undated · <a href="https://scovellremodeling.com/about/" target="_blank" rel="noopener noreferrer">source</a>:</strong> The team page identifies as owner and as office manager.</div><div class="finding-limit"><strong>Limitation:</strong> Neither role establishes who buys cleaning services.</div></li><li class="finding-item"><div class="finding-claim"><strong>source-confirmed · published undated · <a href="https://scovellremodeling.com/contact" target="_blank" rel="noopener noreferrer">source</a>:</strong> The contact page lists 8035 Ward Parkway Plaza and an office phone. It offers a trade/subcontractor interest form for future opportunities.</div><div class="finding-limit"><strong>Limitation:</strong> The page says it may not currently be seeking new trade partners. Its email is published for career applications and is not presented here as a vendor email.</div></li></ul><div class="next-gap"><strong>Remaining verification gap:</strong> Ask the office who handles cleaning for the renovated premises. The certificate supplies a dated reason to investigate; it does not establish an unfilled cleaning contract.</div></div>
+
+          <div class="join-basis-box">
+            <strong>Entity & record linkage basis:</strong> Contacts use existing entity/location links. Website enrichment uses the accepted place match. A shared phone alone does not establish identity. Scovell name and exact street number/road match; Ward Parkway Plaza is the expanded form of WARD PKWY PLZ. The website identifies its office at this location.
+          </div>
+
+          <details class="evidence-details">
+            <summary>Municipal Evidence Records (2 source filings)</summary>
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Classification & Status</th>
+                  <th>Identifiers</th>
+                  <th>Source Provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-08-27</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>Scovell Office Addition &amp; Renovation</div></td><td>Record: CICO-2026-00870<br>Row ordinal: 2216</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr><tr><td>2026-06-02</td><td><strong>Temporary Certificate of Occupancy (Commercial)</strong><div class="ev-status">Ready For Issuance</div><div class=ev-desc>Scovell Office Addition &amp; Renovation</div></td><td>Record: CITO-2026-00236<br>Row ordinal: 12597</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr>
+              </tbody>
+            </table>
+          </details>
+        </article>
+        
+        <article class="project-card outcome-review">
+          <div class="card-header">
+            <div>
+              <div class="card-eyebrow">Project Location</div>
+              <h2 class="card-title">152 South Apartment Homes</h2>
+              <div class="card-address">1931 NW 87th Pl Kansas City, MO 64154, KANSAS CITY MO</div>
+            </div>
+            <div class="card-status-badge">
+              <span class="badge-review">REVIEW</span>
+              <div class="eval-date">Evaluated 2026-09-12</div>
+            </div>
+          </div>
+
+          <div class="disposition-box">
+            <div><strong>Evaluation rationale:</strong> Apartment project confirmed in city plat; individual building-to-management contact still unresolved.</div>
+            <div class="next-action"><strong>Next resolution step:</strong> Verify site plan/building addresses against a current management contact before associating phones.</div>
+          </div>
+
+          <div class="card-body-grid">
+            <div class="grid-section">
+              <h3>Telephone Contacts (with mandatory status)</h3>
+              <div class="phones-list">
+                <div class="empty-field">No sourced telephone route linked.</div>
+              </div>
+            </div>
+
+            <div class="grid-section">
+              <h3>Recorded Roles & Authorities</h3>
+              <div class="people-list">
+                <div class="empty-field">No individual owner or facilities manager linked in current evidence.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class='research-section'><h3>Research Findings & Mandatory Limitations</h3><ul class='findings-list'><li class="finding-item"><div class="finding-claim"><strong>review evidence · published undated unless stated in source · <a href="https://clerk.kcmo.gov/LegislationDetail.aspx?GUID=CD1B8833-EA97-462A-9FD4-96435766727E&amp;ID=6048599&amp;Options=&amp;Search=" target="_blank" rel="noopener noreferrer">source</a>:</strong> City ordinance 230205 identifies the 152 South apartment subdivision near MO 152 and N Platte Purchase Drive. This does not establish contacts for each building.</div><div class="finding-limit"><strong>Limitation:</strong> No cleaning demand or contact reachability established.</div></li></ul><div class="next-gap"><strong>Remaining verification gap:</strong> Verify site plan/building addresses against a current management contact before associating phones.</div></div>
+
+          <div class="join-basis-box">
+            <strong>Entity & record linkage basis:</strong> Explicitly reviewed cohort: all nine source project names are 152 South Apartment Homes in Kansas City MO. Group the management research question only; building identities and contacts remain separate.
+          </div>
+
+          <details class="evidence-details">
+            <summary>Municipal Evidence Records (9 source filings)</summary>
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Classification & Status</th>
+                  <th>Identifiers</th>
+                  <th>Source Provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-09-03</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>152 South Apartment Homes</div></td><td>Record: CICO-2026-00903<br>Row ordinal: 1342</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-09-03</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>152 South Apartment Homes</div></td><td>Record: CICO-2026-00902<br>Row ordinal: 1343</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-09-03</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>152 South Apartment Homes</div></td><td>Record: CICO-2026-00901<br>Row ordinal: 1344</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-09-03</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>152 South Apartment Homes</div></td><td>Record: CICO-2026-00900<br>Row ordinal: 1345</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-09-03</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>152 South Apartment Homes</div></td><td>Record: CICO-2026-00909<br>Row ordinal: 1346</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-08-31</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>152 South Apartment Homes</div></td><td>Record: CICO-2026-00891<br>Row ordinal: 1786</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-08-25</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>152 South Apartment Homes</div></td><td>Record: CICO-2026-00856<br>Row ordinal: 2672</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-08-25</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>152 South Apartment Homes</div></td><td>Record: CICO-2026-00855<br>Row ordinal: 2674</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-08-24</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>152 South Apartment Homes</div></td><td>Record: CICO-2026-00844<br>Row ordinal: 2866</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr>
+              </tbody>
+            </table>
+          </details>
+        </article>
+        
+        <article class="project-card outcome-review">
+          <div class="card-header">
+            <div>
+              <div class="card-eyebrow">Project Location</div>
+              <h2 class="card-title">Dh Restaurante Hondureno</h2>
+              <div class="card-address">824 N RIDGEVIEW RD, OLATHE KS</div>
+            </div>
+            <div class="card-status-badge">
+              <span class="badge-review">REVIEW</span>
+              <div class="eval-date">Evaluated 2026-09-11</div>
+            </div>
+          </div>
+
+          <div class="disposition-box">
+            <div><strong>Evaluation rationale:</strong> Address and phone conflict requires resolution; keep candidate website and phone separate from accepted contact data.</div>
+            <div class="next-action"><strong>Next resolution step:</strong> Resolve Ridgeview versus Old 56 Hwy, determine which number reaches the Ridgeview establishment, and identify its owner/manager. No owner or public email verified in this pass.</div>
+          </div>
+
+          <div class="card-body-grid">
+            <div class="grid-section">
+              <h3>Telephone Contacts (with mandatory status)</h3>
+              <div class="phones-list">
+                <div class="phone-row"><strong>(913) 998-XXXX</strong> — <span class="phone-status">organization/record contact; not called; recipient role unknown</span></div>
+              </div>
+            </div>
+
+            <div class="grid-section">
+              <h3>Recorded Roles & Authorities</h3>
+              <div class="people-list">
+                <div class="empty-field">No individual owner or facilities manager linked in current evidence.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class='research-section'><h3>Research Findings & Mandatory Limitations</h3><ul class='findings-list'><li class="finding-item"><div class="finding-claim"><strong>candidate website — conflicting location · published unknown · <a href="https://www.dhrestaurantehondureno.com/" target="_blank" rel="noopener noreferrer">source</a>:</strong> The DH Restaurante Hondureno branded website lists 806 W Old 56 Hwy, Olathe and (913) 293-9306. Neither address nor phone matches the Ridgeview KDA entry. The website provides a contact form, not an identified owner.</div><div class="finding-limit"><strong>Limitation:</strong> Do not replace the KDA phone or assign this website to Ridgeview until the address discrepancy is resolved.</div></li><li class="finding-item"><div class="finding-claim"><strong>third-party listing — unverified contact candidate · published listing undated; customer review 2026-09-04 · <a href="https://maps.roadtrippers.com/us/olathe-ks/food-drink/dh-restaurante-hondureno-olathe-ks--0" target="_blank" rel="noopener noreferrer">source</a>:</strong> Roadtrippers lists the exact 824 N Ridgeview Rd address with (913) 293-9306, which differs from KDA&#x27;s 9139982585. A September 4 customer review describes a new storefront following a food truck.</div><div class="finding-limit"><strong>Limitation:</strong> A customer review is a lead to investigate, not proof of an opening date, owner identity, or relocation.</div></li></ul><div class="next-gap"><strong>Remaining verification gap:</strong> Resolve Ridgeview versus Old 56 Hwy, determine which number reaches the Ridgeview establishment, and identify its owner/manager. No owner or public email verified in this pass.</div></div>
+
+          <div class="join-basis-box">
+            <strong>Entity & record linkage basis:</strong> Contacts use existing entity/location links. Website enrichment uses the accepted place match. A shared phone alone does not establish identity. The directory matches name and Ridgeview address. The branded website matches the name and directory phone but shows a different address, so it is only a candidate association.
+          </div>
+
+          <details class="evidence-details">
+            <summary>Municipal Evidence Records (1 source filings)</summary>
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Classification & Status</th>
+                  <th>Identifiers</th>
+                  <th>Source Provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-08-17</td><td><strong>Licensing-Preoperational</strong><div class="ev-status">In Compliance</div><div class=ev-desc>KDA Licensing-Preoperational food inspection</div></td><td>Record: 42548<br>Row ordinal: 39</td><td><code>olathe_food_20260910_000000.csv</code><br><span class="ev-hash">SHA-256: 5779be3ccdef...</span> <a href="https://portal.kda.ks.gov/Food/FoodInspectionSearch" target="_blank" rel="noopener noreferrer">official portal</a></td></tr>
+              </tbody>
+            </table>
+          </details>
+        </article>
+        
+        <article class="project-card outcome-review">
+          <div class="card-header">
+            <div>
+              <div class="card-eyebrow">Project Location</div>
+              <h2 class="card-title">Pickwick Plaza Apartments 11th Floor Renovation</h2>
+              <div class="card-address">933 MCGEE ST, KANSAS CITY MO</div>
+            </div>
+            <div class="card-status-badge">
+              <span class="badge-review">REVIEW</span>
+              <div class="eval-date">Evaluated 2026-09-11</div>
+            </div>
+          </div>
+
+          <div class="disposition-box">
+            <div><strong>Evaluation rationale:</strong> Renovation event connects to the property website and management company. Leasing contacts found; no individual manager verified.</div>
+            <div class="next-action"><strong>Next resolution step:</strong> Ask for the person responsible for cleaning vendors at 933 McGee.</div>
+          </div>
+
+          <div class="card-body-grid">
+            <div class="grid-section">
+              <h3>Telephone Contacts (with mandatory status)</h3>
+              <div class="phones-list">
+                <div class="phone-row"><strong>(844) 450-XXXX</strong> — <span class="phone-status">Property website: leasing/tours; Published by official site; not called or delivery-tested</span></div><div class="phone-row"><strong>(816) 307-XXXX</strong> — <span class="phone-status">Tenle property page: property contact; differs from property website; Published by official site; not called or delivery-tested</span></div>
+              </div>
+            </div>
+
+            <div class="grid-section">
+              <h3>Recorded Roles & Authorities</h3>
+              <div class="people-list">
+                <div class="empty-field">No individual owner or facilities manager linked in current evidence.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class='research-section'><h3>Research Findings & Mandatory Limitations</h3><ul class='findings-list'><li class="finding-item"><div class="finding-claim"><strong>source-confirmed · published undated · <a href="https://www.pickwickplaza.com/contact/" target="_blank" rel="noopener noreferrer">source</a>:</strong> The property contact page lists 933 McGee, a leasing email, and (844) 450-XXXX.</div><div class="finding-limit"><strong>Limitation:</strong> The management page publishes a different number. Neither has been called; no preferred number or purchasing authority established.</div></li><li class="finding-item"><div class="finding-claim"><strong>source-confirmed · published undated · <a href="https://www.tenlerm.com/property/pickwick-plaza/" target="_blank" rel="noopener noreferrer">source</a>:</strong> Tenle Property Management lists Pickwick at 933 McGee and links to the property website; its listing gives (816) 307-XXXX.</div><div class="finding-limit"><strong>Limitation:</strong> The corporate general inbox is a separate routing option, not a named local manager.</div></li><li class="finding-item"><div class="finding-claim"><strong>official routing instruction · published undated · <a href="https://www.tenlerm.com/contact-us/" target="_blank" rel="noopener noreferrer">source</a>:</strong> Tenle directs community inquiries to the number at the top of its property page. For Pickwick, that page lists (816) 307-XXXX.</div><div class="finding-limit"><strong>Limitation:</strong> This supports trying the management-listed route first, not proof the number works or reaches purchasing.</div></li><li class="finding-item"><div class="finding-claim"><strong>name search unresolved · published undated · <a href="https://www.bbb.org/us/mo/kansas-city/profile/apartments/pickwick-plaza-0714-1000038410" target="_blank" rel="noopener noreferrer">source</a>:</strong> BBB lists Business Manager as a role but gives no personal name for 933 McGee. A third-party review page mentions Corey without a surname; this was not accepted as a verified manager.</div><div class="finding-limit"><strong>Limitation:</strong> No named current manager established. Review-name candidate source: https://www.safebutler.com/apartments/kansas-city-mo/pickwick-plaza-apartments</div></li></ul><div class="next-gap"><strong>Remaining verification gap:</strong> Follow Tenle’s published routing instruction: try its property-page number, (816) 307-XXXX, and ask who handles cleaning vendors. Reachability and purchasing responsibility are unconfirmed.</div></div>
+
+          <div class="join-basis-box">
+            <strong>Entity & record linkage basis:</strong> Contacts use existing entity/location links. Website enrichment uses the accepted place match. A shared phone alone does not establish identity. Pickwick name and 933 McGee address match the permit. Tenle lists this property and links to its official website. No apartment tenant or neighboring location was joined.
+          </div>
+
+          <details class="evidence-details">
+            <summary>Municipal Evidence Records (1 source filings)</summary>
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Classification & Status</th>
+                  <th>Identifiers</th>
+                  <th>Source Provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-08-27</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>Pickwick Plaza Apartments 11th Floor Renovation</div></td><td>Record: CICO-2026-00863<br>Row ordinal: 2296</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr>
+              </tbody>
+            </table>
+          </details>
+        </article>
+        
+        <article class="project-card outcome-review">
+          <div class="card-header">
+            <div>
+              <div class="card-eyebrow">Project Location</div>
+              <h2 class="card-title">Prime Time Liquor Convenience Store</h2>
+              <div class="card-address">4450 NW BARRY RD, KANSAS CITY MO</div>
+            </div>
+            <div class="card-status-badge">
+              <span class="badge-review">REVIEW</span>
+              <div class="eval-date">Evaluated 2026-09-11</div>
+            </div>
+          </div>
+
+          <div class="disposition-box">
+            <div><strong>Evaluation rationale:</strong> Exact-address ATC record identifies licensee PRIME 11 LLC and a shared license phone. Current individual operator remains unknown.</div>
+            <div class="next-action"><strong>Next resolution step:</strong> Ask which location the number serves and who handles vendors at 4450 NW Barry Rd.</div>
+          </div>
+
+          <div class="card-body-grid">
+            <div class="grid-section">
+              <h3>Telephone Contacts (with mandatory status)</h3>
+              <div class="phones-list">
+                <div class="phone-row"><strong>(816) 737-XXXX</strong> — <span class="phone-status">Reviewed license association; organization phone, recipient unknown; shared across 2 source locations; Source license 314718; not called; approval date is not a live data refresh</span></div>
+              </div>
+            </div>
+
+            <div class="grid-section">
+              <h3>Recorded Roles & Authorities</h3>
+              <div class="people-list">
+                <div class="empty-field">No individual owner or facilities manager linked in current evidence.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class='research-section'><h3>Research Findings & Mandatory Limitations</h3><ul class='findings-list'><li class="finding-item"><div class="finding-claim"><strong>source-confirmed · published 2026-06-13 · <a href="https://www.kcmo.gov/home/showpublisheddocument/16786" target="_blank" rel="noopener noreferrer">source</a>:</strong> The city active-license list dated June 13, 2026 lists Prime Time Liquor at 4450 NW Barry Rd under retail liquor by the package (page 43).</div><div class="finding-limit"><strong>Limitation:</strong> License status alone does not prove actual opening, and the September certificate is not treated as a first-opening date.</div></li><li class="finding-item"><div class="finding-claim"><strong>unverified historical candidate · published 2024 plan; original not retrieved · <a href="https://www.jehefnerco.com/wp-content/uploads/2024/08/PRIME-TIME-3RD-RESUBMITTAL-FULL-PLAN-SET-7-29-24.pdf" target="_blank" rel="noopener noreferrer">source</a>:</strong> Search-index text for a 2024 construction plan identifies Prime 2 Realty LLC as owner/developer and an individual named as its contact at this project address.</div><div class="finding-limit"><strong>Limitation:</strong> Original PDF returned HTTP 403, so its layout could not be verified. Name withheld from accepted people; historical developer contact is not proof of current store ownership.</div></li><li class="finding-item"><div class="finding-claim"><strong>source-confirmed from saved ATC data · published snapshot date not encoded; reviewed 2026-09-11 · <a href="https://data.mo.gov/resource/yyhn-562y.json" target="_blank" rel="noopener noreferrer">source</a>:</strong> License 314718 lists PRIME 11 LLC / PRIMETIME LIQUOR at 4450 NW BARRY RD with 8167371576. All three license variants say No Contact. The number appears at 2 distinct business/address combinations.</div><div class="finding-limit"><strong>Limitation:</strong> Licensee is a company, not an identified person. No Contact is not a name. Shared phone does not prove common ownership. Exact rows, ordinals and snapshot hash are saved in mo_prime_atc_proof.json.</div></li></ul><div class="next-gap"><strong>Remaining verification gap:</strong> Confirm whom the shared license phone reaches and obtain the current operator for license 314718. PRIME 11 LLC is the licensee; the historical PRIME 2 REALTY developer is a different role/entity.</div></div>
+
+          <div class="join-basis-box">
+            <strong>Entity & record linkage basis:</strong> Contacts use existing entity/location links. Website enrichment uses the accepted place match. A shared phone alone does not establish identity. Exact Prime Time Liquor name and 4450 NW Barry Road address match the municipal license listing. Historical plan search evidence remains a candidate, not an accepted current owner. Reviewed ATC license 314718: PRIMETIME LIQUOR and the full 4450 NW BARRY RD, Kansas City MO address match this permit project; no join made on phone alone.
+          </div>
+
+          <details class="evidence-details">
+            <summary>Municipal Evidence Records (2 source filings)</summary>
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Classification & Status</th>
+                  <th>Identifiers</th>
+                  <th>Source Provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-09-04</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>Prime Time Liquor Convenience Store</div></td><td>Record: CICO-2026-00895<br>Row ordinal: 1028</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr><tr><td>2026-03-24</td><td><strong>Temporary Certificate of Occupancy (Commercial)</strong><div class="ev-status">Closed</div><div class=ev-desc>Prime Time Liquor Convenience Store</div></td><td>Record: CITO-2026-00023<br>Row ordinal: 21920</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> </td></tr>
+              </tbody>
+            </table>
+          </details>
+        </article>
+        
+        <article class="project-card outcome-excluded">
+          <div class="card-header">
+            <div>
+              <div class="card-eyebrow">Project Location</div>
+              <h2 class="card-title">Charritos Taqueria Llc</h2>
+              <div class="card-address">844 CENTRAL AVE, # A, KANSAS CITY KS</div>
+            </div>
+            <div class="card-status-badge">
+              <span class="badge-excluded">EXCLUDED</span>
+              <div class="eval-date">Evaluated 2026-09-11</div>
+            </div>
+          </div>
+
+          <div class="disposition-box">
+            <div><strong>Evaluation rationale:</strong> No independent owner or opening corroboration for 844 Central Ave # A found in this pass. Same-name search results were withheld.</div>
+            <div class="next-action"><strong>Next resolution step:</strong> Verify the 844 Central Ave # A operator via the source-record contact or a location-specific business record. Searches by exact address and business name did not supply a verified website, email or named person.</div>
+          </div>
+
+          <div class="card-body-grid">
+            <div class="grid-section">
+              <h3>Telephone Contacts (with mandatory status)</h3>
+              <div class="phones-list">
+                <div class="phone-row"><strong>(816) 447-XXXX</strong> — <span class="phone-status">organization/record contact; not called; recipient role unknown</span></div>
+              </div>
+            </div>
+
+            <div class="grid-section">
+              <h3>Recorded Roles & Authorities</h3>
+              <div class="people-list">
+                <div class="empty-field">No individual owner or facilities manager linked in current evidence.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class='research-section'><h3>Research Findings & Mandatory Limitations</h3><ul class='findings-list'><li class="finding-item"><div class="finding-claim"><strong>not joined — different address and state · published not confirmed in this pass · <a href="https://northeastnews.net/pages/independence-avenue-restaurants-participate-in-biannual-nekc-chamber-taste-and-tour/" target="_blank" rel="noopener noreferrer">source</a>:</strong> Northeast News associates Francisco Cortez with Charritos at 3831 Independence Ave, Kansas City, Missouri. This does not establish that he owns the KDA establishment at 844 Central Ave # A, Kansas City, Kansas.</div><div class="finding-limit"><strong>Limitation:</strong> No owner name or Missouri contact information imported from this result.</div></li><li class="finding-item"><div class="finding-claim"><strong>not joined — different location · published unknown · <a href="https://nekcchamber.com/single-location/kansas-city-mo/page/3/?directory_type=general" target="_blank" rel="noopener noreferrer">source</a>:</strong> The Northeast KC Chamber directory lists Charritos Plaza Taqueria at 3831 Independence Ave, Missouri, with (816) 231-0338. It is not an exact match to the Kansas inspection address.</div><div class="finding-limit"><strong>Limitation:</strong> Name resemblance alone is insufficient to merge the locations or transfer the number.</div></li></ul><div class="next-gap"><strong>Remaining verification gap:</strong> Verify the 844 Central Ave # A operator via the source-record contact or a location-specific business record. Searches by exact address and business name did not supply a verified website, email or named person.</div></div>
+
+          <div class="join-basis-box">
+            <strong>Entity & record linkage basis:</strong> Contacts use existing entity/location links. Website enrichment uses the accepted place match. A shared phone alone does not establish identity. KDA name, license and full address remain the accepted identity. Missouri records at Independence Avenue are not linked by name similarity.
+          </div>
+
+          <details class="evidence-details">
+            <summary>Municipal Evidence Records (1 source filings)</summary>
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Classification & Status</th>
+                  <th>Identifiers</th>
+                  <th>Source Provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-08-11</td><td><strong>Licensing-Preoperational</strong><div class="ev-status">In Compliance</div><div class=ev-desc>KDA Licensing-Preoperational food inspection</div></td><td>Record: 160134<br>Row ordinal: 68</td><td><code>kansas-city_food_20260910_000000.csv</code><br><span class="ev-hash">SHA-256: bcd7ba13e481...</span> <a href="https://portal.kda.ks.gov/Food/FoodInspectionSearch" target="_blank" rel="noopener noreferrer">official portal</a></td></tr>
+              </tbody>
+            </table>
+          </details>
+        </article>
+        
+        <article class="project-card outcome-excluded">
+          <div class="card-header">
+            <div>
+              <div class="card-eyebrow">Project Location</div>
+              <h2 class="card-title">Ridge at Chestnut Apartments Deck Repair</h2>
+              <div class="card-address">8702 Chestnut Cir Kansas City, MO 64131, KANSAS CITY MO</div>
+            </div>
+            <div class="card-status-badge">
+              <span class="badge-excluded">EXCLUDED</span>
+              <div class="eval-date">Evaluated 2026-09-12</div>
+            </div>
+          </div>
+
+          <div class="disposition-box">
+            <div><strong>Evaluation rationale:</strong> Deck-only project: outside this pilot’s interior turnover/office-cleaning event scope.</div>
+            <div class="next-action"><strong>Next resolution step:</strong> Retain source; reconsider for exterior-maintenance profile.</div>
+          </div>
+
+          <div class="card-body-grid">
+            <div class="grid-section">
+              <h3>Telephone Contacts (with mandatory status)</h3>
+              <div class="phones-list">
+                <div class="empty-field">No sourced telephone route linked.</div>
+              </div>
+            </div>
+
+            <div class="grid-section">
+              <h3>Recorded Roles & Authorities</h3>
+              <div class="people-list">
+                <div class="empty-field">No individual owner or facilities manager linked in current evidence.</div>
+              </div>
+            </div>
+          </div>
+
+          
+
+          <div class="join-basis-box">
+            <strong>Entity & record linkage basis:</strong> Explicit cohort review: same named deck-repair project and shared exclusion decision. Preserve each address, certificate and business entity separately.
+          </div>
+
+          <details class="evidence-details">
+            <summary>Municipal Evidence Records (4 source filings)</summary>
+            <table class="evidence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Classification & Status</th>
+                  <th>Identifiers</th>
+                  <th>Source Provenance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2026-08-13</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>Ridge at Chestnut Apartments Deck Repair</div></td><td>Record: CICO-2026-00816<br>Row ordinal: 3928</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-08-13</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>Ridge at Chestnut Apartments Deck Repair</div></td><td>Record: CICO-2026-00815<br>Row ordinal: 3929</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-08-13</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>Ridge at Chestnut Apartments Deck Repair</div></td><td>Record: CICO-2026-00814<br>Row ordinal: 3932</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr><tr><td>2026-08-13</td><td><strong>Certificate of Occupancy (Commercial)</strong><div class="ev-status">Issued</div><div class=ev-desc>Ridge at Chestnut Apartments Deck Repair</div></td><td>Record: CICO-2026-00813<br>Row ordinal: 3933</td><td><code>kcmo_permits_20260917_192503.csv</code><br><span class="ev-hash">SHA-256: 5cb8903c7e9c...</span> <a href="https://data.kcmo.org" target="_blank" rel="noopener noreferrer">official portal</a></td></tr>
+              </tbody>
+            </table>
+          </details>
+        </article>
+        
+
+      
+    </main>
+
+    <!-- Rule 6 Mandatory Limitation Disclaimer Block -->
+    <footer class="limitation-block">
+      <p>Advertised municipal and licensing records only. Cleaning demand, purchasing authority and contact reachability are unverified unless a status field on the record says otherwise. No personal contact details are inferred. Every row reconciles to a named source file, row ordinal and SHA-256 hash.</p>
+      <p class="source-audit-trail">Generated <em>2026-09-18</em> from kansas-city_food_20260910_000000.csv (SHA-256: <code>bcd7ba13e4819b8a...</code>); kcmo-applications_licenses_20260917_192547.csv (SHA-256: <code>7fa34b3239e783fc...</code>); kcmo_permits_20260917_192503.csv (SHA-256: <code>5cb8903c7e9c1263...</code>); kcmo_plans_20260917_192503.csv (SHA-256: <code>902d61a7195f5a37...</code>); olathe_food_20260910_000000.csv (SHA-256: <code>5779be3ccdefdc37...</code>); overland-park_food_20260910_000000.csv (SHA-256: <code>b5b609d2b66290d0...</code>); overland-park_permits_20260917_192503.csv (SHA-256: <code>3f777675be62f55c...</code>).</p>
+    </footer>
+  </div>
+</body>
+</html>

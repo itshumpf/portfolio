@@ -1,0 +1,294 @@
+---
+// Flagship technical investigations feature block for the homepage.
+// Replaces the single-topic CSI feature with the triad of empirical investigations:
+// Storage Rate Monitor, KC Municipal Permits, and Wi-Fi CSI.
+---
+
+<section id="investigations" class="inv-feature">
+  <div class="wrap wrap--wide">
+    <header class="inv-feature__head">
+      <p class="eyebrow">Featured engineering · Flagship investigations</p>
+      <h2 class="inv-feature__title">Pipelines that know when they're lying to you.</h2>
+      <p class="inv-feature__sub">
+        Three deep-dive investigations built around empirical verification: 
+        longitudinal pricing observatories, multi-jurisdiction public-record qualification, and hardware RF link forensics.
+        Each designed around the controls that proved what was actually being measured.
+      </p>
+    </header>
+
+    <div class="inv-feature__grid">
+      <!-- Door 1: FindStorage / PSA Prediction -->
+      <article class="inv-door">
+        <div class="inv-door__top">
+          <span class="inv-door__tag">Market Observatory</span>
+          <span class="inv-door__num">01</span>
+        </div>
+        <h3 class="inv-door__title">Both Sides of the Discount Moved</h3>
+        <p class="inv-door__copy">
+          A seven-source pricing monitor covering 9,077 facilities, an August rate-hike anomaly, and a pre-registered bet on Public Storage's (PSA) Q3 earnings.
+        </p>
+
+        <div class="inv-door__metric">
+          <strong>9,077</strong>
+          <span>facilities tracked daily across 129,704 advertised units</span>
+        </div>
+
+        <ul class="inv-door__list">
+          <li><strong>Sealed Q3 prediction:</strong> Pre-registered bet that PSA promotional discount and rate growth will decelerate YoY.</li>
+          <li><strong>The August 1st event:</strong> 4,904 listings moved into "40% off" and every one received an immediate reference-rate hike (median +$45).</li>
+          <li><strong>Living ledger:</strong> Logged the September 14 reset and its subsequent 12% partial walkback four days later in real time.</li>
+        </ul>
+
+        <div class="inv-door__action">
+          <a href="/storage" class="inv-door__link">
+            <span>Read prediction & rate monitor</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Door 2: KC Permits -->
+      <article class="inv-door">
+        <div class="inv-door__top">
+          <span class="inv-door__tag">Civic Data Integrity</span>
+          <span class="inv-door__num">02</span>
+        </div>
+        <h3 class="inv-door__title">The Verification Filter</h3>
+        <p class="inv-door__copy">
+          Turning 57,032 civic observations across 30,587 locations into 4 verifiable commercial opportunities without hallucinatory leads or naive matching.
+        </p>
+
+        <div class="inv-door__metric">
+          <strong>57,032</strong>
+          <span>observations resolved into 4 prospect actions (37 → 10 → 4)</span>
+        </div>
+
+        <ul class="inv-door__list">
+          <li><strong>The naive scraping myth:</strong> Permits name contractors not tenants, addresses collide, and speculative filings have no buyer.</li>
+          <li><strong>Tyler EnerGov reverse engineering:</strong> Extracted undocumented multi-tenant API headers across Olathe, OP, and KCMO.</li>
+          <li><strong>Silent failures caught:</strong> Detected portals with silent 10,000-row query truncation caps and engineered audit rails.</li>
+        </ul>
+
+        <div class="inv-door__action">
+          <a href="/permits" class="inv-door__link">
+            <span>Read lead qualification audit</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Door 3: CSI: Room or Radio? -->
+      <article class="inv-door">
+        <div class="inv-door__top">
+          <span class="inv-door__tag">Embedded RF & Signal Processing</span>
+          <span class="inv-door__num">03</span>
+        </div>
+        <h3 class="inv-door__title">Room or Radio?</h3>
+        <p class="inv-door__copy">
+          A Wi-Fi CSI system identified devices at 99.7% accuracy. Physical controls broke the device-identity claim—and revealed a physical link state instead.
+        </p>
+
+        <div class="inv-door__metric">
+          <strong>69.5M</strong>
+          <span>clean beacon frames replayed across 8 paired overnight captures</span>
+        </div>
+
+        <ul class="inv-door__list">
+          <li><strong>The seductive number:</strong> 99.7% accuracy identifying ESP32 transmitters by subcarrier phase slope.</li>
+          <li><strong>The hypothesis ledger:</strong> 29 distinct ideas killed across 35 rejection tests, proving what the feature wasn't before claiming what it was.</li>
+          <li><strong>The double difference:</strong> Two receivers watching the same pair disagreed by 6.79 standard deviations.</li>
+        </ul>
+
+        <div class="inv-door__action">
+          <a href="/csi" class="inv-door__link">
+            <span>Open full RF investigation</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <div class="inv-feature__footer">
+      <a href="/investigations" class="inv-feature__hub-link">
+        Compare all three investigations on the Investigations Hub →
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .inv-feature {
+    padding-block: clamp(60px, 9vw, 110px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .inv-feature__head {
+    max-width: 820px;
+    margin-bottom: 48px;
+  }
+
+  .inv-feature__title {
+    margin-top: 12px;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+  }
+
+  .inv-feature__sub {
+    margin-top: 16px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .inv-feature__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  @media (max-width: 980px) {
+    .inv-feature__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .inv-door {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    transition: border-color 0.15s ease;
+  }
+
+  .inv-door:hover {
+    border-color: var(--accent);
+  }
+
+  .inv-door__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .inv-door__tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .inv-door__num {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  .inv-door__title {
+    font-size: 1.35rem;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .inv-door__copy {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .inv-door__metric {
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+    padding-block: 12px;
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .inv-door__metric strong {
+    font-size: 1.4rem;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+  }
+
+  .inv-door__metric span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .inv-door__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .inv-door__list li {
+    position: relative;
+    padding-left: 14px;
+  }
+
+  .inv-door__list li::before {
+    content: "▪";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .inv-door__list strong {
+    color: var(--text-primary);
+  }
+
+  .inv-door__action {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .inv-door__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: gap 0.15s ease;
+  }
+
+  .inv-door__link:hover {
+    gap: 10px;
+  }
+
+  .inv-feature__footer {
+    margin-top: 36px;
+    text-align: center;
+  }
+
+  .inv-feature__hub-link {
+    display: inline-block;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 2px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .inv-feature__hub-link:hover {
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+  }
+</style>
