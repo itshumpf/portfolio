@@ -2,8 +2,8 @@
   "_meta": {
     "purpose": "Single source of truth for every hard number this site publishes. The resume claims 'every figure I publish is emitted by a script that refuses to write a null.' This file plus scripts/check-facts.mjs is what makes that true rather than aspirational.",
     "rule": "A number does not go on the site until it has an entry here with a derivation you could paste into a terminal. If you cannot name the command, the number is a guess and does not ship.",
-    "lastVerified": "2026-09-06",
-    "verifiedBy": "read out of the named source file on 2026-09-06; see each fact's derivation"
+    "lastVerified": "2026-09-15",
+    "verifiedBy": "read out of the named source files on 2026-09-15; see each fact's derivation"
   },
 
   "facts": {
@@ -76,29 +76,31 @@
     },
 
     "findstorage.stores": {
-      "value": "4,664",
-      "derivation": ".astory/2026-08-25-findstorage-exit-report.md line 211. FROZEN at shutdown; this number does not move again",
+      "value": "9,077",
+      "derivation": "storageDir/history/combined/latest.manifest.json: stores for the complete 2026-09-15 merge",
       "mustAppearOn": ["work/findstorage/index.html"]
     },
-    "findstorage.coverage": {
-      "value": "41 states plus DC and Puerto Rico",
-      "derivation": "distinct `state` values in history/sizes-2026-08.csv on 2026-08-25 = 43, of which DC and PR are not states. Re-derived 2026-09-06. The earlier '43 states' counted two non-states",
+    "findstorage.offers": {
+      "value": "129,704",
+      "derivation": "sum of each included brand's `units` in storageDir/history/combined/latest.manifest.json for 2026-09-15",
       "mustAppearOn": ["work/findstorage/index.html"]
     },
-    "findstorage.snapshot_days": {
-      "value": "46 days",
-      "alsoAccept": ["46 consecutive"],
-      "derivation": "longest consecutive run of snapshot dates in history/2026-0{4,7,8}.csv filtered to <= 2026-08-25: 2026-07-11 to 2026-08-25 = 46 days, zero gaps. There are 48 snapshot days in total across a 119-day span, but 2026-04-29 and 2026-07-09 are isolated probes — 48 was never a consecutive run. Re-derived 2026-09-06",
+    "findstorage.promo_containment": {
+      "value": "4,904 / 4,904",
+      "alsoAccept": ["4,904 of 4,904"],
+      "derivation": "storageDir/analysis/august1_containment.py against history/rate_changes.csv for 2026-08-01 and `40% off For 4 Month`",
       "mustAppearOn": ["work/findstorage/index.html"]
     },
-    "findstorage.listings": {
-      "value": "55,328",
-      "derivation": "sum of the `listings` column in history/2026-08.csv on 2026-08-25. The exit report's 55,332 'advertised price points' does not reproduce and is retired",
+    "findstorage.promo_median_rise": {
+      "value": "$45",
+      "alsoAccept": ["+$45"],
+      "derivation": "storageDir/analysis/august1_containment.py, median price increase among the 4,904 exact SKUs entering `40% off For 4 Month` on 2026-08-01",
       "mustAppearOn": ["work/findstorage/index.html"]
     },
-    "findstorage.price_changes": {
-      "value": "396,402",
-      "derivation": ".astory/2026-08-25-findstorage-exit-report.md line 215",
+    "findstorage.september_cost_change": {
+      "value": "1.1%",
+      "alsoAccept": ["+1.1%"],
+      "derivation": "storageDir/analysis/september14_offer_value.py over 59,045 exact matched modelable Public Storage offers, 2026-09-13 to 2026-09-14",
       "mustAppearOn": ["work/findstorage/index.html"]
     },
 
@@ -177,6 +179,14 @@
     {
       "pattern": "55,332",
       "reason": "'advertised price points' from the exit report; does not reproduce. The listings count on 2026-08-25 is 55,328. Retired 2026-09-06"
+    },
+    {
+      "pattern": "Collection ended 25 August 2026",
+      "reason": "The single-operator collection was revived and expanded into the multi-source Storage Rate Monitor in September 2026. Retired 2026-09-15"
+    },
+    {
+      "pattern": "dataset is closed as of 25 August 2026",
+      "reason": "Superseded by the live seven-source daily pipeline. Retired 2026-09-15"
     }
   ],
 
