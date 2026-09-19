@@ -10,8 +10,8 @@ interface Props {
 const { title, description, image = '/og-image.png' } = Astro.props;
 
 // og:url / og:image need absolute URLs to unfurl correctly on LinkedIn/etc.
-// Astro.site is unset until a production domain is attached (see
-// astro.config.mjs) — once it is, these resolve automatically.
+// Astro.site is set to the production domain in astro.config.mjs, so these
+// resolve to stable absolute URLs in every production build.
 const absoluteImage = Astro.site ? new URL(image, Astro.site).href : image;
 const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
