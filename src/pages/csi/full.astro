@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import CsiShowcase from '../../components/CsiShowcase.astro';
+import Footer from '../../components/Footer.astro';
+
+// The unabridged record. /csi is the short version; this route keeps the
+// full case studies — every rejection test, every threshold, the V1 build
+// narrative — at a stable address so nothing was lost in the edit.
+const [profile] = await getCollection('profile');
+---
+
+<BaseLayout
+  title="Room or Radio? — the full record — Braeden Keena"
+  description="The unabridged WiFi CSI case studies: the classifier, the controls that broke it, the eight-night replication, and the V1 instrument build."
+>
+  <Nav name={profile.data.name} />
+
+  <div class="wrap wrap--wide full-note">
+    <p>
+      <strong>The full record.</strong> This is the long version — the V1 instrument build and the
+      complete Room or Radio investigation, unabridged. The short version lives at
+      <a href="/csi">/csi</a>.
+    </p>
+  </div>
+
+  <CsiShowcase />
+  <Footer profile={profile} />
+</BaseLayout>
+
+<style>
+  .full-note {
+    padding-top: clamp(32px, 6vw, 64px);
+  }
+
+  .full-note p {
+    max-width: 720px;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+</style>

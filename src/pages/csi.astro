@@ -2,17 +2,352 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
-import CsiShowcase from '../components/CsiShowcase.astro';
 import Footer from '../components/Footer.astro';
 
+// The short version. The unabridged case studies still render, unchanged,
+// at /csi/full via CsiShowcase — this page is the front door, not a
+// replacement for the record.
 const [profile] = await getCollection('profile');
 ---
 
 <BaseLayout
   title="Room or Radio? — Braeden Keena"
-  description="A 99.7%-accurate Wi-Fi device classifier, the controls that broke it, and the physical-link security hypothesis that followed."
+  description="A Wi-Fi device classifier, the physical controls that broke its interpretation, and what the signal turned out to measure instead."
 >
   <Nav name={profile.data.name} />
-  <CsiShowcase />
+
+  <article class="csi-page">
+    <div class="wrap wrap--wide">
+      <header class="csi-header">
+        <p class="eyebrow">Technical Investigation · Wireless Sensing</p>
+        <h1 class="csi-title">Room or Radio?</h1>
+        <p class="csi-subtitle">
+          I built a classifier that identified three Wi-Fi transmitters with 99.7% accuracy, then
+          spent two months proving it wasn't measuring what I said it was.
+        </p>
+      </header>
+
+      <!-- Numbers at a glance -->
+      <div class="glance">
+        <div class="glance-item">
+          <span class="glance-num">69,510,186</span>
+          <span class="glance-lbl">clean beacon frames replayed, screened from 69,688,145 raw rows — the 54.92 GiB canonical subset of a 99.5 GiB corpus</span>
+        </div>
+        <div class="glance-item">
+          <span class="glance-num">0.2σ / 19.6σ</span>
+          <span class="glance-lbl">separation when three boards share one surface, versus one board moved between rooms</span>
+        </div>
+        <div class="glance-item">
+          <span class="glance-num">29 / 35</span>
+          <span class="glance-lbl">hypotheses killed across formal rejection tests — 13 of them my own working results</span>
+        </div>
+        <div class="glance-item">
+          <span class="glance-num">8 nights</span>
+          <span class="glance-lbl">paired overnight captures, three transmitters, two receiver architectures</span>
+        </div>
+      </div>
+
+      <!-- 1 -->
+      <section class="csi-section">
+        <h2>1. The number I believed</h2>
+        <p>
+          The first classifier identified three ESP32 transmitters at <strong>99.7% accuracy over
+          7,497 windows</strong> on a chronological holdout. That figure carries a condition and
+          should never travel without it: <strong>desk receiver alone.</strong> Once a second
+          receiver's captures of the same sessions join the population, it falls to
+          <strong>95.7% over 14,234 windows</strong>. The gap is cross-receiver generalization,
+          not a harder set of devices.
+        </p>
+        <p>
+          The feature was subcarrier phase slope, which I attributed to quartz crystal sampling
+          frequency offset. Phase slope is actually a composite — sampling frequency offset,
+          packet-boundary timing offset, linear channel delay, and estimator error — and a single
+          antenna cannot decouple them. The accuracy was real. The physical attribution was wrong.
+        </p>
+      </section>
+
+      <!-- 2 -->
+      <section class="csi-section">
+        <h2>2. The controls that broke it</h2>
+        <p>
+          In the original setup each beacon sat in a different room. <em>Which radio is this?</em>
+          and <em>where is this radio?</em> were the same label, and nothing in the experiment could
+          tell them apart.
+        </p>
+        <p>
+          Three tests separated them. Placing all three transmitters on one surface four feet apart
+          collapsed between-device separation from 7.9σ to <strong>0.2σ</strong>. Moving a single
+          board to another room produced a <strong>19.6σ</strong> shift against a 2.5–4.9σ
+          background drift floor. And two receivers watching the same transmitter in the same
+          instant disagreed by <strong>6.79</strong> standard deviations in between-unit SD —
+          the median across 10-second, 1-minute and 5-minute bins — with near-zero correlation
+          between them, often reporting opposite slope signs.
+        </p>
+        <p>
+          A property of a quartz crystal cannot change because a board crossed a doorway, and it
+          cannot disagree between two listeners. The classifier was reading room geometry.
+        </p>
+      </section>
+
+      <!-- 3 -->
+      <section class="csi-section">
+        <h2>3. Eight nights</h2>
+        <p>
+          The replication ran three transmitters four feet apart on one surface, two distinct
+          receiver architectures (ESP32-D0WD and ESP32-S3), across <strong>eight paired overnight
+          captures</strong> — sixteen receiver-nights in total. All 69,688,145 raw rows were
+          screened and 69,510,186 clean frames replayed through a deterministic, unwrap-free
+          estimator at 1-second, 10-second, 1-minute and 5-minute aggregations.
+        </p>
+        <p>
+          Train and test split across whole nights, never across frames. Nearby CSI frames
+          correlate strongly, so a random frame split rewards temporal interpolation and reports it
+          as recognition.
+        </p>
+      </section>
+
+      <!-- 4 -->
+      <section class="csi-section">
+        <h2>4. What it actually measures</h2>
+        <p>
+          Within a single session, a fixed link stays recognizable: <strong>88.4% on D0WD, 91.7% on
+          S3, 94.3% fused.</strong> That result is <strong>exploratory</strong> — it was specified
+          after the frozen tests, using a train-on-first-40%, discard-the-middle-20%,
+          test-on-last-40% split, and it is labelled that way in the exit report rather than
+          presented alongside the preregistered results.
+        </p>
+        <p>
+          A blind 30-minute held-out window across fourteen receiver-nights reached
+          <strong>95.8%</strong> against a 33.3% chance baseline, with signatures shifting only
+          0.07σ across a 39-minute gap.
+        </p>
+        <p>
+          Across unseen nights the preregistered generalization test failed. Best channel-feature
+          accuracy was 53.2% on D0WD and 64.3% on S3 — and "best" is doing work there, because a
+          template carried to a <em>different</em> night averages <strong>38.6–48.8%</strong>, with
+          individual pairs ranging from near 0% to near 100%. Claimed-link verification reached an
+          equal-error rate of 30.9% against a preregistered target of 15%, AUC 0.700 against a
+          target of 0.90. Concatenating two receivers did not rescue it.
+        </p>
+        <p class="pull">
+          This is not a persistent device fingerprint. It is a high-resolution, short-lived
+          measurement of a physical link.
+        </p>
+      </section>
+
+      <!-- 5 -->
+      <section class="csi-section">
+        <h2>5. The more interesting security question</h2>
+        <p>
+          A MAC address is spoofable in software in milliseconds. A physical propagation path is
+          not. To imitate a link signature an attacker would have to reproduce the multipath seen
+          by several distributed receivers, from an authorized location, orientation and
+          environment, at the same time.
+        </p>
+        <p>
+          The eight nights do not show that spoofing is impossible — no cloned MACs, directional
+          spoofers, channel emulators or relay attacks were ever run. What they show is that the
+          link is concrete enough to be worth challenging. Any protocol built on it would need
+          short-horizon enrollment, multi-receiver consensus, and randomized challenge-response,
+          because passive CSI alone drifts over days.
+        </p>
+      </section>
+
+      <!-- 6 -->
+      <section class="csi-section">
+        <h2>6. What the project demonstrates</h2>
+        <p>
+          The transferable part isn't fitting lines to phase data. It's building an embedded
+          instrument, discovering that a 99.7% metric answered the wrong question, and narrowing the
+          claim until it matched what the hardware could actually support.
+        </p>
+        <p>
+          Thirty-five formal rejection tests killed twenty-nine distinct hypotheses. Fifteen of the
+          thirty-five were scored against thresholds frozen before the test ran.
+          <strong>Thirteen of the twenty-nine were my own working results</strong>, retired by
+          controls I built specifically to permit that outcome. Results that went against me are
+          published beside the ones that didn't.
+        </p>
+      </section>
+
+      <!-- 7 -->
+      <section class="csi-section">
+        <h2>7. What remains unisolated</h2>
+        <ul class="limits">
+          <li>
+            <strong>Adversarial resistance is unmeasured.</strong> Repeatability and separability
+            were tested. Cloned MACs, directional spoofers, channel emulators and relay attacks
+            were not.
+          </li>
+          <li>
+            <strong>Space and hardware stay partly confounded.</strong> Four feet at 2.4 GHz is
+            roughly ten wavelengths, and each beacon kept its own antenna and position.
+          </li>
+          <li>
+            <strong>Packet-boundary timing offsets.</strong> Every capture carries an unknown
+            detection offset that mimics a phase slope, and a single-antenna receiver cannot
+            separate it from crystal drift.
+          </li>
+          <li>
+            <strong>Receiver asymmetry.</strong> Gain control and analog front-end differences
+            between the D0WD and S3 silicon were never isolated.
+          </li>
+          <li>
+            <strong>The unit of analysis is three radios.</strong> 69.5 million frames buy
+            statistical power over time, not over devices. Every multi-class number here is a
+            three-class problem against a 33.3% baseline.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Full record -->
+      <section class="full-record">
+        <h3>The full record</h3>
+        <p>
+          This page is the short version. The unabridged case studies — the V1 instrument build,
+          every rejection test with its threshold, and the complete investigation narrative — are
+          published in full.
+        </p>
+        <a href="/csi/full" class="btn-full">Read the full record ↗</a>
+      </section>
+    </div>
+  </article>
+
   <Footer profile={profile} />
 </BaseLayout>
+
+<style>
+  .csi-page {
+    padding-block: clamp(48px, 8vw, 96px);
+  }
+
+  .csi-header {
+    max-width: 860px;
+    margin-bottom: 40px;
+  }
+
+  .csi-title {
+    margin-top: 12px;
+    font-size: clamp(2.3rem, 5vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+  }
+
+  .csi-subtitle {
+    margin-top: 18px;
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  .glance {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--border-soft);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: clamp(40px, 6vw, 72px);
+  }
+
+  .glance-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 22px;
+    background: var(--bg);
+  }
+
+  .glance-num {
+    font-family: var(--font-mono);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .glance-lbl {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .csi-section {
+    max-width: 780px;
+    margin-bottom: clamp(36px, 5vw, 56px);
+  }
+
+  .csi-section h2 {
+    font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .csi-section p {
+    margin-bottom: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .csi-section strong {
+    color: var(--text-primary);
+  }
+
+  .pull {
+    margin-top: 20px;
+    padding-left: 18px;
+    border-left: 2px solid var(--accent);
+    font-size: 1.05rem;
+    color: var(--text-primary) !important;
+  }
+
+  .limits {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+
+  .limits li {
+    padding: 14px 18px;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .full-record {
+    max-width: 780px;
+    margin-top: clamp(48px, 7vw, 80px);
+    padding: 28px 30px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .full-record h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  .full-record p {
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+  }
+
+  .btn-full {
+    display: inline-block;
+    padding: 12px 22px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .btn-full:hover {
+    border-color: var(--accent);
+  }
+</style>
