@@ -1,18 +1,9 @@
 #!/usr/bin/env python3
-"""
-Rebuild Braeden Keena's DEPLOYED resume (braedenkeena.pages.dev/resume.pdf)
-with ONLY the incorrect RF-fingerprinting figures corrected.
+"""Rebuild Braeden Keena's deployed two-page resume.
 
-Source of truth for wording/structure/layout: the deployed PDF itself
-(public/resume.pdf, LibreOffice 26.2 / Carlito, US Letter, 2pp).
-
-Only change: the WiFi CSI bullet #2 figures.
-  11-15 sigma            -> 12.7 sigma and 10.4 sigma, 6 of 6
-  99.6% holdout accuracy -> 99.7% across 7,497 windows (single receiver),
-                            95.7% across 14,234 windows (two receivers)
-  2.8-million-frame      -> 2.36-million-frame
-
-ASCII hyphens only. No non-breaking hyphens anywhere.
+This script is the source of truth for the wording, structure, and layout of
+``public/resume.pdf``. Keep every published figure aligned with the portfolio's
+verified facts and use plain ASCII hyphens instead of non-breaking hyphens.
 """
 
 import sys
@@ -224,6 +215,22 @@ def build(path):
         "network. Every run publishes a coverage report that declares its own "
         "degradation first — a partial run cannot be mistaken for a complete "
         "one.")
+    bullet(doc,
+        "KcPermits consolidates 57,032 records from 21 municipal and county "
+        "feeds into 30,587 resolved locations. Reverse-engineered Tyler "
+        "EnerGov’s four undocumented tenant headers across four city "
+        "portals — tenant IDs differ between identical vendor installs "
+        "— then measured two silent failures: a 10,000-result ceiling "
+        "that returns HTTP 200 with no warning, and a date filter ignored "
+        "server-side, where a 90-day window returned the same 124,214 rows "
+        "as no window at all.")
+    bullet(doc,
+        "The deliverable is built to refuse its own output: 37 source "
+        "records consolidate to 10 projects and 4 prospects, each published "
+        "with the limitation requiring resolution before action. A written "
+        "spec constrains the renderer to fields that "
+        "exist in a record, so the presentation layer cannot compose a claim "
+        "the data does not carry.")
 
     job(doc, "nacup.us — Live World Cup 2026 Fan Hub",
         "2026 · Founder / Developer")
@@ -237,7 +244,7 @@ def build(path):
         "live scores REST API) with dedupe/merge logic, trust-tier scoring, "
         "and freshness decay ranking across 38 host-city feeds.")
     bullet(doc,
-        "Programmatically generated 80+ static SEO pages with JSON-LD "
+        "Programmatically generated 185 static SEO pages with JSON-LD "
         "structured data, sitemap, and Search Console integration; live-score "
         "polling with caching and fallback states.")
 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://braedenkeena.pages.dev/sitemap-index.xml

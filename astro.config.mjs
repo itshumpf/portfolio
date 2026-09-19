@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
@@ -8,6 +9,7 @@ export default defineConfig({
   // zero client-side JS by default, deployable as-is to Cloudflare Pages
   // (build command `npm run build`, output directory `dist`).
   output: 'static',
-  // Powers absolute canonical URLs / OG image URLs / sitemap generation.
+  // Powers absolute canonical URLs, OG image URLs, and the sitemap integration.
   site: 'https://braedenkeena.pages.dev',
+  integrations: [sitemap()],
 });

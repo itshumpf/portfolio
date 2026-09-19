@@ -2,8 +2,8 @@
   "_meta": {
     "purpose": "Single source of truth for every hard number this site publishes. The resume claims 'every figure I publish is emitted by a script that refuses to write a null.' This file plus scripts/check-facts.mjs is what makes that true rather than aspirational.",
     "rule": "A number does not go on the site until it has an entry here with a derivation you could paste into a terminal. If you cannot name the command, the number is a guess and does not ship.",
-    "lastVerified": "2026-09-15",
-    "verifiedBy": "read out of the named source files on 2026-09-15; see each fact's derivation"
+    "lastVerified": "2026-09-19",
+    "verifiedBy": "read out of the named source files; nacup counts verified directly against https://nacup.us/sitemap.xml on 2026-09-19; see each fact's derivation"
   },
 
   "facts": {
@@ -149,6 +149,22 @@
       "value": "387",
       "derivation": "cd C:\\dev\\easyIce && python -m pytest --collect-only -q | tail -1 → '387 tests collected'. The previous figure of 279 was `grep -c 'def test_'`, which misses everything parametrize expands",
       "mustAppearOn": ["work/easyice/index.html"]
+    },
+
+    "nacup.match_pages": {
+      "value": "99",
+      "derivation": "count of /matches/ URLs in https://nacup.us/sitemap.xml, fetched 2026-09-19",
+      "mustAppearOn": ["work/nacup/index.html"]
+    },
+    "nacup.generated_pages": {
+      "value": "185",
+      "derivation": "48 /teams/ + 99 /matches/ + 38 /cities/ URLs in https://nacup.us/sitemap.xml, fetched 2026-09-19",
+      "mustAppearOn": ["work/nacup/index.html"]
+    },
+    "nacup.sitemap_urls": {
+      "value": "187",
+      "derivation": "187 URL entries in https://nacup.us/sitemap.xml: 185 generated team/match/city pages plus the homepage and /watch-parties, fetched 2026-09-19",
+      "mustAppearOn": ["work/nacup/index.html"]
     }
   },
 
@@ -246,18 +262,6 @@
   ],
 
   "unverified": {
-    "_note": "Numbers currently on the site that could NOT be re-derived from a file on 2026-09-06. They are not enforced by the checker because there is nothing to check them against. Resolve or remove them.",
-    "nacup.match_pages": {
-      "value": "99",
-      "problem": "hardcoded in prose, not emitted by the generator. The site previously carried 97 and 99 simultaneously. Settle against nacup.us/sitemap.xml"
-    },
-    "nacup.sitemap_urls": {
-      "value": "187",
-      "problem": "same. 48 + 99 + 38 = 185, +2 = 187 is internally consistent, and so was 48 + 97 + 38 = 183, +2 = 185 — the two versions are the same site two matches apart"
-    },
-    "nacup.seo_pages": {
-      "value": "80+",
-      "problem": "true under either version and therefore uninformative; the real figure is roughly 185"
-    }
+    "_note": "Numbers currently on the site that could not be re-derived from a named source. Reported by the checker but not enforced until resolved."
   }
 }

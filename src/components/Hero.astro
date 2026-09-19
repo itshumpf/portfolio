@@ -28,16 +28,16 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
               </span>
             )}
             {availability && (
-              <p class="hero__availability">
+              <a class="hero__availability" href="/reviews">
                 <span class="hero__availability-dot" aria-hidden="true" />
                 {availability}
-              </p>
+              </a>
             )}
           </div>
         )}
       </div>
       <p class="hero__tagline">
-        Operations & Business Leader <span class="hero__divider">•</span> Self-Taught Software & Systems Builder
+        Operations & Business Leader <span class="hero__divider">•</span> Data Engineer & Systems Builder
       </p>
     </div>
 
@@ -193,9 +193,14 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
     font-size: 0.78rem;
     color: var(--text-muted);
     margin: 0;
+    text-decoration: none;
     /* 1px badge border + 12px badge padding-left: lines this dot up under
        the pill's dot instead of the pill's outer edge. */
     padding-left: 13px;
+  }
+
+  .hero__availability:hover {
+    color: var(--text-primary);
   }
 
   .hero__availability-dot {

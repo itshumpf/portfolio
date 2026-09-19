@@ -16,8 +16,8 @@ stats:
     label: "concept to deployed production site"
   - value: "700+"
     label: "visitors on day one, first-page organic search within 24 hrs"
-  - value: "80+"
-    label: "programmatically generated SEO pages across 38 host cities"
+  - value: "185"
+    label: "programmatically generated team, match, and city pages"
 screenshots:
   - src: "/work/nacup-mobile.jpg"
     alt: "nacup.us on a phone, showing the Kansas City panel with 282 venues, a date strip, scheduled matches and a list of official watch parties."

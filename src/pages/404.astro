@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+
+const [profile] = await getCollection('profile');
+---
+
+<BaseLayout
+  title="Page Not Found — Braeden Keena"
+  description="The requested page does not exist. Return to Braeden Keena's portfolio."
+>
+  <main class="not-found">
+    <section class="wrap">
+      <span class="eyebrow">404 · Page not found</span>
+      <h1>That page isn't here.</h1>
+      <p>
+        The address may be outdated, or the page may have moved. The portfolio and its current
+        case studies are available from the homepage.
+      </p>
+      <a class="btn" href="/">Return to the portfolio →</a>
+    </section>
+  </main>
+  <Footer profile={profile} />
+</BaseLayout>
+
+<style>
+  .not-found {
+    min-height: 70vh;
+    display: grid;
+    align-items: center;
+  }
+
+  .not-found section {
+    width: 100%;
+  }
+
+  .not-found h1 {
+    max-width: 14ch;
+    font-size: clamp(2.6rem, 8vw, 5.5rem);
+    letter-spacing: -0.055em;
+    margin-bottom: 18px;
+  }
+
+  .not-found p {
+    max-width: 58ch;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+  }
+</style>
