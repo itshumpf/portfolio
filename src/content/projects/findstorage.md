@@ -1,9 +1,9 @@
 ---
 title: "FindStorage"
-tagline: "A daily market observatory for advertised self-storage prices—and the pricing behavior that only appears when exact offers are followed through time."
-thesis: "What began as a store-ID finder is now a seven-source longitudinal pipeline. It collects slowly, checkpoints expensive runs, rejects incomplete snapshots, and preserves enough history to distinguish a market event from a collection failure."
+tagline: "A daily advertised-price tracker for self-storage — retired on 25 August 2026, and the reason the measurement behind it outlived the product."
+thesis: "What began as a store-ID finder became a national daily price tracker: it collected slowly, checkpointed expensive runs, rejected incomplete snapshots, and preserved enough history to tell a market event apart from a collection failure. It was shut down deliberately, and the shutdown is the part worth reading."
 expandedBody: true
-period: "2025–present"
+period: "2025–2026"
 role: "Founder / Data Engineer"
 status: "sunset"
 order: 4
@@ -12,10 +12,12 @@ tech: ["Python", "Vanilla JavaScript", "Leaflet.js", "Chart.js", "GitHub Actions
 links:
   live: "https://findstorage.pages.dev/dashboard.html#overview"
 stats:
-  - value: "9,077"
-    label: "facilities in the complete 15 September 2026 snapshot across seven collections"
-  - value: "129,704"
-    label: "advertised unit and offer records preserved in that daily snapshot"
+  - value: "4,664"
+    label: "Public Storage facilities in the final snapshot, 25 August 2026"
+  - value: "46"
+    label: "consecutive daily snapshots with no gaps, 11 July to 25 August"
+  - value: "396,402"
+    label: "advertised price changes logged, alongside 148,870 promotion changes"
   - value: "4,904 / 4,904"
     label: "listings entering one August promotion whose advertised reference rate also increased"
 impact: "The history exposed a coordinated promotion event that a current-price directory could never see: higher reference rates and a four-month discount were assigned to the same 4,904 listings, then unwound through a different combination of lower rates and weaker promotions."
@@ -43,14 +45,14 @@ and nothing has been added since. It stays up as a record of what the product wa
 The measurement did not stop with the product. Collection continued unnamed, and the September
 work — including the figures below — is written up at [the storage investigation](/storage).
 
-## What the system is now
+## What the system was
 
-Seven collectors emit the same dated snapshot contract for Public Storage, CubeSmart, Storage
-Sense, U-Haul, StorageMart, SmartStop, and an independent-operator pilot. On 15 September 2026 the
-complete combined snapshot contained **9,077 facilities and 129,704 advertised unit or offer
-records**.
+A single-source daily tracker for Public Storage. The final snapshot, on **25 August 2026**, held
+**4,664 facilities**, closing a run of **46 consecutive daily snapshots with no gaps** that began on
+11 July. Across that run it logged **396,402 advertised price changes** and **148,870 promotion
+changes** — every one tied to an exact listing, which is what made the finding below possible.
 
-The collection strategy is deliberately conservative. Each source has its own request delay and
+The collection strategy was deliberately conservative. Each source has its own request delay and
 catalog discovery logic. Long runs checkpoint their progress so a late failure does not require
 repeating thousands of requests. Current sitemaps are fetched before facilities are visited, known
 dead URLs are not hammered, and a 403 or 429 stops the responsible collector. Completed work can be
@@ -97,29 +99,15 @@ August**. Against the adjacent $161 rate, paying $142.20 for four months represe
 savings—not $380. Approximately **$304 of the displayed $380 difference** came from the temporarily
 higher reference rate.
 
-## September shows the unwind
+## Where it goes after this
 
-The higher-reference, deeper-promotion structure persisted into September. Among continuously
-observed listings carrying the major four-month offers on 13 September, reference rates were above
-their 31 July medians:
+FindStorage stops here. The structure this run uncovered — a reference rate and a promotional
+badge moving against each other — kept developing after the product was retired, and following it
+required watching more than one operator.
 
-| Promotion on 13 September | Matched listings | 31 July reference | 13 September | 14 September |
-|---|---:|---:|---:|---:|
-| 40% off four months | 7,790 | $116 | $130 | $98 |
-| 50% off first four months | 6,600 | $80 | $98 | $74 |
-| 30% off four months | 4,882 | $151 | $180 | $136 |
-
-Relative to the same listings’ 31 July rates, the higher references accounted for **9.2% to 18.2%**
-of the savings displayed by those September offers.
-
-Then the structure reversed. On 14 September, 35,235 promotions changed and 30,762 matching rates
-fell. The lower rates looked favorable in isolation, but promotion value fell more sharply. Across
-59,045 matched, modelable offers, headline four-month value fell 14.7%, promotional discount value
-fell 49.7%, and modeled customer cost rose **1.1%**. A Shapley decomposition attributes −15.4% to
-the lower monthly rates and +16.5% to weaker promotions.
-
-The customer-facing value had moved from the base rate into the promotional badge and then back
-again. Looking at either field alone would have described only half of the decision.
+That work is a separate project with its own dataset and its own boundary: the
+[Storage Price Observatory](/storage). Nothing below 25 August 2026 belongs to it, and none of its
+figures belong here.
 
 ## What the evidence supports
 

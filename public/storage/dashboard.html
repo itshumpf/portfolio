@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Storage Rate Monitor</title>
+<title>Storage Price Observatory — Daily Rate Monitor</title>
 <style>/* required styles */
 
 .leaflet-pane,
@@ -788,12 +788,18 @@ tr.click:hover{background:var(--surface-2)}
 .study-note{font-size:12px;color:var(--ink-3);line-height:1.55}
 .study-table th{cursor:default}.study-table td{white-space:normal}
 @media (max-width:850px){.study-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.study-epochs,.study-compare{grid-template-columns:1fr}}
+
+    /* Names the dataset on an artifact that circulates on its own. */
+    header .obs-sub { margin: 2px 0 0; font-size: 12px; color: var(--muted, #8fa0af); font-weight: 500; }
+    header .obs-provenance { flex-basis: 100%; margin: 10px 0 0; font-size: 11.5px;
+      line-height: 1.5; color: var(--muted, #8fa0af); max-width: 780px; }
 </style>
 </head>
 <body>
 <header>
   <div class="brand-group">
-    <h1>Storage Rate Monitor</h1>
+    <h1>Storage Price Observatory</h1>
+    <p class="obs-sub">Daily rate monitor &middot; seven collections</p>
     <nav id="nav">
       <button data-view="overview" class="active">Overview</button>
       <button data-view="compare">Compare</button>
@@ -807,6 +813,7 @@ tr.click:hover{background:var(--surface-2)}
   </div>
   <a href="/" class="home-back-link">← Braeden Keena</a>
   <div class="meta" id="meta">loading…</div>
+  <p class="obs-provenance">Advertised prices only, collected daily from each operator's public site. Figures here begin <strong>31 August 2026</strong>. The earlier single-source tracker, FindStorage, was retired on 25 August 2026 and its figures are reported separately &mdash; no count spans that boundary.</p>
 </header>
 <main>
   <section id="v-overview">

@@ -17,10 +17,16 @@ const [profile] = await getCollection('profile');
     <div class="wrap wrap--wide">
       <header class="study-header">
         <div class="study-kicker-row">
-          <span class="study-kicker">Longitudinal Pricing Investigation</span>
+          <span class="study-kicker">Storage Price Observatory · Longitudinal Pricing Investigation</span>
           <span class="study-badge">9,077 Facilities · 129,704 Daily SKUs</span>
         </div>
         <h1 class="study-title">Both Sides of the Discount Moved.</h1>
+        <p class="study-provenance">
+          A finding from the <strong>Storage Price Observatory</strong> — seven daily collections
+          running since 31 August 2026. Its predecessor, <a href="/work/findstorage">FindStorage</a>,
+          was a single-source tracker retired on 25 August 2026. The two datasets do not share
+          figures, and no count spans that boundary.
+        </p>
         <p class="study-lede">
           A percentage-off advertisement contains two numbers: the stated discount and the baseline rate used to calculate savings. 
           When daily snapshots followed exact listings through time, both numbers moved together:
@@ -441,6 +447,18 @@ const [profile] = await getCollection('profile');
     font-size: 1.18rem;
     line-height: 1.65;
     color: var(--text-secondary);
+  }
+
+  /* Names the dataset and its boundary, so no reader fuses these figures with
+     the retired FindStorage set. The 25 August 2026 line is a naming rule, not
+     a pause: the two projects never share a count. */
+  .study-provenance {
+    margin-top: 18px;
+    padding: 12px 16px;
+    border-left: 2px solid var(--border);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-muted);
   }
 
   /* Stat Banner */

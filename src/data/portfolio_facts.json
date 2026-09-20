@@ -5,169 +5,264 @@
     "lastVerified": "2026-09-19",
     "verifiedBy": "read out of the named source files; nacup counts verified directly against https://nacup.us/sitemap.xml on 2026-09-19; see each fact's derivation"
   },
-
   "facts": {
     "gascout.total_liability": {
       "value": "$152.34M",
       "derivation": "sum of per-county tracked totals rendered by georgia/gascrape-site/dist/index.html: 62.75 + 80.29 + 9.30 = 152.34 (Fulton is a sheriff sale list and carries no dollar total)",
-      "mustAppearOn": ["work/gascout/index.html"]
+      "mustAppearOn": [
+        "work/gascout/index.html"
+      ]
     },
     "gascout.records": {
       "value": "451,798",
       "derivation": "sum of per-county record counts in georgia/gascrape-site/dist/index.html: 409,142 + 37,297 + 5,211 + 148 = 451,798",
-      "mustAppearOn": ["work/gascout/index.html"]
+      "mustAppearOn": [
+        "work/gascout/index.html"
+      ]
     },
     "gascout.counties_live": {
       "value": "4 / 159",
       "derivation": "county cards with a LIVE badge in georgia/gascrape-site/dist/index.html, against Georgia's 159 counties",
-      "mustAppearOn": ["work/gascout/index.html"]
+      "mustAppearOn": [
+        "work/gascout/index.html"
+      ]
     },
     "gascout.dekalb_records": {
       "value": "409,142",
       "derivation": "DeKalb county card, georgia/gascrape-site/dist/index.html. DeKalb's share only — never the site total",
-      "mustAppearOn": ["work/gascout/index.html"]
+      "mustAppearOn": [
+        "work/gascout/index.html"
+      ]
     },
     "gascout.dekalb_liability": {
       "value": "$62.75M",
       "derivation": "DeKalb county card, georgia/gascrape-site/dist/index.html. DeKalb's share only — never the site total",
-      "mustAppearOn": ["work/gascout/index.html"]
+      "mustAppearOn": [
+        "work/gascout/index.html"
+      ]
     },
     "gascout.dekalb_pdf_pages": {
       "value": "9,915",
       "derivation": "page count of the DQ205GADEK mainframe dump; pipeline node 01 in georgia/gascrape-site/dist/index.html",
-      "mustAppearOn": ["work/gascout/index.html"]
+      "mustAppearOn": [
+        "work/gascout/index.html"
+      ]
     },
-
     "csi.raw_rows": {
       "value": "69,688,145",
       "derivation": "csi-array/docs/V1_EXIT_REPORT.md line 151-152: raw rows across the 16 canonical eight-night files",
-      "mustAppearOn": ["csi/index.html"]
+      "mustAppearOn": [
+        "csi/index.html"
+      ]
     },
     "csi.clean_frames": {
       "value": "69,510,186",
-      "alsoAccept": ["69.5M", "69.5-million", "69.5 million"],
+      "alsoAccept": [
+        "69.5M",
+        "69.5-million",
+        "69.5 million"
+      ],
       "derivation": "clean beacon frames, csi-array/docs/V1_EXIT_REPORT.md line 151. Rounded forms are allowed in prose; the exact figure must appear in the case study body",
-      "mustAppearOn": ["csi/index.html", "index.html"]
+      "mustAppearOn": [
+        "csi/index.html",
+        "index.html"
+      ]
     },
     "csi.rejection_tests": {
       "value": "35",
       "derivation": "csi-array/docs/HYPOTHESIS_LEDGER.md line 40, Total destroyed. NOT statistically independent — the ledger's counting convention must be quoted with the number (line 30)",
-      "mustAppearOn": ["csi/index.html"]
+      "mustAppearOn": [
+        "csi/index.html"
+      ]
     },
     "csi.distinct_ideas": {
       "value": "29",
       "derivation": "csi-array/docs/HYPOTHESIS_LEDGER.md line 40, after collapsing six families of repeated kill",
-      "mustAppearOn": ["csi/index.html"]
+      "mustAppearOn": [
+        "csi/index.html"
+      ]
     },
     "csi.blind_accuracy": {
       "value": "95.8%",
       "derivation": "median blind identification of three co-located transmitters, held-out 30-minute window, 14 receiver-nights, chance 33.3%",
-      "mustAppearOn": ["csi/index.html"]
+      "mustAppearOn": [
+        "csi/index.html"
+      ]
     },
     "csi.double_difference": {
       "value": "6.79",
       "derivation": "cross-receiver double difference in between-unit SD, median across 10s/1min/5min bins",
-      "mustAppearOn": ["csi/index.html"]
+      "mustAppearOn": [
+        "csi/index.html"
+      ]
     },
     "csi.corpus_bytes": {
       "value": "99.5 GiB",
       "derivation": "du over csi-array/data/raw, 118 session files. The eight-night canonical subset is 54.92 GiB. Row count for the full corpus is an extrapolation and is labelled as one",
-      "mustAppearOn": ["csi/index.html"]
+      "mustAppearOn": [
+        "csi/index.html"
+      ]
     },
-
-    "findstorage.stores": {
+    "observatory.facilities": {
       "value": "9,077",
       "derivation": "storageDir/history/combined/latest.manifest.json: stores for the complete 2026-09-15 merge",
-      "mustAppearOn": ["work/findstorage/index.html"]
+      "mustAppearOn": [
+        "storage/index.html"
+      ]
     },
-    "findstorage.offers": {
+    "observatory.offers": {
       "value": "129,704",
       "derivation": "sum of each included brand's `units` in storageDir/history/combined/latest.manifest.json for 2026-09-15",
-      "mustAppearOn": ["work/findstorage/index.html"]
+      "mustAppearOn": [
+        "storage/index.html"
+      ]
     },
     "findstorage.promo_containment": {
       "value": "4,904 / 4,904",
-      "alsoAccept": ["4,904 of 4,904"],
+      "alsoAccept": [
+        "4,904 of 4,904"
+      ],
       "derivation": "storageDir/analysis/august1_containment.py against history/rate_changes.csv for 2026-08-01 and `40% off For 4 Month`",
-      "mustAppearOn": ["work/findstorage/index.html"]
+      "mustAppearOn": [
+        "work/findstorage/index.html"
+      ]
     },
     "findstorage.promo_median_rise": {
       "value": "$45",
-      "alsoAccept": ["+$45"],
+      "alsoAccept": [
+        "+$45"
+      ],
       "derivation": "storageDir/analysis/august1_containment.py, median price increase among the 4,904 exact SKUs entering `40% off For 4 Month` on 2026-08-01",
-      "mustAppearOn": ["work/findstorage/index.html"]
+      "mustAppearOn": [
+        "work/findstorage/index.html"
+      ]
     },
-    "findstorage.september_cost_change": {
+    "findstorage.stores": {
+      "value": "4,664",
+      "derivation": "distinct store_id in storageDir/history/2026-08.csv where date = 2026-08-25, the final FindStorage snapshot",
+      "mustAppearOn": [
+        "work/findstorage/index.html"
+      ]
+    },
+    "findstorage.consecutive_days": {
+      "value": "46",
+      "alsoAccept": [
+        "46 consecutive"
+      ],
+      "derivation": "unbroken run of snapshot dates ending 2026-08-25 in storageDir/history/: starts 2026-07-11. 48 total snapshot days exist but two isolated probe days sit outside the run",
+      "mustAppearOn": [
+        "work/findstorage/index.html"
+      ]
+    },
+    "findstorage.price_changes": {
+      "value": "396,402",
+      "derivation": "awk -F',' 'NR>1 && $1<=\"2026-08-25\"{f[$6]++}' over storageDir/history/rate_changes.csv, field = price",
+      "mustAppearOn": [
+        "work/findstorage/index.html"
+      ]
+    },
+    "findstorage.promo_changes": {
+      "value": "148,870",
+      "derivation": "same command as findstorage.price_changes, field = promo",
+      "mustAppearOn": [
+        "work/findstorage/index.html"
+      ]
+    },
+    "observatory.september_cost_change": {
       "value": "1.1%",
-      "alsoAccept": ["+1.1%"],
+      "alsoAccept": [
+        "+1.1%"
+      ],
       "derivation": "storageDir/analysis/september14_offer_value.py over 59,045 exact matched modelable Public Storage offers, 2026-09-13 to 2026-09-14",
-      "mustAppearOn": ["work/findstorage/index.html"]
+      "mustAppearOn": [
+        "storage/index.html"
+      ]
     },
-    "findstorage.q3_observed_days": {
+    "observatory.q3_observed_days": {
       "value": "77 of 92",
       "derivation": "2026-09-15-q3-prediction-and-ledger-gap.md §2 and Appendix D.1: 77 observed days of Q3 (21 July + 26 August + 30 September), reflecting the 26-30 August terms review pause",
-      "mustAppearOn": ["storage/index.html"]
+      "mustAppearOn": [
+        "storage/index.html"
+      ]
     },
-    "findstorage.sept18_index": {
+    "observatory.sept18_index": {
       "value": "0.9800",
       "derivation": "2026-09-15-q3-prediction-and-ledger-gap.md Appendix D.3 and matched panel net on 18 September",
-      "mustAppearOn": ["storage/index.html"]
+      "mustAppearOn": [
+        "storage/index.html"
+      ]
     },
-
     "kcpermits.observations": {
       "value": "57,032",
       "derivation": "SELECT count(*) FROM observations in upWork/permits/kc_observations.db",
-      "mustAppearOn": ["permits/index.html"]
+      "mustAppearOn": [
+        "permits/index.html"
+      ]
     },
     "kcpermits.locations": {
       "value": "30,587",
       "derivation": "SELECT count(*) FROM locations in upWork/permits/kc_observations.db",
-      "mustAppearOn": ["permits/index.html"]
+      "mustAppearOn": [
+        "permits/index.html"
+      ]
     },
     "kcpermits.sources": {
       "value": "21",
       "derivation": "SELECT count(*) FROM sources in upWork/permits/kc_observations.db",
-      "mustAppearOn": ["permits/index.html"]
+      "mustAppearOn": [
+        "permits/index.html"
+      ]
     },
     "kcpermits.reconciliation_source_records": {
       "value": "37",
       "derivation": "Source Records In, deliverable_public.html line 270",
-      "mustAppearOn": ["permits/index.html"]
+      "mustAppearOn": [
+        "permits/index.html"
+      ]
     },
     "kcpermits.reconciliation_distinct_projects": {
       "value": "10",
       "derivation": "Distinct Projects, deliverable_public.html line 274",
-      "mustAppearOn": ["permits/index.html"]
+      "mustAppearOn": [
+        "permits/index.html"
+      ]
     },
     "kcpermits.reconciliation_prospects": {
       "value": "4",
       "derivation": "Prospect projects, deliverable_public.html line 278",
-      "mustAppearOn": ["permits/index.html"]
+      "mustAppearOn": [
+        "permits/index.html"
+      ]
     },
-
     "easyice.tests": {
       "value": "387",
       "derivation": "cd C:\\dev\\easyIce && python -m pytest --collect-only -q | tail -1 → '387 tests collected'. The previous figure of 279 was `grep -c 'def test_'`, which misses everything parametrize expands",
-      "mustAppearOn": ["work/easyice/index.html"]
+      "mustAppearOn": [
+        "work/easyice/index.html"
+      ]
     },
-
     "nacup.match_pages": {
       "value": "99",
       "derivation": "count of /matches/ URLs in https://nacup.us/sitemap.xml, fetched 2026-09-19",
-      "mustAppearOn": ["work/nacup/index.html"]
+      "mustAppearOn": [
+        "work/nacup/index.html"
+      ]
     },
     "nacup.generated_pages": {
       "value": "185",
       "derivation": "48 /teams/ + 99 /matches/ + 38 /cities/ URLs in https://nacup.us/sitemap.xml, fetched 2026-09-19",
-      "mustAppearOn": ["work/nacup/index.html"]
+      "mustAppearOn": [
+        "work/nacup/index.html"
+      ]
     },
     "nacup.sitemap_urls": {
       "value": "187",
       "derivation": "187 URL entries in https://nacup.us/sitemap.xml: 185 generated team/match/city pages plus the homepage and /watch-parties, fetched 2026-09-19",
-      "mustAppearOn": ["work/nacup/index.html"]
+      "mustAppearOn": [
+        "work/nacup/index.html"
+      ]
     }
   },
-
   "retired": [
     {
       "pattern": "CALL ASAP",
@@ -254,13 +349,17 @@
       "reason": "Superseded by the live seven-source daily pipeline. Retired 2026-09-15"
     }
   ],
-
   "_mutuallyExclusive_note": "Pairs that cannot both be true on one rendered page. Note what is NOT here: $62.75M and $152.34M coexist legitimately on the GAScout page, because one is DeKalb's share and one is the four-county total. A conflict rule that fired on those would be wrong, and a checker that cries wolf gets switched off.",
   "mutuallyExclusive": [
-    ["97 match pages", "99 match pages"],
-    ["185-URL", "187-URL"]
+    [
+      "97 match pages",
+      "99 match pages"
+    ],
+    [
+      "185-URL",
+      "187-URL"
+    ]
   ],
-
   "unverified": {
     "_note": "Numbers currently on the site that could not be re-derived from a named source. Reported by the checker but not enforced until resolved."
   }
