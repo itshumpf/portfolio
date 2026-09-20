@@ -81,23 +81,12 @@ artifact of the collection.
 
 ## One advertisement, followed through time
 
-On 24 August, a Costa Mesa facility displayed “Month 1–4 40% OFF,” a struck-through full rate,
-“Months 5–12 In-Store Rent,” and “Total Estimated 12-Month Savings.” Three visible offers confirmed
-the arithmetic:
+The clearest single case sits inside this run: a Costa Mesa listing whose reference rate moved to
+$237 on 22 August, carried a four-month 40%-off promotion on the 24th, and returned to $161 on the
+25th — the same day the promotion ended.
 
-| Unit | Advertised reference | Months 1–4 | Stated savings |
-|---|---:|---:|---:|
-| 5×5 | $110 | $66 | $176 |
-| 5×10 | $165 | $99 | $264 |
-| 7.5×10 | $237 | $142 | $380 |
-
-The operator’s savings figure is exactly four months at 40% off the displayed reference rate. The
-arithmetic is correct; the reference rate is the moving part.
-
-The $237 listing was observed at **$161 on 20 August**, $237 on 22–24 August, and **$161 again on 25
-August**. Against the adjacent $161 rate, paying $142.20 for four months represents roughly $75 of
-savings—not $380. Approximately **$304 of the displayed $380 difference** came from the temporarily
-higher reference rate.
+That reconstruction, with the exact SKU, the full change log and the arithmetic, is on the
+[Storage Price Observatory](/storage). It is kept in one place on purpose.
 
 ## Where it goes after this
 

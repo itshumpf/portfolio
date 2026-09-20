@@ -37,25 +37,47 @@ const [profile] = await getCollection('profile');
 
       <!-- Top Hard Stats Grid -->
       <div class="stat-banner">
-        <div class="stat-banner__card">
-          <span class="stat-banner__num">4,904 / 4,904</span>
-          <span class="stat-banner__lbl">August 1 promo listings that also received a rate hike</span>
+        <!-- Event 1: 1 August Reference-Rate Hike -->
+        <div class="stat-group">
+          <div class="stat-group__header">
+            <span class="stat-group__tag">1 August</span>
+            <span class="stat-group__title">Reference-rate increase assigned with promotion</span>
+          </div>
+          <div class="stat-group__cards">
+            <div class="stat-banner__card">
+              <span class="stat-banner__num">4,904 / 4,904</span>
+              <span class="stat-banner__lbl">1 August listings entering the promo that also received a rate hike</span>
+              <span class="stat-banner__sub">0 / 428 in 28 July control (0.0%)</span>
+            </div>
+            <div class="stat-banner__card">
+              <span class="stat-banner__num text-alert">+$45</span>
+              <span class="stat-banner__lbl">median reference-rate increase, same day the 40%-off was assigned</span>
+            </div>
+          </div>
         </div>
-        <div class="stat-banner__card">
-          <span class="stat-banner__num">+$45</span>
-          <span class="stat-banner__lbl">median reference-rate increase within that cohort</span>
-        </div>
-        <div class="stat-banner__card">
-          <span class="stat-banner__num">−49.7%</span>
-          <span class="stat-banner__lbl">promotional discount value withdrawn on September 14</span>
-        </div>
-        <div class="stat-banner__card">
-          <span class="stat-banner__num">+1.1%</span>
-          <span class="stat-banner__lbl">modeled four-month cost change across matched offers after rates fell</span>
+
+        <!-- Event 2: 14 September Portfolio Reset -->
+        <div class="stat-group stat-group--conclusion">
+          <div class="stat-group__header">
+            <span class="stat-group__tag">14 September</span>
+            <span class="stat-group__title">Headline rate cut and promotional withdrawal</span>
+          </div>
+          <div class="stat-group__cards">
+            <div class="stat-banner__card">
+              <span class="stat-banner__num">−14.7%</span>
+              <span class="stat-banner__lbl">rates fell, across 59,045 exact-matched modelable listings, 14 Sept</span>
+            </div>
+            <div class="stat-banner__card stat-banner__card--featured">
+              <span class="stat-banner__tag">The Net Outcome</span>
+              <span class="stat-banner__num text-alert">+1.1%</span>
+              <span class="stat-banner__lbl">modeled four-month cost to the customer — higher, despite the rate cut</span>
+              <span class="stat-banner__sub">promotional discount value withdrawn: −49.7%</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- VISUAL 1: The August Smoking Gun (July Control vs August Event) -->
+      <!-- VISUAL 1: the 28 July control against the 1 August event -->
       <section class="visual-card">
         <div class="visual-card__header">
           <span class="visual-card__eyebrow">The Smoking Gun · Physical Control</span>
@@ -105,7 +127,7 @@ const [profile] = await getCollection('profile');
         </div>
       </section>
 
-      <!-- VISUAL 2: The Costa Mesa Anatomy of a Deceptive Display -->
+      <!-- VISUAL 2: Costa Mesa — how the advertised savings figure was calculated -->
       <section class="visual-card">
         <div class="visual-card__header">
           <span class="visual-card__eyebrow">Exact Listing Reconstruction</span>
@@ -465,18 +487,94 @@ const [profile] = await getCollection('profile');
   /* Stat Banner */
   .stat-banner {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    padding-block: 22px;
+    padding-block: 24px;
     margin-bottom: 56px;
+  }
+
+  @media (max-width: 900px) {
+    .stat-banner {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  .stat-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stat-group__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .stat-group__tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--border-soft);
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .stat-group--conclusion .stat-group__tag {
+    background: rgba(217, 119, 6, 0.15);
+    color: #d97706;
+  }
+
+  .stat-group__title {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .stat-group__cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 540px) {
+    .stat-group__cards {
+      grid-template-columns: 1fr;
+    }
   }
 
   .stat-banner__card {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .stat-banner__card--featured {
+    border-color: rgba(217, 119, 6, 0.45);
+    background: rgba(217, 119, 6, 0.06);
+    position: relative;
+  }
+
+  .stat-banner__tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #d97706;
+    font-weight: 700;
+    margin-bottom: -2px;
   }
 
   .stat-banner__num {
@@ -484,12 +582,25 @@ const [profile] = await getCollection('profile');
     font-weight: 800;
     font-family: var(--font-mono);
     color: var(--text-primary);
+    line-height: 1.1;
+  }
+
+  .stat-banner__card--featured .stat-banner__num {
+    font-size: 2.1rem;
+    color: #d97706;
   }
 
   .stat-banner__lbl {
-    font-size: 0.84rem;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+  }
+
+  .stat-banner__sub {
+    font-size: 0.74rem;
     color: var(--text-muted);
-    line-height: 1.4;
+    line-height: 1.35;
+    margin-top: 2px;
   }
 
   /* Visual Cards */
