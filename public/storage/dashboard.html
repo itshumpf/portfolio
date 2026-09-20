@@ -989,8 +989,8 @@ tr.click:hover{background:var(--surface-2)}
     </div>
 
     <div class="card study-copy" style="margin-top:14px">
-      <h2>Data hygiene & provenance: 77 of 92 days observed</h2>
-      <p>Across the 92-day third quarter, the pipeline recorded <strong>77 of 92</strong> days. Missing days are never interpolated with synthetic lines. 10 days predate collector launch (1–10 July), and <strong>5 days were a deliberate pause (26–30 August)</strong> taken to review changed robots.txt and site terms before resuming. Every observation is immutable and cryptographic.</p>
+      <h2>Data hygiene &amp; provenance: <span id="cov-headline">68 of 74 days observed</span></h2>
+      <p id="cov-body">Collection began <strong>9 July 2026</strong>. Of the <strong>74</strong> days since, the pipeline recorded <strong>68</strong>. Missing days are never interpolated with synthetic lines. <strong>5 were a deliberate pause (26&ndash;30 August)</strong> taken to review changed robots.txt and site terms before resuming, and <strong>1</strong> is an unexplained collection gap. Q3 runs 92 days in total.</p>
     </div>
 
     <div class="card study-copy" style="margin-top:14px">
@@ -1236,6 +1236,16 @@ fetch('dashboard-data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Erro
   const parts=d.brand_order.map(b=>`${d.brands[b].short} ${d.brands[b].snapshot_date||'—'}`).join(' · ');
   el('meta').textContent=`${d.stores.length.toLocaleString()} stores · ${parts} · built ${d.built_at.replace('T',' ').slice(0,16)}Z`;
   initStores();initChanges();
+  if(d.coverage&&d.coverage.observed){const c=d.coverage;
+    const hd=el('cov-headline'),bd=el('cov-body');
+    if(hd)hd.textContent=`${c.observed} of ${c.elapsed_since_first} days observed`;
+    if(bd)bd.innerHTML=`Collection began <strong>${new Date(c.first_observed+'T00:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})}</strong>. `+
+      `Of the <strong>${c.elapsed_since_first}</strong> days since, the pipeline recorded `+
+      `<strong>${c.observed}</strong>. Missing days are never interpolated with synthetic lines. `+
+      (c.paused?`<strong>${c.paused} were a deliberate pause (26&ndash;30 August)</strong> taken to `+
+        `review changed robots.txt and site terms before resuming, and `:'')+
+      `<strong>${c.gaps}</strong> ${c.gaps===1?'is an unexplained collection gap':'are unexplained collection gaps'}. `+
+      `Q3 runs ${c.quarter_days} days in total.`;}
   show(location.hash.slice(1)||'overview');
 }).catch(e=>{el('meta').textContent='';document.querySelector('main').innerHTML=`<div class="card"><h3>Could not load dashboard-data.json</h3><p>${e.message}</p><p class="muted">Build it with <code>python storage_pipeline.py daily</code>, then serve this folder (for example <code>python -m http.server 8777</code>) and open <code>http://localhost:8777/dashboard.html</code>. Opening the file directly from disk blocks the fetch.</p></div>`;});
 </script>
