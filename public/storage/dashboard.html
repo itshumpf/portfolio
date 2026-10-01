@@ -965,9 +965,9 @@ tr.click:hover{background:var(--surface-2)}
         <p>A static paper published on September 14 would have concluded that Public Storage locked in a 25% lower price regime entering Q4. The daily pipeline stayed running and caught the walkback:</p>
         <div class="scroll"><table class="study-table"><thead><tr><th>Date</th><th>State</th><th class="num">Matched Index</th><th>Observed Mechanics</th></tr></thead><tbody>
           <tr><td>13 Sept</td><td>Baseline</td><td class="num">1.0000</td><td class="muted">Pre-reset steady state</td></tr>
-          <tr><td>14 Sept</td><td>Flash reset</td><td class="num down">0.7500</td><td>−25% rate cut on 30,762 SKUs; promo values halved</td></tr>
-          <tr><td>15 Sept</td><td>Predictions sealed</td><td class="num">0.7500</td><td>Git commit <code>2026-09-15-q3-prediction-and-ledger-gap.md</code></td></tr>
-          <tr><td>18 Sept</td><td>Walkback</td><td class="num up"><strong>0.9800</strong></td><td>+12% restored across 22,772 units; 17,935 promos rewritten</td></tr>
+          <tr><td>14 Sept</td><td>Flash reset</td><td class="num down">0.7667</td><td>Full matched panel (0.7500 within cut cohort of 27,213 SKUs); promo values halved</td></tr>
+          <tr><td>15 Sept</td><td>Predictions sealed</td><td class="num">0.7667</td><td>Git commit <code>2026-09-15-q3-prediction-and-ledger-gap.md</code></td></tr>
+          <tr><td>18 Sept</td><td>Walkback</td><td class="num up"><strong>0.9800</strong></td><td>+12% average price restoration (panel mean; 22,772 SKUs repriced: 18,828 up, 3,944 down); 17,935 promos rewritten</td></tr>
         </tbody></table></div>
         <p class="study-note" style="margin-top:12px">By September 18, the matched panel index was 0.9800—just 2% below starting rates. A 25% price reset was half-unwound within 96 hours.</p>
       </div>
@@ -989,14 +989,14 @@ tr.click:hover{background:var(--surface-2)}
     </div>
 
     <div class="card study-copy" style="margin-top:14px">
-      <h2>Data hygiene &amp; provenance: <span id="cov-headline">68 of 74 days observed</span></h2>
-      <p id="cov-body">Collection began <strong>9 July 2026</strong>. Of the <strong>74</strong> days since, the pipeline recorded <strong>68</strong>. Missing days are never interpolated with synthetic lines. <strong>5 were a deliberate pause (26&ndash;30 August)</strong> taken to review changed robots.txt and site terms before resuming, and <strong>1</strong> is an unexplained collection gap. Q3 runs 92 days in total.</p>
+      <h2>Data hygiene &amp; provenance: <span id="cov-headline">78 of 92 days observed (84.8%)</span></h2>
+      <p id="cov-body">Collection began <strong>9 July 2026</strong>. <strong>78 of 92 days</strong> in Q3 were observed (84.8% of the quarter; 92.9% of the 84-day collection window). <strong>8 days</strong> precede the start of collection, <strong>5 were a deliberate pause (26&ndash;30 August)</strong> to review changed site terms, and <strong>1</strong> is an unexplained collection gap. Missing days are preserved as missing; nothing is interpolated.</p>
     </div>
 
     <div class="card study-copy" style="margin-top:14px">
       <h2>What the evidence supports</h2>
       <div class="study-verdict">Public Storage calculated advertised savings from reference rates that our daily observations show had recently increased—sometimes sharply and temporarily.</div>
-      <div class="study-verdict" style="margin-top:12px">Public Storage’s revenue-management system appears to be successfully manipulating the composition and presentation of customer offers, and may be improving short-term introductory economics. It has not yet demonstrated corresponding same-store revenue or NOI growth, and the stock market has not rewarded the company during the period observed.</div>
+      <div class="study-verdict" style="margin-top:12px">Public Storage’s revenue-management system appears to be successfully manipulating the composition and presentation of customer offers, and may be improving short-term introductory economics. It has not yet demonstrated corresponding same-store revenue or NOI growth.</div>
       <p style="margin-top:14px">The study can establish the advertisement, its reference rate, its promotional terms, and the history of that exact listing. It does not observe completed transactions, establish intent, or make a legal determination about deceptive advertising.</p>
       <p class="study-note">Method: immutable daily snapshots; exact facility-and-SKU matching; independent price and promotion event logs; four-month offer terms modeled from the published advertising; missing observations preserved as missing rather than interpolated.</p>
     </div>
@@ -1238,14 +1238,15 @@ fetch('dashboard-data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Erro
   initStores();initChanges();
   if(d.coverage&&d.coverage.observed){const c=d.coverage;
     const hd=el('cov-headline'),bd=el('cov-body');
-    if(hd)hd.textContent=`${c.observed} of ${c.elapsed_since_first} days observed`;
+    const qPct=((c.observed/c.quarter_days)*100).toFixed(1);
+    const wPct=((c.observed/c.elapsed_since_first)*100).toFixed(1);
+    if(hd)hd.textContent=`${c.observed} of ${c.quarter_days} days observed (${qPct}%)`;
     if(bd)bd.innerHTML=`Collection began <strong>${new Date(c.first_observed+'T00:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})}</strong>. `+
-      `Of the <strong>${c.elapsed_since_first}</strong> days since, the pipeline recorded `+
-      `<strong>${c.observed}</strong>. Missing days are never interpolated with synthetic lines. `+
-      (c.paused?`<strong>${c.paused} were a deliberate pause (26&ndash;30 August)</strong> taken to `+
-        `review changed robots.txt and site terms before resuming, and `:'')+
+      `<strong>${c.observed} of ${c.quarter_days} days</strong> in Q3 were observed (${qPct}% of the quarter; ${wPct}% of the ${c.elapsed_since_first}-day collection window). `+
+      `<strong>${c.quarter_days-c.elapsed_since_first} days</strong> precede the start of collection, `+
+      (c.paused?`<strong>${c.paused} were a deliberate pause (26&ndash;30 August)</strong> to review changed site terms, and `:'')+
       `<strong>${c.gaps}</strong> ${c.gaps===1?'is an unexplained collection gap':'are unexplained collection gaps'}. `+
-      `Q3 runs ${c.quarter_days} days in total.`;}
+      `Missing days are preserved as missing; nothing is interpolated.`;}
   show(location.hash.slice(1)||'overview');
 }).catch(e=>{el('meta').textContent='';document.querySelector('main').innerHTML=`<div class="card"><h3>Could not load dashboard-data.json</h3><p>${e.message}</p><p class="muted">Build it with <code>python storage_pipeline.py daily</code>, then serve this folder (for example <code>python -m http.server 8777</code>) and open <code>http://localhost:8777/dashboard.html</code>. Opening the file directly from disk blocks the fetch.</p></div>`;});
 </script>

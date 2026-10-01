@@ -9,7 +9,7 @@ const [profile] = await getCollection('profile');
 
 <BaseLayout
   title="Both Sides of the Discount Moved — Braeden Keena"
-  description="A 9,077-facility longitudinal pricing study. Daily exact-listing snapshots show reference rates rising a median of $45 on the same day 40%-off promotions were assigned."
+  description="A 9,077-facility longitudinal pricing study (as of 15 September 2026). Daily exact-listing snapshots show reference rates rising a median of $45 on the same day 40%-off promotions were assigned."
 >
   <Nav name={profile.data.name} />
 
@@ -18,14 +18,13 @@ const [profile] = await getCollection('profile');
       <header class="study-header">
         <div class="study-kicker-row">
           <span class="study-kicker">Storage Price Observatory · Longitudinal Pricing Investigation</span>
-          <span class="study-badge">9,077 Facilities · 129,704 Daily SKUs</span>
+          <span class="study-badge">9,077 Facilities · 129,704 Daily SKUs (15 Sept 2026)</span>
         </div>
         <h1 class="study-title">Both Sides of the Discount Moved.</h1>
         <p class="study-provenance">
           A finding from the <strong>Storage Price Observatory</strong>. The Public Storage series
           is continuous from 29 April 2026; the six other collections were added during September
-          2026. Through 25 August that Public Storage collection was published as a directory called
-          <a href="/work/findstorage">FindStorage</a> — a product since retired, whose headline
+          2026. Through 25 August that Public Storage collection was published as a directory called <a href="/work/findstorage">FindStorage</a> — a product since retired, whose headline
           figures are frozen at that date and reported separately from the figures here.
         </p>
         <p class="study-lede">
@@ -81,7 +80,7 @@ const [profile] = await getCollection('profile');
       <section class="visual-card">
         <div class="visual-card__header">
           <span class="visual-card__eyebrow">The Smoking Gun · Physical Control</span>
-          <h2>The Control That Proves It Wasn't a System Glitch</h2>
+          <h2>The Control That Rules Out a System Glitch</h2>
           <p class="visual-card__desc">
             Could a website update engine simply bundle rate and promo updates together? 
             July supplies the empirical control. Four days before August 1, hundreds of listings rotated into the same discount with zero rate hikes.
@@ -125,6 +124,10 @@ const [profile] = await getCollection('profile');
             </p>
           </div>
         </div>
+
+        <p class="evidence-aggregate" style="margin-top: 18px; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+          Measured on that same 4,904-offer event cohort, headline value rose 35.3% and promotional value rose 216.4%, producing a 2.1% reduction in aggregate modeled four-month cost — though the median offer cost $2 more, 55.8% of listings cost more over four months, and 96% cost more by month eight.
+        </p>
       </section>
 
       <!-- VISUAL 2: Costa Mesa — how the advertised savings figure was calculated -->
@@ -285,7 +288,7 @@ const [profile] = await getCollection('profile');
           <h2>The Reset Walkback: Caught Live 96 Hours Later</h2>
           <p class="visual-card__desc">
             Had our study frozen on September 14, it would have claimed Public Storage locked in a 25% lower rate regime entering Q4. 
-            The daily pipeline stayed online. On <strong>18 September 2026</strong>, Public Storage restored roughly 12% across 22,772 units, rewriting 17,935 promotions.
+            The daily pipeline stayed online. On <strong>18 September 2026</strong>, Public Storage logged an average price restoration of roughly +12% (panel mean; the median-of-ratios index returned to 0.9800), with 22,772 SKUs repriced (18,828 up, 3,944 down) and 17,935 promotions rewritten.
           </p>
         </div>
 
@@ -319,7 +322,7 @@ const [profile] = await getCollection('profile');
             <div class="tl-node tl-node--restored">
               <span class="tl-date">18 Sept</span>
               <strong class="tl-val text-accent">0.9800</strong>
-              <span class="tl-status">+12% Restored (22k units)</span>
+              <span class="tl-status">+12% panel mean (22,772 repriced)</span>
             </div>
           </div>
         </div>
@@ -402,7 +405,7 @@ const [profile] = await getCollection('profile');
             </div>
             <h3>7-Supplier National Rate Monitor</h3>
             <p class="door-text">
-              Interactive GIS mapping and market intelligence across 9,077 facilities and 129,704 daily SKUs from America's top storage operators.
+              Interactive GIS mapping and market intelligence across 9,077 facilities and 129,704 daily SKUs from America's top storage operators (as of 15 September 2026).
             </p>
             <ul class="door-bullets">
               <li><strong>Interactive Leaflet Map:</strong> store-level inventory & rate curves</li>
