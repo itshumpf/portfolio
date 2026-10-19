@@ -716,6 +716,7 @@ section[hidden]{display:none}
 .grid{display:grid;gap:14px}
 .g4{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
 .g2{grid-template-columns:repeat(auto-fit,minmax(460px,1fr))}
+#v-trends .g2{grid-template-columns:repeat(auto-fit,minmax(min(460px,100%),1fr))}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;min-width:0}
 .card h3{margin:0 0 8px;font-size:13px;font-weight:600;color:var(--ink-2)}
 .card .sub{color:var(--ink-3);font-size:12px;margin:-4px 0 10px}
@@ -789,6 +790,18 @@ tr.click:hover{background:var(--surface-2)}
 .study-table th{cursor:default}.study-table td{white-space:normal}
 @media (max-width:850px){.study-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.study-epochs,.study-compare{grid-template-columns:1fr}}
     header .obs-sub { margin: 2px 0 0; font-size: 12px; color: var(--muted, #8fa0af); font-weight: 500; }
+@media (max-width:650px){
+  header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;padding:10px 14px}
+  header .brand-group{display:contents}
+  header h1{grid-column:1/-1;font-size:16px}
+  header .obs-sub{grid-column:1;font-size:11px;margin:0;min-width:0}
+  header .home-back-link{grid-column:2;grid-row:2;margin:0;font-size:11px;padding:5px 7px}
+  header nav{grid-column:1/-1;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-padding-inline:4px;padding:2px 0 4px}
+  header nav button{flex:0 0 auto;white-space:nowrap;min-height:44px;padding:8px 12px}
+  header .meta{grid-column:1/-1;min-width:0;max-width:100%;overflow-x:auto;white-space:nowrap;text-align:left;font-size:10px;margin:0;padding-bottom:2px}
+  .g2,.multi{grid-template-columns:minmax(0,1fr)}
+  .multi .panel{min-width:0}
+}
 </style>
 </head>
 <body>
@@ -1185,16 +1198,119 @@ el('ind-status').onchange=e=>{ind.status=e.target.value;renderIndependent();};
 let indTimer;el('ind-q').oninput=e=>{clearTimeout(indTimer);indTimer=setTimeout(()=>{ind.q=e.target.value.trim().toLowerCase();renderIndependent();},150);};
 
 // ------------------------------------------------------------- trends
+const trendPlugin={
+  id:'trendLabels',
+  beforeLayout(chart){
+    chart._shortLabels=window.innerWidth<650||chart.width<380;
+    const ctx=chart.ctx;ctx.save();ctx.font='600 11px '+Chart.defaults.font.family;
+    const widths=chart.data.datasets.map(d=>ctx.measureText(chart._shortLabels&&d.short?d.short:d.label).width);
+    chart.options.layout.padding.right=Math.ceil(Math.max(0,...widths))+16;ctx.restore();
+  },
+  afterInit(chart){
+    chart._labelBoxes=[];chart._isolated=null;
+    chart.canvas.onclick=e=>{
+      const r=chart.canvas.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top;
+      let hit=null;
+      if(chart._labelBoxes){for(const b of chart._labelBoxes){if(b&&px>=b.x-4&&px<=b.x+b.w+6&&Math.abs(py-b.y)<=8){hit=b.i;break;}}}
+      if(hit==null){
+        let best={d:10,i:-1};
+        for(let i=0;i<chart.data.datasets.length;i++){
+          const pts=chart.getDatasetMeta(i).data;
+          for(let j=0;j<pts.length;j++){
+            const p=pts[j];if(p.skip)continue;
+            const dp=Math.hypot(px-p.x,py-p.y);if(dp<best.d)best={d:dp,i};
+            if(j>0&&!pts[j-1].skip){
+              const p0=pts[j-1];
+              if(px>=Math.min(p0.x,p.x)-8&&px<=Math.max(p0.x,p.x)+8){
+                const dx=p.x-p0.x,dy=p.y-p0.y,l2=dx*dx+dy*dy;
+                const t=l2?Math.max(0,Math.min(1,((px-p0.x)*dx+(py-p0.y)*dy)/l2)):0;
+                const ds=Math.hypot(px-(p0.x+t*dx),py-(p0.y+t*dy));
+                if(ds<best.d)best={d:ds,i};
+              }
+            }
+          }
+        }
+        if(best.i>=0)hit=best.i;
+      }
+      chart._isolated=chart._isolated===hit?null:hit;
+      for(let i=0;i<chart.data.datasets.length;i++){
+        const d=chart.data.datasets[i],c=d._c,dim=chart._isolated!=null&&chart._isolated!==i;
+        d.borderColor=dim?c+'26':c;d.backgroundColor=dim?c+'26':c;
+      }
+      chart.update();
+    };
+    chart.canvas.onmousemove=e=>{
+      const r=chart.canvas.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top;
+      let hit=false;
+      if(chart._labelBoxes){for(const b of chart._labelBoxes){if(b&&px>=b.x-4&&px<=b.x+b.w+6&&Math.abs(py-b.y)<=8){hit=true;break;}}}
+      if(!hit){
+        for(let i=0;!hit&&i<chart.data.datasets.length;i++){
+          const pts=chart.getDatasetMeta(i).data;
+          for(let j=0;j<pts.length;j++){
+            const p=pts[j];if(p.skip)continue;
+            if(Math.hypot(px-p.x,py-p.y)<8){hit=true;break;}
+            if(j>0&&!pts[j-1].skip){
+              const p0=pts[j-1];
+              if(px>=Math.min(p0.x,p.x)-8&&px<=Math.max(p0.x,p.x)+8){
+                const dx=p.x-p0.x,dy=p.y-p0.y,l2=dx*dx+dy*dy;
+                const t=l2?Math.max(0,Math.min(1,((px-p0.x)*dx+(py-p0.y)*dy)/l2)):0;
+                if(Math.hypot(px-(p0.x+t*dx),py-(p0.y+t*dy))<8){hit=true;break;}
+              }
+            }
+          }
+        }
+      }
+      chart.canvas.style.cursor=hit?'pointer':'default';
+    };
+  },
+  beforeDestroy(chart){chart.canvas.onclick=null;chart.canvas.onmousemove=null;},
+  afterDatasetsDraw(chart){
+    const ctx=chart.ctx,dss=chart.data.datasets,items=[];
+    chart._labelBoxes=[];
+    const narrow=chart._shortLabels;
+    for(let i=0;i<dss.length;i++){
+      const d=dss[i];if(!d._c)d._c=d.borderColor;
+      const meta=chart.getDatasetMeta(i);let lastPt=null;
+      for(let j=d.data.length-1;j>=0;j--){
+        if(d.data[j]&&d.data[j].y!=null&&!isNaN(d.data[j].y)){
+          const p=meta.data[j];if(p&&!p.skip){lastPt=p;break;}
+        }
+      }
+      if(lastPt){
+        const txt=(narrow&&d.short)?d.short:d.label;
+        items.push({i,label:txt,color:d._c,ptX:lastPt.x,origY:lastPt.y,y:lastPt.y});
+      }
+    }
+    ctx.save();ctx.font='600 11px '+(Chart.defaults.font.family||'sans-serif');
+    ctx.textAlign='left';ctx.textBaseline='middle';
+    for(const it of items)it.w=ctx.measureText(it.label).width;
+    const minDist=17,top=chart.chartArea.top+6,bottom=chart.chartArea.bottom-6;
+    items.sort((a,b)=>a.origY-b.origY||a.i-b.i);
+    for(let j=0;j<items.length;j++)items[j].y=Math.max(top,items[j].origY,j?items[j-1].y+minDist:top);
+    if(items.length&&items[items.length-1].y>bottom){
+      items[items.length-1].y=bottom;
+      for(let j=items.length-2;j>=0;j--)items[j].y=Math.min(items[j].y,items[j+1].y-minDist);
+    }
+    for(const it of items){
+      const textX=it.ptX+4,dim=chart._isolated!=null&&chart._isolated!==it.i;
+      ctx.strokeStyle=ctx.fillStyle=dim?it.color+'26':it.color;
+      if(Math.abs(it.y-it.origY)>1){ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(it.ptX,it.origY);ctx.lineTo(textX,it.y);ctx.stroke();}
+      ctx.fillText(it.label,textX,it.y);
+      chart._labelBoxes.push({i:it.i,x:textX,y:it.y,w:it.w});
+    }
+    ctx.restore();
+  }
+};
 function trends(){
   const bs=brandsIn();const cutoff=trendDays?addDays(D.date,-trendDays):'0000';
-  const series=key=>bs.map(b=>({label:label(b),data:(D.trends[b]||[]).filter(p=>p.d>=cutoff).map(p=>({x:p.d,y:p[key]})),borderColor:color(b),backgroundColor:color(b),spanGaps:false}));
+  const series=key=>bs.map(b=>({label:label(b),short:D.brands[b].short,data:(D.trends[b]||[]).filter(p=>p.d>=cutoff).map(p=>({x:p.d,y:p[key]})),borderColor:color(b),backgroundColor:color(b),spanGaps:false,_c:color(b)}));
   const observedDates=bs.flatMap(b=>(D.trends[b]||[]).map(p=>p.d)).filter(d=>d>=cutoff).sort();
   const allDates=observedDates.length?dateLabels(observedDates[0],D.date):[];
-  const base=(yfmt,min0)=>({parsing:false,scales:{x:{type:'category',labels:allDates,grid:{display:false},ticks:{maxTicksLimit:10,callback:(v,i)=>allDates[i]?.slice(5)}},y:{beginAtZero:!!min0,ticks:{callback:yfmt}}},plugins:{tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${yfmt(c.raw.y)}`}}}});
-  mk('c-t-tens',{type:'line',data:{datasets:series('t')},options:base(v=>'$'+Math.round(v))});
-  mk('c-t-med',{type:'line',data:{datasets:series('m')},options:base(v=>'$'+Math.round(v))});
-  mk('c-t-avail',{type:'line',data:{datasets:series('avail')},options:base(v=>Math.round(v).toLocaleString(),true)});
-  mk('c-t-stores',{type:'line',data:{datasets:series('stores')},options:base(v=>Math.round(v).toLocaleString(),true)});
+  const base=(yfmt,min0)=>({parsing:false,maintainAspectRatio:false,layout:{padding:{right:0}},scales:{x:{type:'category',labels:allDates,grid:{display:false},ticks:{maxTicksLimit:10,callback:(v,i)=>allDates[i]?.slice(5)}},y:{beginAtZero:!!min0,ticks:{callback:yfmt}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${yfmt(c.raw.y)}`,labelColor:c=>({borderColor:c.dataset._c||c.dataset.borderColor,backgroundColor:c.dataset._c||c.dataset.backgroundColor})}}}});
+  mk('c-t-tens',{type:'line',data:{datasets:series('t')},options:base(v=>'$'+Math.round(v)),plugins:[trendPlugin]});
+  mk('c-t-med',{type:'line',data:{datasets:series('m')},options:base(v=>'$'+Math.round(v)),plugins:[trendPlugin]});
+  mk('c-t-avail',{type:'line',data:{datasets:series('avail')},options:base(v=>Math.round(v).toLocaleString(),true),plugins:[trendPlugin]});
+  mk('c-t-stores',{type:'line',data:{datasets:series('stores')},options:base(v=>Math.round(v).toLocaleString(),true),plugins:[trendPlugin]});
 }
 
 // ------------------------------------------------------------- case study
@@ -1222,6 +1338,7 @@ function changes(){
 const rendered={};
 function show(v){
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+  if(window.innerWidth<=650){const b=el('nav').querySelector('.active');if(b)el('nav').scrollLeft=b.offsetLeft-(el('nav').clientWidth-b.offsetWidth)/2;}
   document.querySelectorAll('main > section').forEach(s=>s.hidden=s.id!=='v-'+v);
   if(v==='stores'){setTimeout(()=>map.invalidateSize(),50);}
   if(!rendered[v]){rendered[v]=true;({overview,compare,markets,stores,independent,trends,changes,study})[v]();}
